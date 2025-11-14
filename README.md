@@ -2,12 +2,14 @@
 
 Comprehensive test suite for OpenCL C built-in functions using Mesa OpenCL (Rusticl).
 
-This project tests **129 OpenCL built-in functions** with **1,290 test cases** across multiple function categories:
+This project tests **128 OpenCL built-in functions** with **1,280 test cases** across multiple function categories:
 - Math Functions (51 functions): trigonometric, exponential, logarithmic, power, rounding, etc.
 - Geometric Functions (23 functions): dot, cross, distance, length, normalize, and fast variants
 - Common Functions (12 functions): clamp, degrees, radians, max, min, mix, step, smoothstep, sign
-- Integer Functions (21 functions): abs, add_sat, clz, ctz, mad_hi, mul24, popcount, rotate, etc.
+- Integer Functions (20 functions): abs, add_sat, clz, mad_hi, mul24, popcount, rotate, etc.
 - Relational Functions (22 functions): comparisons, classification, logical operations, select
+
+**Note:** This covers ~60-65% of testable OpenCL built-in functions. Some categories like synchronization functions, async copy, and image functions require multi-work-item execution or special object types that aren't suitable for this single-work-item test framework. See [MISSING_FUNCTIONS.md](MISSING_FUNCTIONS.md) for detailed analysis of untested functions.
 
 ## Project Structure
 
