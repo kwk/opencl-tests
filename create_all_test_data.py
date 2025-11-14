@@ -16,11 +16,17 @@ MATH_FUNCTIONS = {
     "cosh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.cosh(x)},
     "tanh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.tanh(x)},
     "asinh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.asinh(x)},
-    "acosh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.acosh(max(1.0, x))},
+    "acosh": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.acosh(x),
+        "valid_range": lambda x: x >= 1.0,
+    },
     "atanh": {
         "inputs": 1,
         "type": "float",
-        "test_fn": lambda x: math.atanh(max(-0.99, min(0.99, x))),
+        "test_fn": lambda x: math.atanh(x),
+        "valid_range": lambda x: -1.0 < x < 1.0,
     },
     # Exponential/logarithmic functions
     "exp2": {"inputs": 1, "type": "float", "test_fn": lambda x: 2**x},
@@ -64,14 +70,35 @@ MATH_FUNCTIONS = {
     "native_exp": {"inputs": 1, "type": "float", "test_fn": lambda x: math.exp(x)},
     "native_exp2": {"inputs": 1, "type": "float", "test_fn": lambda x: 2**x},
     "native_exp10": {"inputs": 1, "type": "float", "test_fn": lambda x: 10**x},
-    "native_log": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log(max(0.001, x))},
-    "native_log2": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log2(max(0.001, x))},
-    "native_log10": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log10(max(0.001, x))},
-    "native_sqrt": {"inputs": 1, "type": "float", "test_fn": lambda x: math.sqrt(max(0, x))},
+    "native_log": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.log(x),
+        "valid_range": lambda x: x > 0.0,
+    },
+    "native_log2": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.log2(x),
+        "valid_range": lambda x: x > 0.0,
+    },
+    "native_log10": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.log10(x),
+        "valid_range": lambda x: x > 0.0,
+    },
+    "native_sqrt": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.sqrt(x),
+        "valid_range": lambda x: x >= 0.0,
+    },
     "native_rsqrt": {
         "inputs": 1,
         "type": "float",
-        "test_fn": lambda x: 1 / math.sqrt(max(0.001, x)),
+        "test_fn": lambda x: 1 / math.sqrt(x),
+        "valid_range": lambda x: x > 0.0,
     },
 }
 
@@ -79,6 +106,38 @@ MATH_FUNCTIONS = {
 def generate_test_values_1input():
     """Generate diverse test values for single-input functions"""
     return [0.0, 1.0, -1.0, 0.5, -0.5, 2.0, -2.0, 10.0, -10.0, 100.0]
+
+
+def generate_test_values_acosh():
+    """Generate test values specifically for acosh (domain: x >= 1.0)"""
+    return [1.0, 1.5, 2.0, 3.0, 5.0, 10.0, 20.0, 50.0, 100.0, 1000.0]
+
+
+def generate_test_values_atanh():
+    """Generate test values specifically for atanh (domain: -1.0 < x < 1.0)"""
+    return [0.0, 0.1, -0.1, 0.5, -0.5, 0.9, -0.9, 0.99, -0.99, 0.25]
+
+
+def generate_test_values_log():
+    """Generate test values for log functions (domain: x > 0.0)"""
+    return [0.001, 0.01, 0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 100.0, 1000.0]
+
+
+def generate_test_values_sqrt():
+    """Generate test values for sqrt functions (domain: x >= 0.0)"""
+    return [0.0, 0.01, 0.25, 0.5, 1.0, 4.0, 9.0, 16.0, 100.0, 1000.0]
+
+
+def generate_test_values_exp():
+    """Generate test values for exp functions (avoid overflow for float32)"""
+    # exp(88) is close to float max, so keep inputs smaller
+    return [0.0, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 40.0, 80.0, -10.0]
+
+
+def generate_test_values_exp10():
+    """Generate test values for exp10/pow10 functions (avoid overflow for float32)"""
+    # 10^38 is close to float max, so keep inputs smaller
+    return [0.0, 0.5, 1.0, 2.0, 3.0, 5.0, 10.0, 20.0, 30.0, -5.0]
 
 
 def generate_test_values_2input():
@@ -117,11 +176,32 @@ def generate_math_function_tests(name, spec):
     """Generate 10 test cases for a math function"""
     num_inputs = spec["inputs"]
     test_fn = spec["test_fn"]
+    valid_range = spec.get("valid_range", None)
     tests = []
 
     if num_inputs == 1:
-        values = generate_test_values_1input()
+        # Use custom test values for specific functions
+        if name == "acosh":
+            values = generate_test_values_acosh()
+        elif name == "atanh":
+            values = generate_test_values_atanh()
+        elif name in ["native_log", "native_log2", "native_log10", "log2", "log10"]:
+            values = generate_test_values_log()
+        elif name in ["native_sqrt", "native_rsqrt", "rsqrt"]:
+            values = generate_test_values_sqrt()
+        elif name in ["native_exp"]:
+            values = generate_test_values_exp()
+        elif name in ["native_exp10", "exp10"]:
+            values = generate_test_values_exp10()
+        elif name in ["native_exp2", "exp2"]:
+            values = generate_test_values_exp()
+        else:
+            values = generate_test_values_1input()
+
         for val in values:
+            # Skip values outside valid range if specified
+            if valid_range and not valid_range(val):
+                continue
             try:
                 expected = test_fn(val)
                 tests.append({"inputs": [val], "expected": float(expected)})
@@ -154,9 +234,19 @@ def extend_math_functions_json():
 
     for func_name, spec in MATH_FUNCTIONS.items():
         # Check if function already exists
-        exists = any(f["name"] == func_name for f in data["functions"])
-        if not exists:
-            tests = generate_math_function_tests(func_name, spec)
+        existing_func = None
+        for i, f in enumerate(data["functions"]):
+            if f["name"] == func_name:
+                existing_func = i
+                break
+
+        tests = generate_math_function_tests(func_name, spec)
+
+        if existing_func is not None:
+            # Update existing function
+            data["functions"][existing_func]["tests"] = tests
+        else:
+            # Add new function
             data["functions"].append(
                 {
                     "name": func_name,

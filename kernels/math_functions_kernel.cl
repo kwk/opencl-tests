@@ -308,3 +308,60 @@ __kernel void test_lgamma(__global const float *input, __global float *output,
     if (i < count)
         output[i] = lgamma(input[i]);
 }
+
+// Native Functions (fast, lower precision variants)
+__kernel void test_native_exp(__global const float *input, __global float *output,
+                              const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_exp(input[i]);
+}
+
+__kernel void test_native_exp2(__global const float *input, __global float *output,
+                               const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_exp2(input[i]);
+}
+
+__kernel void test_native_exp10(__global const float *input, __global float *output,
+                                const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_exp10(input[i]);
+}
+
+__kernel void test_native_log(__global const float *input, __global float *output,
+                              const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_log(input[i]);
+}
+
+__kernel void test_native_log2(__global const float *input, __global float *output,
+                               const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_log2(input[i]);
+}
+
+__kernel void test_native_log10(__global const float *input, __global float *output,
+                                const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_log10(input[i]);
+}
+
+__kernel void test_native_sqrt(__global const float *input, __global float *output,
+                               const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_sqrt(input[i]);
+}
+
+__kernel void test_native_rsqrt(__global const float *input, __global float *output,
+                                const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = native_rsqrt(input[i]);
+}
