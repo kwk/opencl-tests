@@ -2,12 +2,12 @@
 
 This document tracks OpenCL C built-in functions not yet covered by the test suite.
 
-## Currently Tested Categories (141 functions, 1,410 tests, 100% passing ✅)
+## Currently Tested Categories (140 functions, 1,397 tests, 100% passing ✅)
 
 ✅ **Math Functions** (51 functions)
 ✅ **Geometric Functions** (23 functions)
 ✅ **Common Functions** (12 functions)
-✅ **Integer Functions** (27 functions)
+✅ **Integer Functions** (26 functions - excludes ctz_int, not supported in Mesa Rusticl)
 ✅ **Relational Functions** (22 functions)
 ✅ **Vector Miscellaneous Functions** (2 functions)
 ✅ **Vector Load/Store Functions** (4 functions)
@@ -182,9 +182,9 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ## Current Test Coverage
 
-**Total Functions Tested:** 141 functions
-**Total Test Cases:** 1,410 tests
-**Test Pass Rate:** 100% ✅ (1410/1410 passing)
+**Total Functions Tested:** 140 functions
+**Total Test Cases:** 1,397 tests
+**Test Pass Rate:** 100% ✅ (1397/1397 passing)
 **Estimated Missing (Testable):** ~55-75 functions
 **Estimated Missing (Not Testable):** ~30-40 functions
 

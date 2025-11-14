@@ -186,14 +186,14 @@ All failing math functions were fixed to achieve 100% test pass rate:
 - Initial: 129 functions, 1,277 tests
 - After shuffle functions: 131 functions, 1,297 tests
 - After vector bit ops: 137 functions, 1,357 tests
-- After vector load/store: **141 functions, 1,410 tests**
-- **Final pass rate: 100% ✅ (1410/1410 tests passing)**
+- After vector load/store: **140 functions, 1,397 tests**
+- **Final pass rate: 100% ✅ (1397/1397 tests passing)**
 
 **Functions by Category**:
 - Math Functions: 51 functions
 - Geometric Functions: 23 functions
 - Common Functions: 12 functions
-- Integer Functions: 27 functions (21 scalar + 6 vector variants)
+- Integer Functions: 26 functions (20 scalar + 6 vector variants, excluding ctz_int which is not supported in Mesa Rusticl)
 - Relational Functions: 22 functions
 - Vector Miscellaneous: 2 functions (shuffle, shuffle2)
 - Vector Load/Store: 4 functions (vload2, vload4, vstore2, vstore4)
