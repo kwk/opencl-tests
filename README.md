@@ -148,12 +148,27 @@ Success!
 From the build directory:
 
 ```bash
+# Run all tests
 RUSTICL_ENABLE=iris ./test_all_opencl_functions
+
+# Run a specific function test
+RUSTICL_ENABLE=iris ./test_all_opencl_functions sqrt
+
+# Run all tests in a category
+RUSTICL_ENABLE=iris ./test_all_opencl_functions --category math
+
+# List all available tests
+./test_all_opencl_functions --list
+
+# Show help
+./test_all_opencl_functions --help
 ```
+
+The test runner supports filtering to run specific tests or categories, making it easy to debug individual failing tests. Available categories: `integer`, `common`, `geometric`, `math`, `relational`.
 
 The test runner will:
 1. Initialize Mesa OpenCL and detect GPU device
-2. Run all 129 function tests (1,290 test cases total)
+2. Run filtered or all function tests (128 functions, 1,280 test cases total)
 3. Display test progress for each function category
 4. Show summary with pass/fail statistics
 5. List any failed tests with details

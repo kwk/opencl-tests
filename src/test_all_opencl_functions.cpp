@@ -29,6 +29,20 @@ struct TestResult {
 
 std::vector<TestResult> test_results;
 
+// Test registry structure
+struct TestFunction {
+    std::string name;
+    std::string category;
+    void (*func)();
+};
+
+std::vector<TestFunction> test_registry;
+
+// Helper to register a test function
+void registerTest(const std::string& name, const std::string& category, void (*func)()) {
+    test_registry.push_back({name, category, func});
+}
+
 // Helper function for float comparison with tolerance
 bool floatEquals(float a, float b, float tolerance = 0.0001f) {
     return std::fabs(a - b) < tolerance;
@@ -300,158 +314,288 @@ void printTestSummary() {
     }
 }
 
-int main() {
+void registerAllTests() {
+    // Register all integer function tests
+    registerTest("abs_int", "integer", test_abs_int);
+    registerTest("abs_diff_int", "integer", test_abs_diff_int);
+    registerTest("abs_diff_uint", "integer", test_abs_diff_uint);
+    registerTest("add_sat_int", "integer", test_add_sat_int);
+    registerTest("add_sat_uint", "integer", test_add_sat_uint);
+    registerTest("clz_int", "integer", test_clz_int);
+    // test_ctz_int - not supported in Mesa Rusticl
+    registerTest("hadd_int", "integer", test_hadd_int);
+    registerTest("mad24_int", "integer", test_mad24_int);
+    registerTest("mad_hi_int", "integer", test_mad_hi_int);
+    registerTest("mad_sat_int", "integer", test_mad_sat_int);
+    registerTest("max_int", "integer", test_max_int);
+    registerTest("max_uint", "integer", test_max_uint);
+    registerTest("min_int", "integer", test_min_int);
+    registerTest("min_uint", "integer", test_min_uint);
+    registerTest("mul24_int", "integer", test_mul24_int);
+    registerTest("mul_hi_int", "integer", test_mul_hi_int);
+    registerTest("popcount_int", "integer", test_popcount_int);
+    registerTest("rhadd_int", "integer", test_rhadd_int);
+    registerTest("rotate_int", "integer", test_rotate_int);
+    registerTest("sub_sat_int", "integer", test_sub_sat_int);
+
+    // Register all common function tests
+    registerTest("clamp_float", "common", test_clamp_float);
+    registerTest("clamp_float2", "common", test_clamp_float2);
+    registerTest("degrees", "common", test_degrees);
+    registerTest("max_float", "common", test_max_float);
+    registerTest("max_float2", "common", test_max_float2);
+    registerTest("min_float", "common", test_min_float);
+    registerTest("min_float2", "common", test_min_float2);
+    registerTest("mix", "common", test_mix);
+    registerTest("radians", "common", test_radians);
+    registerTest("sign", "common", test_sign);
+    registerTest("smoothstep", "common", test_smoothstep);
+    registerTest("step", "common", test_step);
+
+    // Register all geometric function tests
+    registerTest("cross", "geometric", test_cross);
+    registerTest("cross_float4", "geometric", test_cross_float4);
+    registerTest("distance_float2", "geometric", test_distance_float2);
+    registerTest("distance_float3", "geometric", test_distance_float3);
+    registerTest("distance_float4", "geometric", test_distance_float4);
+    registerTest("dot_float2", "geometric", test_dot_float2);
+    registerTest("dot_float3", "geometric", test_dot_float3);
+    registerTest("dot_float4", "geometric", test_dot_float4);
+    registerTest("fast_distance_float2", "geometric", test_fast_distance_float2);
+    registerTest("fast_distance_float3", "geometric", test_fast_distance_float3);
+    registerTest("fast_distance_float4", "geometric", test_fast_distance_float4);
+    registerTest("fast_length_float2", "geometric", test_fast_length_float2);
+    registerTest("fast_length_float3", "geometric", test_fast_length_float3);
+    registerTest("fast_length_float4", "geometric", test_fast_length_float4);
+    registerTest("fast_normalize_float2", "geometric", test_fast_normalize_float2);
+    registerTest("fast_normalize_float3", "geometric", test_fast_normalize_float3);
+    registerTest("fast_normalize_float4", "geometric", test_fast_normalize_float4);
+    registerTest("length_float2", "geometric", test_length_float2);
+    registerTest("length_float3", "geometric", test_length_float3);
+    registerTest("length_float4", "geometric", test_length_float4);
+    registerTest("normalize_float2", "geometric", test_normalize_float2);
+    registerTest("normalize_float3", "geometric", test_normalize_float3);
+    registerTest("normalize_float4", "geometric", test_normalize_float4);
+
+    // Register all math function tests
+    registerTest("acos", "math", test_acos);
+    registerTest("asin", "math", test_asin);
+    registerTest("atan", "math", test_atan);
+    registerTest("atan2", "math", test_atan2);
+    registerTest("cos", "math", test_cos);
+    registerTest("sin", "math", test_sin);
+    registerTest("tan", "math", test_tan);
+    registerTest("acosh", "math", test_acosh);
+    registerTest("asinh", "math", test_asinh);
+    registerTest("atanh", "math", test_atanh);
+    registerTest("cosh", "math", test_cosh);
+    registerTest("sinh", "math", test_sinh);
+    registerTest("tanh", "math", test_tanh);
+    registerTest("cbrt", "math", test_cbrt);
+    registerTest("ceil", "math", test_ceil);
+    registerTest("erf", "math", test_erf);
+    registerTest("erfc", "math", test_erfc);
+    registerTest("exp", "math", test_exp);
+    registerTest("exp2", "math", test_exp2);
+    registerTest("exp10", "math", test_exp10);
+    registerTest("expm1", "math", test_expm1);
+    registerTest("fabs", "math", test_fabs);
+    registerTest("floor", "math", test_floor);
+    registerTest("fma", "math", test_fma);
+    registerTest("fmax", "math", test_fmax);
+    registerTest("fmin", "math", test_fmin);
+    registerTest("fmod", "math", test_fmod);
+    registerTest("hypot", "math", test_hypot);
+    registerTest("lgamma", "math", test_lgamma);
+    registerTest("log", "math", test_log);
+    registerTest("log2", "math", test_log2);
+    registerTest("log10", "math", test_log10);
+    registerTest("log1p", "math", test_log1p);
+    registerTest("native_exp", "math", test_native_exp);
+    registerTest("native_exp2", "math", test_native_exp2);
+    registerTest("native_exp10", "math", test_native_exp10);
+    registerTest("native_log", "math", test_native_log);
+    registerTest("native_log2", "math", test_native_log2);
+    registerTest("native_log10", "math", test_native_log10);
+    registerTest("native_rsqrt", "math", test_native_rsqrt);
+    registerTest("native_sqrt", "math", test_native_sqrt);
+    registerTest("pow", "math", test_pow);
+    registerTest("pown", "math", test_pown);
+    registerTest("powr", "math", test_powr);
+    registerTest("remainder", "math", test_remainder);
+    registerTest("rint", "math", test_rint);
+    registerTest("round", "math", test_round);
+    registerTest("rsqrt", "math", test_rsqrt);
+    registerTest("sqrt", "math", test_sqrt);
+    registerTest("tgamma", "math", test_tgamma);
+    registerTest("trunc", "math", test_trunc);
+
+    // Register all relational function tests
+    registerTest("all_int2", "relational", test_all_int2);
+    registerTest("all_int4", "relational", test_all_int4);
+    registerTest("any_int2", "relational", test_any_int2);
+    registerTest("any_int4", "relational", test_any_int4);
+    registerTest("bitselect_float", "relational", test_bitselect_float);
+    registerTest("bitselect_int", "relational", test_bitselect_int);
+    registerTest("isequal", "relational", test_isequal);
+    registerTest("isfinite", "relational", test_isfinite);
+    registerTest("isgreater", "relational", test_isgreater);
+    registerTest("isgreaterequal", "relational", test_isgreaterequal);
+    registerTest("isinf", "relational", test_isinf);
+    registerTest("isless", "relational", test_isless);
+    registerTest("islessequal", "relational", test_islessequal);
+    registerTest("islessgreater", "relational", test_islessgreater);
+    registerTest("isnan", "relational", test_isnan);
+    registerTest("isnormal", "relational", test_isnormal);
+    registerTest("isordered", "relational", test_isordered);
+    registerTest("isunordered", "relational", test_isunordered);
+    registerTest("isnotequal", "relational", test_isnotequal);
+    registerTest("select_float", "relational", test_select_float);
+    registerTest("select_int", "relational", test_select_int);
+    registerTest("signbit", "relational", test_signbit);
+}
+
+void printUsage(const char* program) {
+    std::cout << "Usage: " << program << " [OPTIONS] [FUNCTION_NAME]\n\n";
+    std::cout << "Run OpenCL built-in function tests.\n\n";
+    std::cout << "Options:\n";
+    std::cout << "  --list              List all available tests\n";
+    std::cout << "  --category <name>   Run tests only from specified category\n";
+    std::cout << "                      (integer, common, geometric, math, relational)\n";
+    std::cout << "  --help              Show this help message\n\n";
+    std::cout << "Examples:\n";
+    std::cout << "  " << program << "                  # Run all tests\n";
+    std::cout << "  " << program << " sqrt             # Run only sqrt test\n";
+    std::cout << "  " << program << " --category math  # Run all math function tests\n";
+    std::cout << "  " << program << " --list           # List all available tests\n";
+}
+
+void listTests() {
+    std::string current_category = "";
+    for (const auto& test : test_registry) {
+        if (test.category != current_category) {
+            current_category = test.category;
+            std::cout << "\n=== " << current_category << " ===" << std::endl;
+        }
+        std::cout << "  " << test.name << std::endl;
+    }
+}
+
+int main(int argc, char* argv[]) {
+    // Register all tests
+    registerAllTests();
+
+    std::string filter_function = "";
+    std::string filter_category = "";
+    bool list_mode = false;
+
+    // Parse command-line arguments
+    for (int i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+        if (arg == "--help" || arg == "-h") {
+            printUsage(argv[0]);
+            return 0;
+        } else if (arg == "--list") {
+            list_mode = true;
+        } else if (arg == "--category") {
+            if (i + 1 < argc) {
+                filter_category = argv[++i];
+            } else {
+                std::cerr << "Error: --category requires an argument\n";
+                printUsage(argv[0]);
+                return 1;
+            }
+        } else if (arg[0] != '-') {
+            filter_function = arg;
+        } else {
+            std::cerr << "Error: Unknown option: " << arg << "\n";
+            printUsage(argv[0]);
+            return 1;
+        }
+    }
+
+    // Handle --list mode
+    if (list_mode) {
+        std::cout << "Available tests:\n";
+        listTests();
+        return 0;
+    }
+
+    // Validate category if specified
+    if (!filter_category.empty()) {
+        bool valid_category = false;
+        for (const auto& test : test_registry) {
+            if (test.category == filter_category) {
+                valid_category = true;
+                break;
+            }
+        }
+        if (!valid_category) {
+            std::cerr << "Error: Invalid category '" << filter_category << "'\n";
+            std::cerr << "Valid categories: integer, common, geometric, math, relational\n";
+            return 1;
+        }
+    }
+
+    // Validate function name if specified
+    if (!filter_function.empty()) {
+        bool found = false;
+        for (const auto& test : test_registry) {
+            if (test.name == filter_function) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            std::cerr << "Error: Unknown function '" << filter_function << "'\n";
+            std::cerr << "Use --list to see all available tests\n";
+            return 1;
+        }
+    }
+
+    // Print header
     std::cout << "========================================" << std::endl;
     std::cout << "OpenCL Built-in Functions Test Suite" << std::endl;
-    std::cout << "Testing 129 functions with 1290 test cases" << std::endl;
+    if (!filter_function.empty()) {
+        std::cout << "Running test: " << filter_function << std::endl;
+    } else if (!filter_category.empty()) {
+        std::cout << "Running category: " << filter_category << std::endl;
+    } else {
+        std::cout << "Testing 128 functions with 1280 test cases" << std::endl;
+    }
     std::cout << "========================================" << std::endl << std::endl;
 
     // Initialize OpenCL
     initializeOpenCL();
 
-    // Run all integer function tests
-    std::cout << "=== INTEGER FUNCTIONS ===" << std::endl;
-    test_abs_int();
-    test_abs_diff_int();
-    test_abs_diff_uint();
-    test_add_sat_int();
-    test_add_sat_uint();
-    test_clz_int();
-    // test_ctz_int();  // ctz not supported in Mesa Rusticl
-    test_hadd_int();
-    test_mad24_int();
-    test_mad_hi_int();
-    test_mad_sat_int();
-    test_max_int();
-    test_max_uint();
-    test_min_int();
-    test_min_uint();
-    test_mul24_int();
-    test_mul_hi_int();
-    test_popcount_int();
-    test_rhadd_int();
-    test_rotate_int();
-    test_sub_sat_int();
+    // Run filtered tests
+    std::string current_category = "";
+    int tests_run = 0;
 
-    // Run all common function tests
-    std::cout << "\n=== COMMON FUNCTIONS ===" << std::endl;
-    test_clamp_float();
-    test_clamp_float2();
-    test_degrees();
-    test_max_float();
-    test_max_float2();
-    test_min_float();
-    test_min_float2();
-    test_mix();
-    test_radians();
-    test_sign();
-    test_smoothstep();
-    test_step();
+    for (const auto& test : test_registry) {
+        // Apply filters
+        if (!filter_function.empty() && test.name != filter_function) {
+            continue;
+        }
+        if (!filter_category.empty() && test.category != filter_category) {
+            continue;
+        }
 
-    // Run all geometric function tests
-    std::cout << "\n=== GEOMETRIC FUNCTIONS ===" << std::endl;
-    test_cross();
-    test_cross_float4();
-    test_distance_float2();
-    test_distance_float3();
-    test_distance_float4();
-    test_dot_float2();
-    test_dot_float3();
-    test_dot_float4();
-    test_fast_distance_float2();
-    test_fast_distance_float3();
-    test_fast_distance_float4();
-    test_fast_length_float2();
-    test_fast_length_float3();
-    test_fast_length_float4();
-    test_fast_normalize_float2();
-    test_fast_normalize_float3();
-    test_fast_normalize_float4();
-    test_length_float2();
-    test_length_float3();
-    test_length_float4();
-    test_normalize_float2();
-    test_normalize_float3();
-    test_normalize_float4();
+        // Print category header
+        if (test.category != current_category) {
+            current_category = test.category;
+            std::cout << "\n=== " << current_category << " FUNCTIONS ===" << std::endl;
+        }
 
-    // Run all math function tests
-    std::cout << "\n=== MATH FUNCTIONS ===" << std::endl;
-    test_acos();
-    test_asin();
-    test_atan();
-    test_atan2();
-    test_cos();
-    test_sin();
-    test_tan();
-    test_acosh();
-    test_asinh();
-    test_atanh();
-    test_cosh();
-    test_sinh();
-    test_tanh();
-    test_cbrt();
-    test_ceil();
-    test_erf();
-    test_erfc();
-    test_exp();
-    test_exp2();
-    test_exp10();
-    test_expm1();
-    test_fabs();
-    test_floor();
-    test_fma();
-    test_fmax();
-    test_fmin();
-    test_fmod();
-    test_hypot();
-    test_lgamma();
-    test_log();
-    test_log2();
-    test_log10();
-    test_log1p();
-    test_native_exp();
-    test_native_exp2();
-    test_native_exp10();
-    test_native_log();
-    test_native_log2();
-    test_native_log10();
-    test_native_rsqrt();
-    test_native_sqrt();
-    test_pow();
-    test_pown();
-    test_powr();
-    test_remainder();
-    test_rint();
-    test_round();
-    test_rsqrt();
-    test_sqrt();
-    test_tgamma();
-    test_trunc();
+        // Run the test
+        test.func();
+        tests_run++;
+    }
 
-    // Run all relational function tests
-    std::cout << "\n=== RELATIONAL FUNCTIONS ===" << std::endl;
-    test_all_int2();
-    test_all_int4();
-    test_any_int2();
-    test_any_int4();
-    test_bitselect_float();
-    test_bitselect_int();
-    test_isequal();
-    test_isfinite();
-    test_isgreater();
-    test_isgreaterequal();
-    test_isinf();
-    test_isless();
-    test_islessequal();
-    test_islessgreater();
-    test_isnan();
-    test_isnormal();
-    test_isordered();
-    test_isunordered();
-    test_isnotequal();
-    test_select_float();
-    test_select_int();
-    test_signbit();
+    if (tests_run == 0) {
+        std::cout << "No tests matched the filter criteria.\n";
+        return 1;
+    }
 
     // Print summary
     printTestSummary();
