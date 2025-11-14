@@ -139,7 +139,7 @@ lambda x: math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5)
 - Modified verification logic for scalar array outputs (element-wise comparison)
 - Fixed kernel file naming convention to match code generator expectations
 
-**Test Coverage**:
+**Test Coverage (Initial Implementation)**:
 - `vload2_float`: Load float2 from scalar array (10 tests)
 - `vload4_float`: Load float4 from scalar array (10 tests)
 - `vstore2_float`: Store float2 to scalar array (10 tests)
@@ -155,6 +155,44 @@ lambda x: math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5)
 - `generate_tests.py` - Extended with vload/vstore special case handling
 - `src/test_all_opencl_functions.cpp` - Updated function count and registrations
 - `README.md` - Updated test statistics
+
+### 10. Extended Vector Load/Store Functions (vload3/8/16, vstore3/8/16)
+
+**Problem**: Initial implementation only covered vload2/4 and vstore2/4. Missing vload3/8/16 and vstore3/8/16 variants.
+
+**Solution**: Extended test data generator and code generator to support all standard vector sizes.
+
+**Implementation Details**:
+- Added float8 and float16 to type mapping in `generate_tests.py`
+- Fixed `is_vector_type()` to recognize 8 and 16-element vectors (was only checking 2, 3, 4)
+- Added component-wise comparison for float8 (8 components) and float16 (16 components)
+- Extended array size calculations for all vector sizes:
+  - vload3: 6-element arrays
+  - vload8: 16-element arrays
+  - vload16: 32-element arrays
+  - vstore3: 6-element output
+  - vstore8: 16-element output
+  - vstore16: 32-element output
+
+**Test Coverage (Complete Implementation)**:
+- `vload2_float`: Load float2 from scalar array (10 tests)
+- `vload3_float`: Load float3 from scalar array (10 tests)
+- `vload4_float`: Load float4 from scalar array (10 tests)
+- `vload8_float`: Load float8 from scalar array (10 tests)
+- `vload16_float`: Load float16 from scalar array (10 tests)
+- `vstore2_float`: Store float2 to scalar array (10 tests)
+- `vstore3_float`: Store float3 to scalar array (10 tests)
+- `vstore4_float`: Store float4 to scalar array (10 tests)
+- `vstore8_float`: Store float8 to scalar array (10 tests)
+- `vstore16_float`: Store float16 to scalar array (10 tests)
+- **100 total test cases**, all passing ✅
+
+**Files Modified**:
+- `create_vload_vstore_test_data.py` - Added 6 new function definitions
+- `kernels/vector_load_store_functions_kernel.cl` - Added 6 new kernel implementations
+- `generate_tests.py` - Fixed is_vector_type(), added float8/float16 support
+- `src/test_all_opencl_functions.cpp` - Added 6 function declarations and registrations
+- Documentation files (README.md, CLAUDE.md, MISSING_FUNCTIONS.md) - Updated statistics
 
 ## Test Results Summary
 
@@ -186,8 +224,9 @@ All failing math functions were fixed to achieve 100% test pass rate:
 - Initial: 129 functions, 1,277 tests
 - After shuffle functions: 131 functions, 1,297 tests
 - After vector bit ops: 137 functions, 1,357 tests
-- After vector load/store: **140 functions, 1,397 tests**
-- **Final pass rate: 100% ✅ (1397/1397 tests passing)**
+- After vector load/store (2/4): 140 functions, 1,397 tests
+- After vector load/store (all): **146 functions, 1,457 tests**
+- **Final pass rate: 100% ✅ (1457/1457 tests passing)**
 
 **Functions by Category**:
 - Math Functions: 51 functions
@@ -196,7 +235,7 @@ All failing math functions were fixed to achieve 100% test pass rate:
 - Integer Functions: 26 functions (20 scalar + 6 vector variants, excluding ctz_int which is not supported in Mesa Rusticl)
 - Relational Functions: 22 functions
 - Vector Miscellaneous: 2 functions (shuffle, shuffle2)
-- Vector Load/Store: 4 functions (vload2, vload4, vstore2, vstore4)
+- Vector Load/Store: 10 functions (vload2/3/4/8/16, vstore2/3/4/8/16)
 
 ## Project Cleanup
 

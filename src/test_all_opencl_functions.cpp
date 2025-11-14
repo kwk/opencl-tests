@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 140 functions with 1397 test cases
+ * Tests 146 functions with 1457 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -216,9 +216,15 @@ void test_signbit();
 void test_shuffle_float4();
 void test_shuffle2_float4();
 void test_vload2_float();
+void test_vload3_float();
 void test_vload4_float();
+void test_vload8_float();
+void test_vload16_float();
 void test_vstore2_float();
+void test_vstore3_float();
 void test_vstore4_float();
+void test_vstore8_float();
+void test_vstore16_float();
 
 void initializeOpenCL() {
   cl_int err;
@@ -501,9 +507,15 @@ void registerAllTests() {
 
   // Register vector load/store function tests
   registerTest("vload2_float", "vector_load_store", test_vload2_float);
+  registerTest("vload3_float", "vector_load_store", test_vload3_float);
   registerTest("vload4_float", "vector_load_store", test_vload4_float);
+  registerTest("vload8_float", "vector_load_store", test_vload8_float);
+  registerTest("vload16_float", "vector_load_store", test_vload16_float);
   registerTest("vstore2_float", "vector_load_store", test_vstore2_float);
+  registerTest("vstore3_float", "vector_load_store", test_vstore3_float);
   registerTest("vstore4_float", "vector_load_store", test_vstore4_float);
+  registerTest("vstore8_float", "vector_load_store", test_vstore8_float);
+  registerTest("vstore16_float", "vector_load_store", test_vstore16_float);
 }
 
 void printUsage(const char *program) {
@@ -616,7 +628,7 @@ int main(int argc, char *argv[]) {
   } else if (!filter_category.empty()) {
     std::cout << "Running category: " << filter_category << std::endl;
   } else {
-    std::cout << "Testing 140 functions with 1397 test cases" << std::endl;
+    std::cout << "Testing 146 functions with 1457 test cases" << std::endl;
   }
   std::cout << "========================================" << std::endl
             << std::endl;

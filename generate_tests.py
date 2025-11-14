@@ -23,6 +23,8 @@ def get_c_type(opencl_type):
         "float2": "cl_float2",
         "float3": "cl_float3",
         "float4": "cl_float4",
+        "float8": "cl_float8",
+        "float16": "cl_float16",
         "int": "int",
         "uint": "unsigned int",
         "float": "float",
@@ -32,7 +34,7 @@ def get_c_type(opencl_type):
 
 def is_vector_type(type_name):
     """Check if type is a vector type"""
-    return any(type_name.endswith(str(i)) for i in [2, 3, 4])
+    return any(type_name.endswith(str(i)) for i in [2, 3, 4, 8, 16])
 
 
 def is_int_type(type_name):
@@ -91,8 +93,14 @@ def generate_function_test(func_data, category):
         # Determine array size based on vector width
         if "vload2" in name:
             array_size = 4  # 2 floats per offset * 2 offsets
+        elif "vload3" in name:
+            array_size = 6  # 3 floats per offset * 2 offsets
         elif "vload4" in name:
             array_size = 8  # 4 floats per offset * 2 offsets
+        elif "vload8" in name:
+            array_size = 16  # 8 floats per offset * 2 offsets
+        elif "vload16" in name:
+            array_size = 32  # 16 floats per offset * 2 offsets
         else:
             array_size = 4  # default
         code.append(f"    {input_c_type} input0[NUM_TESTS * {array_size}];")
@@ -118,8 +126,14 @@ def generate_function_test(func_data, category):
         # vstore outputs to scalar array
         if "vstore2" in name:
             output_array_size = 4
+        elif "vstore3" in name:
+            output_array_size = 6
         elif "vstore4" in name:
             output_array_size = 8
+        elif "vstore8" in name:
+            output_array_size = 16
+        elif "vstore16" in name:
+            output_array_size = 32
         else:
             output_array_size = 4
         code.append(f"    {output_c_type} output[NUM_TESTS * {output_array_size}];")
@@ -342,6 +356,22 @@ def generate_function_test(func_data, category):
                     "                       floatEquals(output[i].s[2], expected[i].s[2]) &&"
                 )
                 code.append("                       floatEquals(output[i].s[3], expected[i].s[3]);")
+            elif output_type.endswith("8"):
+                comparisons = [
+                    f"floatEquals(output[i].s[{j}], expected[i].s[{j}])" for j in range(8)
+                ]
+                code.append(f"        bool passed = {comparisons[0]} &&")
+                for j in range(1, 7):
+                    code.append(f"                       {comparisons[j]} &&")
+                code.append(f"                       {comparisons[7]};")
+            elif output_type.endswith("16"):
+                comparisons = [
+                    f"floatEquals(output[i].s[{j}], expected[i].s[{j}])" for j in range(16)
+                ]
+                code.append(f"        bool passed = {comparisons[0]} &&")
+                for j in range(1, 15):
+                    code.append(f"                       {comparisons[j]} &&")
+                code.append(f"                       {comparisons[15]};")
         else:
             # Int vector - exact comparison
             if output_type.endswith("2"):

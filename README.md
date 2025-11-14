@@ -2,18 +2,18 @@
 
 Comprehensive test suite for OpenCL C built-in functions using Mesa OpenCL (Rusticl).
 
-This project tests **140 OpenCL built-in functions** with **1,397 test cases** across multiple function categories:
+This project tests **146 OpenCL built-in functions** with **1,457 test cases** across multiple function categories:
 - Math Functions (51 functions): trigonometric, exponential, logarithmic, power, rounding, etc.
 - Geometric Functions (23 functions): dot, cross, distance, length, normalize, and fast variants
 - Common Functions (12 functions): clamp, degrees, radians, max, min, mix, step, smoothstep, sign
 - Integer Functions (26 functions): abs, add_sat, clz, mad_hi, mul24, popcount, rotate, and vector variants
 - Relational Functions (22 functions): comparisons, classification, logical operations, select
 - Vector Miscellaneous Functions (2 functions): shuffle, shuffle2
-- Vector Load/Store Functions (4 functions): vload2, vload4, vstore2, vstore4
+- Vector Load/Store Functions (10 functions): vload2/3/4/8/16, vstore2/3/4/8/16
 
-**Test Results**: ✅ **100% passing** (1397/1397 tests)
+**Test Results**: ✅ **100% passing** (1457/1457 tests)
 
-**Note:** This covers ~60-65% of testable OpenCL built-in functions. Some categories like synchronization functions, async copy, and image functions require multi-work-item execution or special object types that aren't suitable for this single-work-item test framework. See [MISSING_FUNCTIONS.md](MISSING_FUNCTIONS.md) for detailed analysis of untested functions.
+**Note:** This covers ~68-73% of testable OpenCL built-in functions. Some categories like synchronization functions, async copy, and image functions require multi-work-item execution or special object types that aren't suitable for this single-work-item test framework. See [MISSING_FUNCTIONS.md](MISSING_FUNCTIONS.md) for detailed analysis of untested functions.
 
 ## Project Structure
 
@@ -46,7 +46,7 @@ opencl-examples/
 ## Features
 
 ### Comprehensive Test Suite
-- **test_all_opencl_functions**: Tests 140 OpenCL built-in functions with 1,397 test cases
+- **test_all_opencl_functions**: Tests 146 OpenCL built-in functions with 1,457 test cases
 - ✅ **100% pass rate** - All tests passing on Mesa Rusticl with Intel UHD Graphics
 - Data-driven test framework with JSON test specifications
 - Automatic C++ code generation from JSON test data
