@@ -12,3 +12,11 @@ compile_commands.json
 
 # Generated test code
 src/generated_tests.cpp
+
+# Compiled executables
+test_all_opencl_functions
+
+# Editor swap files
+*.swp
+*.swo
+*~
