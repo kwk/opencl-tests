@@ -46,7 +46,12 @@ MATH_FUNCTIONS = {
         "type": "float",
         "test_fn": lambda x: x ** (1 / 3) if x >= 0 else -((-x) ** (1 / 3)),
     },
-    "rsqrt": {"inputs": 1, "type": "float", "test_fn": lambda x: 1 / math.sqrt(max(0.001, x))},
+    "rsqrt": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: 1 / math.sqrt(x),
+        "valid_range": lambda x: x > 0.0,
+    },
     "pown": {"inputs": 2, "types": ["float", "int"], "test_fn": lambda x, n: x ** int(n)},
     "powr": {
         "inputs": 2,
@@ -134,6 +139,13 @@ MATH_FUNCTIONS = {
 def generate_test_values_1input():
     """Generate diverse test values for single-input functions"""
     return [0.0, 1.0, -1.0, 0.5, -0.5, 2.0, -2.0, 10.0, -10.0, 100.0]
+
+
+def generate_test_values_hyperbolic():
+    """Generate test values for hyperbolic functions (avoid overflow for float32)"""
+    # cosh(88) and sinh(88) are close to float max (~3.4e38)
+    # Keep values smaller to avoid overflow
+    return [0.0, 1.0, -1.0, 0.5, -0.5, 2.0, -2.0, 5.0, -5.0, 10.0]
 
 
 def generate_test_values_acosh():
@@ -238,6 +250,8 @@ def generate_math_function_tests(name, spec):
             values = generate_test_values_log1p()
         elif name in ["tgamma", "lgamma"]:
             values = generate_test_values_gamma()
+        elif name in ["cosh", "sinh", "expm1"]:
+            values = generate_test_values_hyperbolic()
         else:
             values = generate_test_values_1input()
 
