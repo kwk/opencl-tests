@@ -80,8 +80,8 @@ def generate_function_test(func_data, category):
     output_c_type = get_c_type(output_type)
 
     for i in range(num_inputs):
-        # Special case: select functions have int as last parameter
-        if "select" in name and i == num_inputs - 1:
+        # Special case: select and pown functions have int as last parameter
+        if ("select" in name or name == "pown") and i == num_inputs - 1:
             code.append(f"    int input{i}[NUM_TESTS];")
         else:
             code.append(f"    {input_c_type} input{i}[NUM_TESTS];")
@@ -108,8 +108,8 @@ def generate_function_test(func_data, category):
             # Scalar inputs
             for input_idx in range(num_inputs):
                 value = inputs[input_idx] if num_inputs > 1 else inputs[0]
-                # Special case: select functions have int as last parameter
-                if "select" in name and input_idx == num_inputs - 1:
+                # Special case: select and pown functions have int as last parameter
+                if ("select" in name or name == "pown") and input_idx == num_inputs - 1:
                     formatted = str(int(value))
                 else:
                     formatted = format_scalar_value(value, input_type)
@@ -148,8 +148,8 @@ def generate_function_test(func_data, category):
 
     # Create buffers with correct types
     for i in range(num_inputs):
-        # Special case: select functions have int as last parameter
-        if "select" in name and i == num_inputs - 1:
+        # Special case: select and pown functions have int as last parameter
+        if ("select" in name or name == "pown") and i == num_inputs - 1:
             buffer_type = "int"
         else:
             buffer_type = input_c_type

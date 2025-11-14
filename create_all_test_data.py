@@ -34,7 +34,12 @@ MATH_FUNCTIONS = {
     "expm1": {"inputs": 1, "type": "float", "test_fn": lambda x: math.expm1(x)},
     "log2": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log2(max(0.001, x))},
     "log10": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log10(max(0.001, x))},
-    "log1p": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log1p(max(-0.99, x))},
+    "log1p": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.log1p(x),
+        "valid_range": lambda x: x > -1.0,
+    },
     # Power functions
     "cbrt": {
         "inputs": 1,
@@ -42,14 +47,27 @@ MATH_FUNCTIONS = {
         "test_fn": lambda x: x ** (1 / 3) if x >= 0 else -((-x) ** (1 / 3)),
     },
     "rsqrt": {"inputs": 1, "type": "float", "test_fn": lambda x: 1 / math.sqrt(max(0.001, x))},
-    "pown": {"inputs": 2, "types": ["float", "int"], "test_fn": lambda x, n: x**n},
-    "powr": {"inputs": 2, "type": "float", "test_fn": lambda x, y: max(0.001, x) ** y},
+    "pown": {"inputs": 2, "types": ["float", "int"], "test_fn": lambda x, n: x ** int(n)},
+    "powr": {
+        "inputs": 2,
+        "type": "float",
+        "test_fn": lambda x, y: x**y,
+        "valid_range": lambda x: x > 0.0,
+    },
     # Rounding functions
     "ceil": {"inputs": 1, "type": "float", "test_fn": lambda x: math.ceil(x)},
     "floor": {"inputs": 1, "type": "float", "test_fn": lambda x: math.floor(x)},
     "trunc": {"inputs": 1, "type": "float", "test_fn": lambda x: math.trunc(x)},
-    "round": {"inputs": 1, "type": "float", "test_fn": lambda x: round(x)},
-    "rint": {"inputs": 1, "type": "float", "test_fn": lambda x: round(x)},
+    "round": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5),
+    },
+    "rint": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5),
+    },
     "fmod": {"inputs": 2, "type": "float", "test_fn": lambda x, y: math.fmod(x, max(0.1, y))},
     "remainder": {
         "inputs": 2,
@@ -64,8 +82,18 @@ MATH_FUNCTIONS = {
     "hypot": {"inputs": 2, "type": "float", "test_fn": lambda x, y: math.hypot(x, y)},
     "erf": {"inputs": 1, "type": "float", "test_fn": lambda x: math.erf(x)},
     "erfc": {"inputs": 1, "type": "float", "test_fn": lambda x: math.erfc(x)},
-    "tgamma": {"inputs": 1, "type": "float", "test_fn": lambda x: math.gamma(max(0.1, x))},
-    "lgamma": {"inputs": 1, "type": "float", "test_fn": lambda x: math.lgamma(max(0.1, x))},
+    "tgamma": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.gamma(x),
+        "valid_range": lambda x: x > 0.0,
+    },
+    "lgamma": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.lgamma(x),
+        "valid_range": lambda x: x > 0.0,
+    },
     # Native and half-precision variants
     "native_exp": {"inputs": 1, "type": "float", "test_fn": lambda x: math.exp(x)},
     "native_exp2": {"inputs": 1, "type": "float", "test_fn": lambda x: 2**x},
@@ -140,6 +168,17 @@ def generate_test_values_exp10():
     return [0.0, 0.5, 1.0, 2.0, 3.0, 5.0, 10.0, 20.0, 30.0, -5.0]
 
 
+def generate_test_values_log1p():
+    """Generate test values for log1p (domain: x > -1.0)"""
+    return [0.0, 0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 100.0, 1000.0, -0.5]
+
+
+def generate_test_values_gamma():
+    """Generate test values for gamma functions (domain: x > 0.0)"""
+    # Avoid very large values that cause overflow in gamma function
+    return [0.1, 0.5, 1.0, 1.5, 2.0, 3.0, 5.0, 10.0, 15.0, 20.0]
+
+
 def generate_test_values_2input():
     """Generate diverse test value pairs for two-input functions"""
     return [
@@ -195,6 +234,10 @@ def generate_math_function_tests(name, spec):
             values = generate_test_values_exp10()
         elif name in ["native_exp2", "exp2"]:
             values = generate_test_values_exp()
+        elif name == "log1p":
+            values = generate_test_values_log1p()
+        elif name in ["tgamma", "lgamma"]:
+            values = generate_test_values_gamma()
         else:
             values = generate_test_values_1input()
 
@@ -210,9 +253,18 @@ def generate_math_function_tests(name, spec):
     elif num_inputs == 2:
         value_pairs = generate_test_values_2input()
         for v1, v2 in value_pairs:
+            # Skip values outside valid range if specified (check first parameter for powr)
+            if valid_range and not valid_range(v1):
+                continue
             try:
-                expected = test_fn(v1, v2)
-                tests.append({"inputs": [v1, v2], "expected": float(expected)})
+                # For pown, second parameter should be int
+                if name == "pown":
+                    v2_val = int(v2)
+                    expected = test_fn(v1, v2_val)
+                    tests.append({"inputs": [v1, v2_val], "expected": float(expected)})
+                else:
+                    expected = test_fn(v1, v2)
+                    tests.append({"inputs": [v1, v2], "expected": float(expected)})
             except:
                 pass
     elif num_inputs == 3:
