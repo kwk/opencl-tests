@@ -327,14 +327,41 @@ You don't need to install libclc separately - the OpenCL runtime you install inc
 
 ## Contributing
 
+### Code Formatting
+
+This project uses pre-commit hooks to maintain consistent code formatting:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Set up git hooks
+pre-commit install
+
+# Run manually on all files
+pre-commit run --all-files
+```
+
+**Formatting rules:**
+- **Python code**: Formatted with [black](https://github.com/psf/black) (line length: 100)
+- **C/C++ code**: Formatted with [clang-format](https://clang.llvm.org/docs/ClangFormat.html) (LLVM style)
+- **OpenCL kernels (.cl)**: Formatted with clang-format (LLVM style)
+
+Pre-commit hooks automatically format code before each commit. You can also run formatters manually:
+```bash
+black generate_tests.py create_*_test_data.py
+clang-format -i src/*.cpp kernels/*.cl
+```
+
+### Adding New Tests
+
 To add tests for additional OpenCL built-in functions:
 
 1. Create kernel implementations in appropriate `kernels/*_kernel.cl` file
-2. Add test data to corresponding `test_data/*.json` file, or
-3. Create a Python generator script in `create_*_test_data.py`
-4. Run `python3 generate_tests.py` to regenerate test code
-5. Add function declarations and calls in `src/test_all_opencl_functions.cpp`
-6. Rebuild and test
+2. Add test data to corresponding `test_data/*.json` file, or create a Python generator script `create_*_test_data.py`
+3. Test data is automatically converted to C++ during build (no manual regeneration needed)
+4. Add function declarations to the registry in `src/test_all_opencl_functions.cpp`
+5. Rebuild and test
 
 ## License
 

@@ -10,7 +10,6 @@ import math
 # Complete list of all OpenCL math functions with their properties
 MATH_FUNCTIONS = {
     # Already implemented: sqrt, sin, cos, tan, asin, acos, atan, exp, log, pow
-
     # Remaining trigonometric functions
     "atan2": {"inputs": 2, "type": "float", "test_fn": lambda y, x: math.atan2(y, x)},
     "sinh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.sinh(x)},
@@ -18,8 +17,11 @@ MATH_FUNCTIONS = {
     "tanh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.tanh(x)},
     "asinh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.asinh(x)},
     "acosh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.acosh(max(1.0, x))},
-    "atanh": {"inputs": 1, "type": "float", "test_fn": lambda x: math.atanh(max(-0.99, min(0.99, x)))},
-
+    "atanh": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.atanh(max(-0.99, min(0.99, x))),
+    },
     # Exponential/logarithmic functions
     "exp2": {"inputs": 1, "type": "float", "test_fn": lambda x: 2**x},
     "exp10": {"inputs": 1, "type": "float", "test_fn": lambda x: 10**x},
@@ -27,13 +29,15 @@ MATH_FUNCTIONS = {
     "log2": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log2(max(0.001, x))},
     "log10": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log10(max(0.001, x))},
     "log1p": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log1p(max(-0.99, x))},
-
     # Power functions
-    "cbrt": {"inputs": 1, "type": "float", "test_fn": lambda x: x**(1/3) if x >= 0 else -((-x)**(1/3))},
-    "rsqrt": {"inputs": 1, "type": "float", "test_fn": lambda x: 1/math.sqrt(max(0.001, x))},
+    "cbrt": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: x ** (1 / 3) if x >= 0 else -((-x) ** (1 / 3)),
+    },
+    "rsqrt": {"inputs": 1, "type": "float", "test_fn": lambda x: 1 / math.sqrt(max(0.001, x))},
     "pown": {"inputs": 2, "types": ["float", "int"], "test_fn": lambda x, n: x**n},
-    "powr": {"inputs": 2, "type": "float", "test_fn": lambda x, y: max(0.001, x)**y},
-
+    "powr": {"inputs": 2, "type": "float", "test_fn": lambda x, y: max(0.001, x) ** y},
     # Rounding functions
     "ceil": {"inputs": 1, "type": "float", "test_fn": lambda x: math.ceil(x)},
     "floor": {"inputs": 1, "type": "float", "test_fn": lambda x: math.floor(x)},
@@ -41,8 +45,11 @@ MATH_FUNCTIONS = {
     "round": {"inputs": 1, "type": "float", "test_fn": lambda x: round(x)},
     "rint": {"inputs": 1, "type": "float", "test_fn": lambda x: round(x)},
     "fmod": {"inputs": 2, "type": "float", "test_fn": lambda x, y: math.fmod(x, max(0.1, y))},
-    "remainder": {"inputs": 2, "type": "float", "test_fn": lambda x, y: math.remainder(x, max(0.1, y))},
-
+    "remainder": {
+        "inputs": 2,
+        "type": "float",
+        "test_fn": lambda x, y: math.remainder(x, max(0.1, y)),
+    },
     # Other math functions
     "fabs": {"inputs": 1, "type": "float", "test_fn": lambda x: abs(x)},
     "fmax": {"inputs": 2, "type": "float", "test_fn": lambda x, y: max(x, y)},
@@ -53,7 +60,6 @@ MATH_FUNCTIONS = {
     "erfc": {"inputs": 1, "type": "float", "test_fn": lambda x: math.erfc(x)},
     "tgamma": {"inputs": 1, "type": "float", "test_fn": lambda x: math.gamma(max(0.1, x))},
     "lgamma": {"inputs": 1, "type": "float", "test_fn": lambda x: math.lgamma(max(0.1, x))},
-
     # Native and half-precision variants
     "native_exp": {"inputs": 1, "type": "float", "test_fn": lambda x: math.exp(x)},
     "native_exp2": {"inputs": 1, "type": "float", "test_fn": lambda x: 2**x},
@@ -62,31 +68,50 @@ MATH_FUNCTIONS = {
     "native_log2": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log2(max(0.001, x))},
     "native_log10": {"inputs": 1, "type": "float", "test_fn": lambda x: math.log10(max(0.001, x))},
     "native_sqrt": {"inputs": 1, "type": "float", "test_fn": lambda x: math.sqrt(max(0, x))},
-    "native_rsqrt": {"inputs": 1, "type": "float", "test_fn": lambda x: 1/math.sqrt(max(0.001, x))},
+    "native_rsqrt": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: 1 / math.sqrt(max(0.001, x)),
+    },
 }
+
 
 def generate_test_values_1input():
     """Generate diverse test values for single-input functions"""
-    return [
-        0.0, 1.0, -1.0, 0.5, -0.5,
-        2.0, -2.0, 10.0, -10.0, 100.0
-    ]
+    return [0.0, 1.0, -1.0, 0.5, -0.5, 2.0, -2.0, 10.0, -10.0, 100.0]
+
 
 def generate_test_values_2input():
     """Generate diverse test value pairs for two-input functions"""
     return [
-        (1.0, 1.0), (2.0, 3.0), (5.0, 2.0), (10.0, 0.5), (3.0, 4.0),
-        (-1.0, 1.0), (1.0, -1.0), (0.5, 0.5), (100.0, 10.0), (7.0, 3.0)
+        (1.0, 1.0),
+        (2.0, 3.0),
+        (5.0, 2.0),
+        (10.0, 0.5),
+        (3.0, 4.0),
+        (-1.0, 1.0),
+        (1.0, -1.0),
+        (0.5, 0.5),
+        (100.0, 10.0),
+        (7.0, 3.0),
     ]
+
 
 def generate_test_values_3input():
     """Generate diverse test value triples for three-input functions"""
     return [
-        (1.0, 2.0, 3.0), (2.0, 3.0, 4.0), (5.0, 2.0, 1.0),
-        (10.0, 0.5, 0.1), (3.0, 4.0, 5.0), (-1.0, 1.0, 0.0),
-        (1.0, -1.0, 2.0), (0.5, 0.5, 0.5), (100.0, 10.0, 1.0),
-        (7.0, 3.0, 2.0)
+        (1.0, 2.0, 3.0),
+        (2.0, 3.0, 4.0),
+        (5.0, 2.0, 1.0),
+        (10.0, 0.5, 0.1),
+        (3.0, 4.0, 5.0),
+        (-1.0, 1.0, 0.0),
+        (1.0, -1.0, 2.0),
+        (0.5, 0.5, 0.5),
+        (100.0, 10.0, 1.0),
+        (7.0, 3.0, 2.0),
     ]
+
 
 def generate_math_function_tests(name, spec):
     """Generate 10 test cases for a math function"""
@@ -121,6 +146,7 @@ def generate_math_function_tests(name, spec):
 
     return tests[:10]  # Ensure exactly 10 tests
 
+
 def extend_math_functions_json():
     """Extend the math_functions.json file with all remaining functions"""
     with open("test_data/math_functions.json", "r") as f:
@@ -131,19 +157,22 @@ def extend_math_functions_json():
         exists = any(f["name"] == func_name for f in data["functions"])
         if not exists:
             tests = generate_math_function_tests(func_name, spec)
-            data["functions"].append({
-                "name": func_name,
-                "kernel_name": f"test_{func_name}",
-                "input_type": "float",
-                "output_type": "float",
-                "num_inputs": spec["inputs"],
-                "tests": tests
-            })
+            data["functions"].append(
+                {
+                    "name": func_name,
+                    "kernel_name": f"test_{func_name}",
+                    "input_type": "float",
+                    "output_type": "float",
+                    "num_inputs": spec["inputs"],
+                    "tests": tests,
+                }
+            )
 
     with open("test_data/math_functions.json", "w") as f:
         json.dump(data, f, indent=2)
 
     print(f"Extended math_functions.json with {len(MATH_FUNCTIONS)} additional functions")
+
 
 if __name__ == "__main__":
     extend_math_functions_json()
