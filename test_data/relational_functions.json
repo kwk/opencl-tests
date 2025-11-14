@@ -1806,7 +1806,7 @@
             240,
             15
           ],
-          "expected": 240
+          "expected": 0
         },
         {
           "inputs": [
@@ -1814,7 +1814,7 @@
             240,
             240
           ],
-          "expected": 15
+          "expected": 255
         },
         {
           "inputs": [
