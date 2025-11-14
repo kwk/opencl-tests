@@ -82,18 +82,51 @@ def generate_function_test(func_data, category):
     input_c_type = get_c_type(input_type)
     output_c_type = get_c_type(output_type)
 
-    for i in range(num_inputs):
-        # Special case: select and pown functions have int as last parameter
-        if ("select" in name or name == "pown") and i == num_inputs - 1:
-            code.append(f"    int input{i}[NUM_TESTS];")
-        # Special case: shuffle functions have uint4 mask as last parameter(s)
-        elif "shuffle" in name and i >= num_inputs - 1:
-            code.append(f"    cl_uint4 input{i}[NUM_TESTS];")
-        else:
-            code.append(f"    {input_c_type} input{i}[NUM_TESTS];")
+    # Special handling for vload/vstore functions
+    is_vload = name.startswith("vload")
+    is_vstore = name.startswith("vstore")
 
-    code.append(f"    {output_c_type} output[NUM_TESTS];")
-    code.append(f"    {output_c_type} expected[NUM_TESTS];")
+    if is_vload:
+        # vload: first input is scalar array, second is size_t offset
+        # Determine array size based on vector width
+        if "vload2" in name:
+            array_size = 4  # 2 floats per offset * 2 offsets
+        elif "vload4" in name:
+            array_size = 8  # 4 floats per offset * 2 offsets
+        else:
+            array_size = 4  # default
+        code.append(f"    {input_c_type} input0[NUM_TESTS * {array_size}];")
+        code.append(f"    size_t input1[NUM_TESTS];")
+    elif is_vstore:
+        # vstore: first input is vector, second is size_t offset
+        code.append(f"    {input_c_type} input0[NUM_TESTS];")
+        code.append(f"    size_t input1[NUM_TESTS];")
+    else:
+        # Standard handling
+        for i in range(num_inputs):
+            # Special case: select and pown functions have int as last parameter
+            if ("select" in name or name == "pown") and i == num_inputs - 1:
+                code.append(f"    int input{i}[NUM_TESTS];")
+            # Special case: shuffle functions have uint4 mask as last parameter(s)
+            elif "shuffle" in name and i >= num_inputs - 1:
+                code.append(f"    cl_uint4 input{i}[NUM_TESTS];")
+            else:
+                code.append(f"    {input_c_type} input{i}[NUM_TESTS];")
+
+    # Output arrays
+    if is_vstore:
+        # vstore outputs to scalar array
+        if "vstore2" in name:
+            output_array_size = 4
+        elif "vstore4" in name:
+            output_array_size = 8
+        else:
+            output_array_size = 4
+        code.append(f"    {output_c_type} output[NUM_TESTS * {output_array_size}];")
+        code.append(f"    {output_c_type} expected[NUM_TESTS * {output_array_size}];")
+    else:
+        code.append(f"    {output_c_type} output[NUM_TESTS];")
+        code.append(f"    {output_c_type} expected[NUM_TESTS];")
 
     code.append("")
     code.append("    // Initialize test data")
@@ -103,8 +136,24 @@ def generate_function_test(func_data, category):
         inputs = test["inputs"]
         expected = test["expected"]
 
-        # Handle inputs
-        if isinstance(inputs[0], list):
+        # Handle inputs - special cases for vload/vstore
+        if is_vload:
+            # vload: inputs[0] is scalar array, inputs[1] is offset
+            scalar_array = inputs[0]
+            offset = inputs[1]
+            # Initialize scalar array for this test
+            for i, val in enumerate(scalar_array):
+                code.append(
+                    f"    input0[{test_idx} * {array_size} + {i}] = {format_scalar_value(val, input_type)};"
+                )
+            code.append(f"    input1[{test_idx}] = {offset};")
+        elif is_vstore:
+            # vstore: inputs[0] is vector, inputs[1] is offset
+            vector_data = inputs[0]
+            offset = inputs[1]
+            code.append(f"    input0[{test_idx}] = {format_vector_value(vector_data, input_type)};")
+            code.append(f"    input1[{test_idx}] = {offset};")
+        elif isinstance(inputs[0], list):
             # Vector inputs
             for input_idx in range(num_inputs):
                 vector_data = inputs[input_idx]
@@ -126,7 +175,13 @@ def generate_function_test(func_data, category):
                 code.append(f"    input{input_idx}[{test_idx}] = {formatted};")
 
         # Handle expected output
-        if isinstance(expected, list):
+        if is_vstore:
+            # vstore: expected is scalar array
+            for i, val in enumerate(expected):
+                code.append(
+                    f"    expected[{test_idx} * {output_array_size} + {i}] = {format_scalar_value(val, output_type)};"
+                )
+        elif isinstance(expected, list):
             # Vector expected
             formatted = format_vector_value(expected, output_type)
             code.append(f"    expected[{test_idx}] = {formatted};")
@@ -157,26 +212,63 @@ def generate_function_test(func_data, category):
     code.append("")
 
     # Create buffers with correct types
-    for i in range(num_inputs):
-        # Special case: select and pown functions have int as last parameter
-        if ("select" in name or name == "pown") and i == num_inputs - 1:
-            buffer_type = "int"
-        # Special case: shuffle functions have uint4 mask as last parameter(s)
-        elif "shuffle" in name and i >= num_inputs - 1:
-            buffer_type = "cl_uint4"
-        else:
-            buffer_type = input_c_type
+    if is_vload:
+        # vload: first buffer is scalar array, second is size_t offset
         code.append(
-            f"    cl_mem inputBuffer{i} = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,"
+            f"    cl_mem inputBuffer0 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,"
         )
         code.append(
-            f"                                        NUM_TESTS * sizeof({buffer_type}), input{i}, &err);"
+            f"                                        NUM_TESTS * {array_size} * sizeof({input_c_type}), input0, &err);"
         )
+        code.append(
+            f"    cl_mem inputBuffer1 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,"
+        )
+        code.append(
+            f"                                        NUM_TESTS * sizeof(size_t), input1, &err);"
+        )
+    elif is_vstore:
+        # vstore: first buffer is vector, second is size_t offset
+        code.append(
+            f"    cl_mem inputBuffer0 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,"
+        )
+        code.append(
+            f"                                        NUM_TESTS * sizeof({input_c_type}), input0, &err);"
+        )
+        code.append(
+            f"    cl_mem inputBuffer1 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,"
+        )
+        code.append(
+            f"                                        NUM_TESTS * sizeof(size_t), input1, &err);"
+        )
+    else:
+        # Standard buffer creation
+        for i in range(num_inputs):
+            # Special case: select and pown functions have int as last parameter
+            if ("select" in name or name == "pown") and i == num_inputs - 1:
+                buffer_type = "int"
+            # Special case: shuffle functions have uint4 mask as last parameter(s)
+            elif "shuffle" in name and i >= num_inputs - 1:
+                buffer_type = "cl_uint4"
+            else:
+                buffer_type = input_c_type
+            code.append(
+                f"    cl_mem inputBuffer{i} = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,"
+            )
+            code.append(
+                f"                                        NUM_TESTS * sizeof({buffer_type}), input{i}, &err);"
+            )
 
-    code.append(f"    cl_mem outputBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY,")
-    code.append(
-        f"                                         NUM_TESTS * sizeof({output_c_type}), NULL, &err);"
-    )
+    # Output buffer
+    if is_vstore:
+        code.append(f"    cl_mem outputBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY,")
+        code.append(
+            f"                                         NUM_TESTS * {output_array_size} * sizeof({output_c_type}), NULL, &err);"
+        )
+    else:
+        code.append(f"    cl_mem outputBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY,")
+        code.append(
+            f"                                         NUM_TESTS * sizeof({output_c_type}), NULL, &err);"
+        )
     code.append("")
 
     # Set kernel arguments
@@ -192,17 +284,37 @@ def generate_function_test(func_data, category):
     code.append(
         "    err = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &globalSize, NULL, 0, NULL, NULL);"
     )
-    code.append(
-        f"    clEnqueueReadBuffer(queue, outputBuffer, CL_TRUE, 0, NUM_TESTS * sizeof({output_c_type}), output, 0, NULL, NULL);"
-    )
+
+    # Read buffer - special handling for vstore
+    if is_vstore:
+        code.append(
+            f"    clEnqueueReadBuffer(queue, outputBuffer, CL_TRUE, 0, NUM_TESTS * {output_array_size} * sizeof({output_c_type}), output, 0, NULL, NULL);"
+        )
+    else:
+        code.append(
+            f"    clEnqueueReadBuffer(queue, outputBuffer, CL_TRUE, 0, NUM_TESTS * sizeof({output_c_type}), output, 0, NULL, NULL);"
+        )
     code.append("")
 
     # Verify results
     code.append("    // Verify results")
-    code.append("    for (int i = 0; i < NUM_TESTS; i++) {")
+    if is_vstore:
+        # For vstore, we need to verify the entire scalar array for each test
+        code.append("    for (int i = 0; i < NUM_TESTS; i++) {")
+        code.append(f"        bool passed = true;")
+        code.append(f"        for (int j = 0; j < {output_array_size}; j++) {{")
+        code.append(
+            f"            if (!floatEquals(output[i * {output_array_size} + j], expected[i * {output_array_size} + j])) {{"
+        )
+        code.append(f"                passed = false;")
+        code.append(f"                break;")
+        code.append(f"            }}")
+        code.append(f"        }}")
+    else:
+        code.append("    for (int i = 0; i < NUM_TESTS; i++) {")
 
-    # Generate comparison code based on output type
-    if is_vector_type(output_type):
+    # Generate comparison code based on output type (skip for vstore, already handled)
+    if not is_vstore and is_vector_type(output_type):
         # For vector outputs, compare component-wise
         if "float" in output_type:
             # Float vector - use tolerance-based comparison
@@ -244,9 +356,9 @@ def generate_function_test(func_data, category):
                 code.append("                       (output[i].s[1] == expected[i].s[1]) &&")
                 code.append("                       (output[i].s[2] == expected[i].s[2]) &&")
                 code.append("                       (output[i].s[3] == expected[i].s[3]);")
-    elif is_int_type(output_type):
+    elif not is_vstore and is_int_type(output_type):
         code.append("        bool passed = (output[i] == expected[i]);")
-    else:
+    elif not is_vstore:
         code.append("        bool passed = floatEquals(output[i], expected[i]);")
 
     code.append(f'        test_results.push_back({{"{name}", i, passed, ""}});')

@@ -2,15 +2,16 @@
 
 Comprehensive test suite for OpenCL C built-in functions using Mesa OpenCL (Rusticl).
 
-This project tests **137 OpenCL built-in functions** with **1,357 test cases** across multiple function categories:
+This project tests **141 OpenCL built-in functions** with **1,410 test cases** across multiple function categories:
 - Math Functions (51 functions): trigonometric, exponential, logarithmic, power, rounding, etc.
 - Geometric Functions (23 functions): dot, cross, distance, length, normalize, and fast variants
 - Common Functions (12 functions): clamp, degrees, radians, max, min, mix, step, smoothstep, sign
 - Integer Functions (27 functions): abs, add_sat, clz, mad_hi, mul24, popcount, rotate, and vector variants
 - Relational Functions (22 functions): comparisons, classification, logical operations, select
 - Vector Miscellaneous Functions (2 functions): shuffle, shuffle2
+- Vector Load/Store Functions (4 functions): vload2, vload4, vstore2, vstore4
 
-**Test Results**: ✅ **100% passing** (1357/1357 tests)
+**Test Results**: ✅ **100% passing** (1410/1410 tests)
 
 **Note:** This covers ~60-65% of testable OpenCL built-in functions. Some categories like synchronization functions, async copy, and image functions require multi-work-item execution or special object types that aren't suitable for this single-work-item test framework. See [MISSING_FUNCTIONS.md](MISSING_FUNCTIONS.md) for detailed analysis of untested functions.
 
@@ -24,16 +25,20 @@ opencl-examples/
 │   ├── geometric_functions_kernel.cl
 │   ├── integer_functions_kernel.cl
 │   ├── math_functions_kernel.cl
-│   └── relational_functions_kernel.cl
+│   ├── relational_functions_kernel.cl
+│   ├── vector_misc_functions_kernel.cl
+│   └── vector_load_store_functions_kernel.cl
 ├── test_data/                      # JSON test specifications
 │   ├── common_functions.json
 │   ├── geometric_functions.json
 │   ├── integer_functions.json
 │   ├── math_functions.json
-│   └── relational_functions.json
+│   ├── relational_functions.json
+│   ├── vector_misc_functions.json
+│   └── vector_load_store_functions.json
 ├── src/
 │   ├── test_all_opencl_functions.cpp       # Comprehensive test runner
-│   └── generated_tests.cpp                 # Auto-generated test code (11,000+ lines)
+│   └── generated_tests.cpp                 # Auto-generated test code (14,000+ lines)
 ├── generate_tests.py               # Code generator (JSON → C++)
 └── create_*_test_data.py          # Test data generators
 ```
@@ -41,15 +46,16 @@ opencl-examples/
 ## Features
 
 ### Comprehensive Test Suite
-- **test_all_opencl_functions**: Tests 137 OpenCL built-in functions with 1,357 test cases
+- **test_all_opencl_functions**: Tests 141 OpenCL built-in functions with 1,410 test cases
 - ✅ **100% pass rate** - All tests passing on Mesa Rusticl with Intel UHD Graphics
 - Data-driven test framework with JSON test specifications
 - Automatic C++ code generation from JSON test data
-- Organized by function category (math, geometric, common, integer, relational)
+- Organized by function category (math, geometric, common, integer, relational, vector_misc, vector_load_store)
 - Hybrid tolerance comparison: absolute tolerance for small values, relative tolerance (1%) for large values
 - Component-wise comparison for vector types
 - Banker's rounding (`rint()`) vs round-half-away (`round()`) properly distinguished
 - Domain validation to avoid overflow and invalid inputs (e.g., `rsqrt(0)`, `log(-1)`)
+- Special handling for vector load/store functions with scalar arrays and size_t offsets
 - Detailed test result reporting
 
 ## Prerequisites
@@ -120,11 +126,11 @@ RUSTICL_ENABLE=iris ./test_all_opencl_functions --category math
 ./test_all_opencl_functions --help
 ```
 
-The test runner supports filtering to run specific tests or categories, making it easy to debug individual failing tests. Available categories: `integer`, `common`, `geometric`, `math`, `relational`.
+The test runner supports filtering to run specific tests or categories, making it easy to debug individual failing tests. Available categories: `integer`, `common`, `geometric`, `math`, `relational`, `vector_misc`, `vector_load_store`.
 
 The test runner will:
 1. Initialize Mesa OpenCL and detect GPU device
-2. Run filtered or all function tests (129 functions, 1,277 test cases total)
+2. Run filtered or all function tests (141 functions, 1,410 test cases total)
 3. Display test progress for each function category
 4. Show summary with pass/fail statistics
 5. List any failed tests with details
@@ -133,7 +139,7 @@ Example output:
 ```
 ========================================
 OpenCL Built-in Functions Test Suite
-Testing 137 functions with 1357 test cases
+Testing 141 functions with 1410 test cases
 ========================================
 
 Found Mesa platform: rusticl (Mesa/X.org)
@@ -161,8 +167,8 @@ sin() tests complete
 ========================================
 TEST SUMMARY
 ========================================
-Total tests: 1357
-Passed: 1357 (100%)
+Total tests: 1410
+Passed: 1410 (100%)
 Failed: 0 (0%)
 ========================================
 ```

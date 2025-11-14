@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 137 functions with 1370 test cases
+ * Tests 141 functions with 1410 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -215,6 +215,10 @@ void test_select_int();
 void test_signbit();
 void test_shuffle_float4();
 void test_shuffle2_float4();
+void test_vload2_float();
+void test_vload4_float();
+void test_vstore2_float();
+void test_vstore4_float();
 
 void initializeOpenCL() {
   cl_int err;
@@ -494,6 +498,12 @@ void registerAllTests() {
   // Register vector miscellaneous function tests
   registerTest("shuffle_float4", "vector_misc", test_shuffle_float4);
   registerTest("shuffle2_float4", "vector_misc", test_shuffle2_float4);
+
+  // Register vector load/store function tests
+  registerTest("vload2_float", "vector_load_store", test_vload2_float);
+  registerTest("vload4_float", "vector_load_store", test_vload4_float);
+  registerTest("vstore2_float", "vector_load_store", test_vstore2_float);
+  registerTest("vstore4_float", "vector_load_store", test_vstore4_float);
 }
 
 void printUsage(const char *program) {

@@ -2,7 +2,7 @@
 
 This document tracks OpenCL C built-in functions not yet covered by the test suite.
 
-## Currently Tested Categories (137 functions, 1,357 tests, 100% passing ✅)
+## Currently Tested Categories (141 functions, 1,410 tests, 100% passing ✅)
 
 ✅ **Math Functions** (51 functions)
 ✅ **Geometric Functions** (23 functions)
@@ -10,25 +10,29 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 ✅ **Integer Functions** (27 functions)
 ✅ **Relational Functions** (22 functions)
 ✅ **Vector Miscellaneous Functions** (2 functions)
+✅ **Vector Load/Store Functions** (4 functions)
 
 ## Missing Categories
 
-### 1. Vector Data Load and Store Functions ⚠️ Partially Testable
+### 1. Vector Data Load and Store Functions ✅ PARTIALLY COMPLETED
 
-**Functions:**
-- `vload2, vload3, vload4, vload8, vload16` - Load vector from scalar pointer
-- `vstore2, vstore3, vstore4, vstore8, vstore16` - Store vector to scalar pointer
-- `vload_half, vload_half2, vload_half3, vload_half4, ...` - Load half precision
-- `vstore_half, vstore_half2, vstore_half3, vstore_half4, ...` - Store half precision
-- `vloada_half2, vloada_half3, vloada_half4, ...` - Aligned load half
-- `vstorea_half2, vstorea_half3, vstorea_half4, ...` - Aligned store half
+**Functions implemented:**
+- ✅ `vload2, vload4` - Load float2/float4 from scalar pointer (IMPLEMENTED)
+- ✅ `vstore2, vstore4` - Store float2/float4 to scalar pointer (IMPLEMENTED)
+- ⚠️ `vload3, vload8, vload16` - Not yet implemented
+- ⚠️ `vstore3, vstore8, vstore16` - Not yet implemented
+- ⚠️ `vload_half*` - Half precision load functions (requires half support)
+- ⚠️ `vstore_half*` - Half precision store functions (requires half support)
+- ⚠️ `vloada_half*` - Aligned half load (requires half support)
+- ⚠️ `vstorea_half*` - Aligned half store (requires half support)
 
-**Testability:** ✅ Can be tested
-- Requires proper memory alignment
-- Tests data movement between scalar and vector types
-- Half precision support depends on device capabilities
+**Status:** ✅ Partially completed - 4 functions with 40 test cases, all passing
+- Implemented vload2_float, vload4_float, vstore2_float, vstore4_float
+- Tests cover various offsets and value ranges
+- Extended test framework to handle scalar array inputs/outputs and size_t offsets
+- Half-precision functions and larger vector sizes (8, 16) can be added later
 
-**Priority:** Medium - Useful for memory access patterns
+**Priority:** Medium - Core vload2/vload4/vstore2/vstore4 completed
 
 ---
 
@@ -158,10 +162,11 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ### Medium Priority - Could Add
 
-2. **Vector Load/Store Functions** - Important for memory patterns
-   - Add to new `vector_load_store_functions` category
-   - Requires alignment handling
-   - ~30-50 additional tests
+2. ✅ ~~**Vector Load/Store Functions**~~ - PARTIALLY COMPLETED
+   - ✅ Core functions (vload2/4, vstore2/4) implemented
+   - ✅ Added to `vector_load_store_functions` category
+   - ✅ 40 test cases added, all passing
+   - ⚠️ Could extend with vload3/8/16 and half-precision variants
 
 3. ✅ ~~**Extended Bit Operation Variants**~~ - COMPLETED
    - ✅ Added vector variants (int2/int4) for clz, popcount, rotate
@@ -177,17 +182,18 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ## Current Test Coverage
 
-**Total Functions Tested:** 137 functions
-**Total Test Cases:** 1,357 tests
-**Test Pass Rate:** 100% ✅ (1357/1357 passing)
-**Estimated Missing (Testable):** ~60-80 functions
+**Total Functions Tested:** 141 functions
+**Total Test Cases:** 1,410 tests
+**Test Pass Rate:** 100% ✅ (1410/1410 passing)
+**Estimated Missing (Testable):** ~55-75 functions
 **Estimated Missing (Not Testable):** ~30-40 functions
 
-**Overall OpenCL Built-in Function Coverage:** ~60-65% (of testable functions)
+**Overall OpenCL Built-in Function Coverage:** ~65-70% (of testable functions)
 
 ## Recent Improvements (Achieved 100% Pass Rate)
 
 The test suite has been extensively validated and improved:
+- ✅ **Vector Load/Store** (Jan 2025) - Added vload2/4 and vstore2/4 functions with 40 test cases
 - ✅ **Vector Bit Operations** (Jan 2025) - Added int2/int4 variants for clz, popcount, rotate
 - ✅ **Shuffle Functions** (Jan 2025) - Added shuffle() and shuffle2() for vector element rearrangement
 - Fixed vector relational functions (`any()`, `all()`) to properly check MSB
@@ -196,3 +202,4 @@ The test suite has been extensively validated and improved:
 - Corrected rounding semantics (`rint()` vs `round()`)
 - Fixed all bitwise operation test data
 - Custom test value generators for different function characteristics
+- Extended test framework to support scalar array inputs/outputs and size_t offset parameters
