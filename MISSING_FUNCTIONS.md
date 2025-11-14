@@ -2,12 +2,12 @@
 
 This document tracks OpenCL C built-in functions not yet covered by the test suite.
 
-## Currently Tested Categories (131 functions, 1,297 tests, 100% passing ✅)
+## Currently Tested Categories (137 functions, 1,357 tests, 100% passing ✅)
 
 ✅ **Math Functions** (51 functions)
 ✅ **Geometric Functions** (23 functions)
 ✅ **Common Functions** (12 functions)
-✅ **Integer Functions** (21 functions)
+✅ **Integer Functions** (27 functions)
 ✅ **Relational Functions** (22 functions)
 ✅ **Vector Miscellaneous Functions** (2 functions)
 
@@ -120,21 +120,17 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ---
 
-### 7. Extended Bit Operations ⚠️ Partially Covered
+### 7. Extended Bit Operations ✅ COMPLETED
 
-**Functions we already have:**
-- ✅ `clz` (count leading zeros)
-- ✅ `popcount` (population count)
-- ✅ `rotate` (rotate bits)
+**Functions implemented:**
+- ✅ `clz` (count leading zeros) - scalar + int2/int4 vectors
+- ✅ `popcount` (population count) - scalar + int2/int4 vectors
+- ✅ `rotate` (rotate bits) - scalar + int2/int4 vectors
 - ⚠️ `ctz` (count trailing zeros) - not supported in Mesa Rusticl
 
-**Additional variants:**
-- Could add more vector variants (clz on int2/int4, etc.)
-
-**Testability:** ✅ Easy to extend
-- Similar to existing integer function tests
-
-**Priority:** Medium - Extend existing coverage
+**Status:** ✅ Completed - Extended with vector variants
+- Added clz_int2, clz_int4, popcount_int2, popcount_int4, rotate_int2, rotate_int4
+- 60 additional test cases, all passing
 
 ---
 
@@ -167,9 +163,9 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
    - Requires alignment handling
    - ~30-50 additional tests
 
-3. **Extended Bit Operation Variants** - Complete coverage
-   - Add vector variants to existing integer functions
-   - ~10-20 additional tests
+3. ✅ ~~**Extended Bit Operation Variants**~~ - COMPLETED
+   - ✅ Added vector variants (int2/int4) for clz, popcount, rotate
+   - ✅ 60 test cases added, all passing
 
 ### Low Priority - Current Framework Cannot Support
 
@@ -181,9 +177,9 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ## Current Test Coverage
 
-**Total Functions Tested:** 131 functions
-**Total Test Cases:** 1,297 tests
-**Test Pass Rate:** 100% ✅ (1297/1297 passing)
+**Total Functions Tested:** 137 functions
+**Total Test Cases:** 1,357 tests
+**Test Pass Rate:** 100% ✅ (1357/1357 passing)
 **Estimated Missing (Testable):** ~60-80 functions
 **Estimated Missing (Not Testable):** ~30-40 functions
 
@@ -192,6 +188,7 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 ## Recent Improvements (Achieved 100% Pass Rate)
 
 The test suite has been extensively validated and improved:
+- ✅ **Vector Bit Operations** (Jan 2025) - Added int2/int4 variants for clz, popcount, rotate
 - ✅ **Shuffle Functions** (Jan 2025) - Added shuffle() and shuffle2() for vector element rearrangement
 - Fixed vector relational functions (`any()`, `all()`) to properly check MSB
 - Implemented hybrid tolerance for float comparison (absolute + relative)

@@ -2,14 +2,15 @@
 
 Comprehensive test suite for OpenCL C built-in functions using Mesa OpenCL (Rusticl).
 
-This project tests **129 OpenCL built-in functions** with **1,277 test cases** across multiple function categories:
+This project tests **137 OpenCL built-in functions** with **1,357 test cases** across multiple function categories:
 - Math Functions (51 functions): trigonometric, exponential, logarithmic, power, rounding, etc.
 - Geometric Functions (23 functions): dot, cross, distance, length, normalize, and fast variants
 - Common Functions (12 functions): clamp, degrees, radians, max, min, mix, step, smoothstep, sign
-- Integer Functions (21 functions): abs, add_sat, clz, mad_hi, mul24, popcount, rotate, etc.
+- Integer Functions (27 functions): abs, add_sat, clz, mad_hi, mul24, popcount, rotate, and vector variants
 - Relational Functions (22 functions): comparisons, classification, logical operations, select
+- Vector Miscellaneous Functions (2 functions): shuffle, shuffle2
 
-**Test Results**: ✅ **100% passing** (1277/1277 tests)
+**Test Results**: ✅ **100% passing** (1357/1357 tests)
 
 **Note:** This covers ~60-65% of testable OpenCL built-in functions. Some categories like synchronization functions, async copy, and image functions require multi-work-item execution or special object types that aren't suitable for this single-work-item test framework. See [MISSING_FUNCTIONS.md](MISSING_FUNCTIONS.md) for detailed analysis of untested functions.
 
@@ -40,7 +41,7 @@ opencl-examples/
 ## Features
 
 ### Comprehensive Test Suite
-- **test_all_opencl_functions**: Tests 129 OpenCL built-in functions with 1,277 test cases
+- **test_all_opencl_functions**: Tests 137 OpenCL built-in functions with 1,357 test cases
 - ✅ **100% pass rate** - All tests passing on Mesa Rusticl with Intel UHD Graphics
 - Data-driven test framework with JSON test specifications
 - Automatic C++ code generation from JSON test data
@@ -132,7 +133,7 @@ Example output:
 ```
 ========================================
 OpenCL Built-in Functions Test Suite
-Testing 129 functions with 1277 test cases
+Testing 137 functions with 1357 test cases
 ========================================
 
 Found Mesa platform: rusticl (Mesa/X.org)
@@ -160,8 +161,8 @@ sin() tests complete
 ========================================
 TEST SUMMARY
 ========================================
-Total tests: 1277
-Passed: 1277 (100%)
+Total tests: 1357
+Passed: 1357 (100%)
 Failed: 0 (0%)
 ========================================
 ```

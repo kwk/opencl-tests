@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 131 functions with 1310 test cases
+ * Tests 137 functions with 1370 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -84,6 +84,8 @@ void test_abs_diff_uint();
 void test_add_sat_int();
 void test_add_sat_uint();
 void test_clz_int();
+void test_clz_int2();
+void test_clz_int4();
 // void test_ctz_int();  // ctz not supported in Mesa Rusticl
 void test_hadd_int();
 void test_mad24_int();
@@ -96,8 +98,12 @@ void test_min_uint();
 void test_mul24_int();
 void test_mul_hi_int();
 void test_popcount_int();
+void test_popcount_int2();
+void test_popcount_int4();
 void test_rhadd_int();
 void test_rotate_int();
+void test_rotate_int2();
+void test_rotate_int4();
 void test_sub_sat_int();
 void test_clamp_float();
 void test_clamp_float2();
@@ -344,6 +350,8 @@ void registerAllTests() {
   registerTest("add_sat_int", "integer", test_add_sat_int);
   registerTest("add_sat_uint", "integer", test_add_sat_uint);
   registerTest("clz_int", "integer", test_clz_int);
+  registerTest("clz_int2", "integer", test_clz_int2);
+  registerTest("clz_int4", "integer", test_clz_int4);
   // test_ctz_int - not supported in Mesa Rusticl
   registerTest("hadd_int", "integer", test_hadd_int);
   registerTest("mad24_int", "integer", test_mad24_int);
@@ -356,8 +364,12 @@ void registerAllTests() {
   registerTest("mul24_int", "integer", test_mul24_int);
   registerTest("mul_hi_int", "integer", test_mul_hi_int);
   registerTest("popcount_int", "integer", test_popcount_int);
+  registerTest("popcount_int2", "integer", test_popcount_int2);
+  registerTest("popcount_int4", "integer", test_popcount_int4);
   registerTest("rhadd_int", "integer", test_rhadd_int);
   registerTest("rotate_int", "integer", test_rotate_int);
+  registerTest("rotate_int2", "integer", test_rotate_int2);
+  registerTest("rotate_int4", "integer", test_rotate_int4);
   registerTest("sub_sat_int", "integer", test_sub_sat_int);
 
   // Register all common function tests

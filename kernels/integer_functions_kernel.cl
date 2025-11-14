@@ -58,6 +58,20 @@ __kernel void test_clz_int(__global const int *input, __global int *output,
         output[i] = clz(input[i]);
 }
 
+__kernel void test_clz_int2(__global const int2 *input, __global int2 *output,
+                            const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = clz(input[i]);
+}
+
+__kernel void test_clz_int4(__global const int4 *input, __global int4 *output,
+                            const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = clz(input[i]);
+}
+
 // Note: ctz (count trailing zeros) is not supported in Mesa Rusticl OpenCL 3.0
 // __kernel void test_ctz_int(__global const int* input, __global int* output, const unsigned int
 // count) {
@@ -121,6 +135,20 @@ __kernel void test_rotate_int(__global const int *v, __global const int *i, __gl
         output[idx] = rotate(v[idx], i[idx]);
 }
 
+__kernel void test_rotate_int2(__global const int2 *v, __global const int2 *i, __global int2 *output,
+                               const unsigned int count) {
+    int idx = get_global_id(0);
+    if (idx < count)
+        output[idx] = rotate(v[idx], i[idx]);
+}
+
+__kernel void test_rotate_int4(__global const int4 *v, __global const int4 *i, __global int4 *output,
+                               const unsigned int count) {
+    int idx = get_global_id(0);
+    if (idx < count)
+        output[idx] = rotate(v[idx], i[idx]);
+}
+
 __kernel void test_sub_sat_int(__global const int *x, __global const int *y, __global int *output,
                                const unsigned int count) {
     int i = get_global_id(0);
@@ -130,6 +158,20 @@ __kernel void test_sub_sat_int(__global const int *x, __global const int *y, __g
 
 __kernel void test_popcount_int(__global const int *input, __global int *output,
                                 const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = popcount(input[i]);
+}
+
+__kernel void test_popcount_int2(__global const int2 *input, __global int2 *output,
+                                 const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = popcount(input[i]);
+}
+
+__kernel void test_popcount_int4(__global const int4 *input, __global int4 *output,
+                                 const unsigned int count) {
     int i = get_global_id(0);
     if (i < count)
         output[i] = popcount(input[i]);
