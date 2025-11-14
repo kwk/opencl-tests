@@ -331,16 +331,16 @@ def create_relational_functions_json():
             "output_type": "int",
             "num_inputs": 1,
             "tests": [
-                {"inputs": [[0, 0]], "expected": 0},
-                {"inputs": [[1, 0]], "expected": 1},
-                {"inputs": [[0, 1]], "expected": 1},
-                {"inputs": [[1, 1]], "expected": 1},
-                {"inputs": [[-1, 0]], "expected": 1},
-                {"inputs": [[0, -1]], "expected": 1},
-                {"inputs": [[-1, -1]], "expected": 1},
-                {"inputs": [[5, 0]], "expected": 1},
-                {"inputs": [[0, 5]], "expected": 1},
-                {"inputs": [[5, 5]], "expected": 1},
+                {"inputs": [[0, 0]], "expected": 0},  # No MSB set
+                {"inputs": [[1, 0]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[0, 1]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[1, 1]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[-1, 0]], "expected": 1},  # Negative - MSB set
+                {"inputs": [[0, -1]], "expected": 1},  # Negative - MSB set
+                {"inputs": [[-1, -1]], "expected": 1},  # Both negative - MSB set
+                {"inputs": [[5, 0]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[0, 5]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[5, 5]], "expected": 0},  # Positive - no MSB set
             ],
         }
     )
@@ -353,16 +353,16 @@ def create_relational_functions_json():
             "output_type": "int",
             "num_inputs": 1,
             "tests": [
-                {"inputs": [[0, 0, 0, 0]], "expected": 0},
-                {"inputs": [[1, 0, 0, 0]], "expected": 1},
-                {"inputs": [[0, 1, 0, 0]], "expected": 1},
-                {"inputs": [[0, 0, 1, 0]], "expected": 1},
-                {"inputs": [[0, 0, 0, 1]], "expected": 1},
-                {"inputs": [[1, 1, 1, 1]], "expected": 1},
-                {"inputs": [[-1, 0, 0, 0]], "expected": 1},
-                {"inputs": [[0, -1, 0, 0]], "expected": 1},
-                {"inputs": [[5, 5, 0, 0]], "expected": 1},
-                {"inputs": [[5, 5, 5, 5]], "expected": 1},
+                {"inputs": [[0, 0, 0, 0]], "expected": 0},  # No MSB set
+                {"inputs": [[1, 0, 0, 0]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[0, 1, 0, 0]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[0, 0, 1, 0]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[0, 0, 0, 1]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[1, 1, 1, 1]], "expected": 0},  # All positive - no MSB set
+                {"inputs": [[-1, 0, 0, 0]], "expected": 1},  # Negative - MSB set
+                {"inputs": [[0, -1, 0, 0]], "expected": 1},  # Negative - MSB set
+                {"inputs": [[5, 5, 0, 0]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[5, 5, 5, 5]], "expected": 0},  # All positive - no MSB set
             ],
         }
     )
@@ -375,16 +375,16 @@ def create_relational_functions_json():
             "output_type": "int",
             "num_inputs": 1,
             "tests": [
-                {"inputs": [[0, 0]], "expected": 0},
-                {"inputs": [[1, 0]], "expected": 0},
-                {"inputs": [[0, 1]], "expected": 0},
-                {"inputs": [[1, 1]], "expected": 1},
-                {"inputs": [[-1, -1]], "expected": 1},
-                {"inputs": [[-1, 0]], "expected": 0},
-                {"inputs": [[0, -1]], "expected": 0},
-                {"inputs": [[5, 5]], "expected": 1},
-                {"inputs": [[5, 0]], "expected": 0},
-                {"inputs": [[-5, -5]], "expected": 1},
+                {"inputs": [[0, 0]], "expected": 0},  # No MSB set
+                {"inputs": [[1, 0]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[0, 1]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[1, 1]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[-1, -1]], "expected": 1},  # All negative - all MSB set
+                {"inputs": [[-1, 0]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[0, -1]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[5, 5]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[5, 0]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[-5, -5]], "expected": 1},  # All negative - all MSB set
             ],
         }
     )
@@ -397,16 +397,16 @@ def create_relational_functions_json():
             "output_type": "int",
             "num_inputs": 1,
             "tests": [
-                {"inputs": [[0, 0, 0, 0]], "expected": 0},
-                {"inputs": [[1, 1, 1, 1]], "expected": 1},
-                {"inputs": [[1, 1, 1, 0]], "expected": 0},
-                {"inputs": [[1, 1, 0, 1]], "expected": 0},
-                {"inputs": [[1, 0, 1, 1]], "expected": 0},
-                {"inputs": [[0, 1, 1, 1]], "expected": 0},
-                {"inputs": [[-1, -1, -1, -1]], "expected": 1},
-                {"inputs": [[5, 5, 5, 5]], "expected": 1},
-                {"inputs": [[5, 5, 5, 0]], "expected": 0},
-                {"inputs": [[-5, -5, -5, -5]], "expected": 1},
+                {"inputs": [[0, 0, 0, 0]], "expected": 0},  # No MSB set
+                {"inputs": [[1, 1, 1, 1]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[1, 1, 1, 0]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[1, 1, 0, 1]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[1, 0, 1, 1]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[0, 1, 1, 1]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[-1, -1, -1, -1]], "expected": 1},  # All negative - all MSB set
+                {"inputs": [[5, 5, 5, 5]], "expected": 0},  # Positive - no MSB set
+                {"inputs": [[5, 5, 5, 0]], "expected": 0},  # Not all have MSB set
+                {"inputs": [[-5, -5, -5, -5]], "expected": 1},  # All negative - all MSB set
             ],
         }
     )
