@@ -17,6 +17,9 @@ def get_c_type(opencl_type):
         "int2": "cl_int2",
         "int3": "cl_int3",
         "int4": "cl_int4",
+        "uint2": "cl_uint2",
+        "uint3": "cl_uint3",
+        "uint4": "cl_uint4",
         "float2": "cl_float2",
         "float3": "cl_float3",
         "float4": "cl_float4",
@@ -83,6 +86,9 @@ def generate_function_test(func_data, category):
         # Special case: select and pown functions have int as last parameter
         if ("select" in name or name == "pown") and i == num_inputs - 1:
             code.append(f"    int input{i}[NUM_TESTS];")
+        # Special case: shuffle functions have uint4 mask as last parameter(s)
+        elif "shuffle" in name and i >= num_inputs - 1:
+            code.append(f"    cl_uint4 input{i}[NUM_TESTS];")
         else:
             code.append(f"    {input_c_type} input{i}[NUM_TESTS];")
 
@@ -102,7 +108,11 @@ def generate_function_test(func_data, category):
             # Vector inputs
             for input_idx in range(num_inputs):
                 vector_data = inputs[input_idx]
-                formatted = format_vector_value(vector_data, input_type)
+                # Special case: shuffle functions have uint4 mask as last parameter(s)
+                if "shuffle" in name and input_idx >= num_inputs - 1:
+                    formatted = format_vector_value(vector_data, "uint4")
+                else:
+                    formatted = format_vector_value(vector_data, input_type)
                 code.append(f"    input{input_idx}[{test_idx}] = {formatted};")
         else:
             # Scalar inputs
@@ -151,6 +161,9 @@ def generate_function_test(func_data, category):
         # Special case: select and pown functions have int as last parameter
         if ("select" in name or name == "pown") and i == num_inputs - 1:
             buffer_type = "int"
+        # Special case: shuffle functions have uint4 mask as last parameter(s)
+        elif "shuffle" in name and i >= num_inputs - 1:
+            buffer_type = "cl_uint4"
         else:
             buffer_type = input_c_type
         code.append(

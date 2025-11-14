@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 129 functions with 1290 test cases
+ * Tests 131 functions with 1310 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -207,6 +207,8 @@ void test_isnotequal();
 void test_select_float();
 void test_select_int();
 void test_signbit();
+void test_shuffle_float4();
+void test_shuffle2_float4();
 
 void initializeOpenCL() {
   cl_int err;
@@ -476,6 +478,10 @@ void registerAllTests() {
   registerTest("select_float", "relational", test_select_float);
   registerTest("select_int", "relational", test_select_int);
   registerTest("signbit", "relational", test_signbit);
+
+  // Register vector miscellaneous function tests
+  registerTest("shuffle_float4", "vector_misc", test_shuffle_float4);
+  registerTest("shuffle2_float4", "vector_misc", test_shuffle2_float4);
 }
 
 void printUsage(const char *program) {
@@ -485,7 +491,7 @@ void printUsage(const char *program) {
   std::cout << "  --list              List all available tests\n";
   std::cout << "  --category <name>   Run tests only from specified category\n";
   std::cout << "                      (integer, common, geometric, math, "
-               "relational)\n";
+               "relational, vector_misc)\n";
   std::cout << "  --help              Show this help message\n\n";
   std::cout << "Examples:\n";
   std::cout << "  " << program << "                  # Run all tests\n";
@@ -558,8 +564,8 @@ int main(int argc, char *argv[]) {
     }
     if (!valid_category) {
       std::cerr << "Error: Invalid category '" << filter_category << "'\n";
-      std::cerr
-          << "Valid categories: integer, common, geometric, math, relational\n";
+      std::cerr << "Valid categories: integer, common, geometric, math, "
+                   "relational, vector_misc\n";
       return 1;
     }
   }
