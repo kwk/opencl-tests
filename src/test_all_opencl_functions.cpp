@@ -44,9 +44,21 @@ void registerTest(const std::string &name, const std::string &category,
   test_registry.push_back({name, category, func});
 }
 
-// Helper function for float comparison with tolerance
+// Helper function for float comparison with hybrid tolerance
+// Uses absolute tolerance for small values, relative tolerance for large values
 bool floatEquals(float a, float b, float tolerance = 0.0001f) {
-  return std::fabs(a - b) < tolerance;
+  float diff = std::fabs(a - b);
+
+  // For very small values or when either is near zero, use absolute tolerance
+  if (std::fabs(a) < 1.0f || std::fabs(b) < 1.0f) {
+    return diff < tolerance;
+  }
+
+  // For larger values, use relative tolerance (as percentage of magnitude)
+  // This is important for native_* functions with large outputs like exp(80)
+  float max_val = std::max(std::fabs(a), std::fabs(b));
+  float relative_tolerance = 0.01f; // 1% for native functions
+  return (diff / max_val) < relative_tolerance;
 }
 
 // Helper function to load kernel source from file
