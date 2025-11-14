@@ -70,17 +70,6 @@ sudo apt-get install opencl-headers ocl-icd-opencl-dev mesa-opencl-icd
 sudo pacman -S opencl-headers ocl-icd opencl-mesa
 ```
 
-**macOS:**
-```bash
-# Install Xcode Command Line Tools (includes OpenCL framework)
-xcode-select --install
-
-# Install CMake via Homebrew
-brew install cmake
-```
-
-Note: macOS has built-in OpenCL support, but some test functions may not be available on all Apple GPU implementations.
-
 ### Enabling Mesa Rusticl
 
 Mesa Rusticl requires enabling your GPU driver via the `RUSTICL_ENABLE` environment variable:

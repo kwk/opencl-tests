@@ -13,8 +13,7 @@ if(NOT OpenCL_FOUND)
     message(FATAL_ERROR "OpenCL not found. Please install OpenCL development libraries:\n"
             "Fedora/RHEL: sudo dnf install opencl-headers OpenCL-ICD-Loader-devel pocl\n"
             "Ubuntu/Debian: sudo apt-get install opencl-headers ocl-icd-opencl-dev pocl-opencl-icd\n"
-            "Arch: sudo pacman -S opencl-headers ocl-icd pocl\n"
-            "macOS: OpenCL framework is included with Xcode Command Line Tools")
+            "Arch: sudo pacman -S opencl-headers ocl-icd pocl")
 endif()
 
 include_directories(${OpenCL_INCLUDE_DIRS})
