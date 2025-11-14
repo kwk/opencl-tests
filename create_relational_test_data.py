@@ -264,16 +264,16 @@ def create_relational_functions_json():
             "output_type": "int",
             "num_inputs": 2,
             "tests": [
-                {"inputs": [1.0, 2.0], "expected": -1},
-                {"inputs": [2.0, 1.0], "expected": -1},
-                {"inputs": [0.0, 0.0], "expected": -1},
-                {"inputs": [-1.0, 1.0], "expected": -1},
-                {"inputs": [100.0, 50.0], "expected": -1},
-                {"inputs": [3.14, 2.71], "expected": -1},
-                {"inputs": [0.0, 1.0], "expected": -1},
-                {"inputs": [5.0, 5.0], "expected": -1},
-                {"inputs": [-5.0, -10.0], "expected": -1},
-                {"inputs": [1000.0, 1.0], "expected": -1},
+                {"inputs": [1.0, 2.0], "expected": 1},  # Both ordered (not NaN) -> 1
+                {"inputs": [2.0, 1.0], "expected": 1},
+                {"inputs": [0.0, 0.0], "expected": 1},
+                {"inputs": [-1.0, 1.0], "expected": 1},
+                {"inputs": [100.0, 50.0], "expected": 1},
+                {"inputs": [3.14, 2.71], "expected": 1},
+                {"inputs": [0.0, 1.0], "expected": 1},
+                {"inputs": [5.0, 5.0], "expected": 1},
+                {"inputs": [-5.0, -10.0], "expected": 1},
+                {"inputs": [1000.0, 1.0], "expected": 1},
             ],
         }
     )
