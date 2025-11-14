@@ -1,59 +1,76 @@
-# OpenCL Hello World Examples
+# OpenCL Built-in Functions Test Suite
 
-This project demonstrates OpenCL usage with standard built-in math functions across different device types (CPU, Nvidia GPU, AMD GPU, Mesa).
+Comprehensive test suite for OpenCL C built-in functions using Mesa OpenCL (Rusticl).
+
+This project tests **129 OpenCL built-in functions** with **1,290 test cases** across multiple function categories:
+- Math Functions (51 functions): trigonometric, exponential, logarithmic, power, rounding, etc.
+- Geometric Functions (23 functions): dot, cross, distance, length, normalize, and fast variants
+- Common Functions (12 functions): clamp, degrees, radians, max, min, mix, step, smoothstep, sign
+- Integer Functions (21 functions): abs, add_sat, clz, ctz, mad_hi, mul24, popcount, rotate, etc.
+- Relational Functions (22 functions): comparisons, classification, logical operations, select
 
 ## Project Structure
 
 ```
 opencl-examples/
 ├── CMakeLists.txt
-├── kernel.cl
+├── kernel.cl                       # Simple hello world kernel
+├── kernels/                        # Test kernels for all built-in functions
+│   ├── common_functions_kernel.cl
+│   ├── geometric_functions_kernel.cl
+│   ├── integer_functions_kernel.cl
+│   ├── math_functions_kernel.cl
+│   └── relational_functions_kernel.cl
+├── test_data/                      # JSON test specifications
+│   ├── common_functions.json
+│   ├── geometric_functions.json
+│   ├── integer_functions.json
+│   ├── math_functions.json
+│   └── relational_functions.json
 ├── src/
-│   ├── hello_opencl_cpu.cpp
-│   ├── hello_opencl_nvidia.cpp
-│   ├── hello_opencl_amd.cpp
-│   ├── hello_opencl_mesa_gpu.cpp
-│   └── hello_opencl_mesa_cpu.cpp
-└── README.md
+│   ├── hello_opencl_mesa_gpu.cpp           # Simple Mesa GPU example
+│   ├── test_all_opencl_functions.cpp       # Comprehensive test runner
+│   └── generated_tests.cpp                 # Auto-generated test code (11,000+ lines)
+├── generate_tests.py               # Code generator (JSON → C++)
+└── create_*_test_data.py          # Test data generators
 ```
 
 ## Features
 
-- Five separate binaries targeting different OpenCL devices:
-  - `hello_opencl_cpu`: Targets CPU devices (PoCL)
-  - `hello_opencl_nvidia`: Targets Nvidia GPU devices
-  - `hello_opencl_amd`: Targets AMD GPU devices
-  - `hello_opencl_mesa_gpu`: Targets Mesa OpenCL GPU devices (Rusticl/Clover)
-  - `hello_opencl_mesa_cpu`: Targets Mesa OpenCL CPU devices (Rusticl/Clover)
-- Uses the OpenCL C built-in `sqrt()` math function from the [OpenCL C Specification](https://registry.khronos.org/OpenCL/specs/3.0-unified/html/OpenCL_C.html#built-in-math-functions)
-- Demonstrates basic OpenCL workflow: context creation, kernel compilation, buffer management, and execution
+### Simple Example
+- **hello_opencl_mesa_gpu**: Basic OpenCL example using Mesa GPU (Rusticl) with the `sqrt()` function
+
+### Comprehensive Test Suite
+- **test_all_opencl_functions**: Tests 129 OpenCL built-in functions with 1,290 test cases
+- Data-driven test framework with JSON test specifications
+- Automatic C++ code generation from JSON test data
+- Organized by function category (math, geometric, common, integer, relational)
+- Tolerance-based comparison for floating-point results
+- Component-wise comparison for vector types
+- Detailed test result reporting
 
 ## Prerequisites
 
 - CMake 3.10 or higher
 - C++14 compatible compiler
 - OpenCL development headers and libraries
-- At least one of the following:
-  - CPU OpenCL runtime (e.g., Intel OpenCL Runtime, PoCL)
-  - Nvidia GPU with CUDA/OpenCL support
-  - AMD GPU with ROCm/OpenCL support
-  - Mesa OpenCL support (Rusticl or Clover) for Intel/AMD/other GPUs
+- Mesa OpenCL (Rusticl) for GPU support
 
-### Installing OpenCL
+### Installing OpenCL and Mesa
 
 **Fedora/RHEL:**
 ```bash
-sudo dnf install opencl-headers OpenCL-ICD-Loader-devel pocl
+sudo dnf install opencl-headers OpenCL-ICD-Loader-devel mesa-libOpenCL
 ```
 
 **Ubuntu/Debian:**
 ```bash
-sudo apt-get install opencl-headers ocl-icd-opencl-dev pocl-opencl-icd
+sudo apt-get install opencl-headers ocl-icd-opencl-dev mesa-opencl-icd
 ```
 
 **Arch Linux:**
 ```bash
-sudo pacman -S opencl-headers ocl-icd pocl
+sudo pacman -S opencl-headers ocl-icd opencl-mesa
 ```
 
 **macOS:**
@@ -65,47 +82,14 @@ xcode-select --install
 brew install cmake
 ```
 
-Note: PoCL provides a portable CPU-based OpenCL implementation for testing and development.
+Note: macOS has built-in OpenCL support, but some test functions may not be available on all Apple GPU implementations.
 
-### macOS-Specific Information
+### Enabling Mesa Rusticl
 
-**OpenCL on macOS:**
-- OpenCL is included as a system framework (no additional installation needed)
-- Available on both Intel-based Macs and Apple Silicon (M1/M2/M3/M4) Macs
-- Apple deprecated OpenCL in favor of Metal, but OpenCL still works and is supported
-- On macOS, the examples will use the built-in Apple OpenCL implementation
-- Apple's OpenCL supports CPU and GPU devices (Intel integrated graphics or Apple Silicon GPU)
+Mesa Rusticl requires enabling your GPU driver via the `RUSTICL_ENABLE` environment variable:
 
-**Note about device selection:**
-- On Apple Silicon Macs, you'll see Apple's GPU as the primary OpenCL device
-- On Intel Macs, you may see Intel HD/Iris graphics
-- The `hello_opencl_cpu` example will use the CPU device
-- The Nvidia and AMD-specific examples won't work on macOS (use the CPU example instead)
-
-### Installing Mesa OpenCL (Optional)
-
-Mesa provides OpenCL support for Intel and AMD GPUs through Rusticl (newer, Rust-based) or Clover (older, Gallium-based).
-
-**Fedora/RHEL:**
 ```bash
-sudo dnf install mesa-libOpenCL
-```
-
-**Ubuntu/Debian:**
-```bash
-sudo apt-get install mesa-opencl-icd
-```
-
-**Arch Linux:**
-```bash
-sudo pacman -S opencl-mesa
-```
-
-Note: Mesa OpenCL requires compatible GPU hardware (Intel, AMD, or other Mesa-supported GPUs). Check `clinfo` after installation to verify Mesa is detected.
-
-**Important for Rusticl:** You need to enable your GPU driver by setting the `RUSTICL_ENABLE` environment variable. For Intel GPUs, use `iris`; for AMD GPUs, use `radeonsi`. Example:
-```bash
-export RUSTICL_ENABLE=iris  # For Intel GPUs
+export RUSTICL_ENABLE=iris      # For Intel GPUs
 # or
 export RUSTICL_ENABLE=radeonsi  # For AMD GPUs
 ```
@@ -114,8 +98,6 @@ For more information, see the [official Mesa Rusticl documentation](https://docs
 
 ## Building
 
-### Linux
-
 ```bash
 mkdir build
 cd build
@@ -123,75 +105,22 @@ cmake ..
 make
 ```
 
-### macOS
-
-```bash
-mkdir build
-cd build
-cmake ..
-make
-```
-
-The build process is the same on macOS as on Linux. CMake will automatically find the OpenCL framework on macOS.
-
-**Note:** On macOS, you may see warnings about OpenCL being deprecated. These can be safely ignored - OpenCL still works correctly despite the deprecation notices.
+This builds two executables:
+- `hello_opencl_mesa_gpu` - Simple Mesa GPU example
+- `test_all_opencl_functions` - Comprehensive test suite
 
 ## Running
 
-### Linux
+### Simple Example
 
 From the build directory:
 
 ```bash
-# Run CPU version
-./hello_opencl_cpu
-
-# Run Nvidia GPU version
-./hello_opencl_nvidia
-
-# Run AMD GPU version
-./hello_opencl_amd
-
-# Run Mesa GPU version (requires mesa-libOpenCL and RUSTICL_ENABLE)
-RUSTICL_ENABLE=iris ./hello_opencl_mesa_gpu  # Use iris for Intel, radeonsi for AMD
-
-# Run Mesa CPU version (requires mesa-libOpenCL)
-./hello_opencl_mesa_cpu
+RUSTICL_ENABLE=iris ./hello_opencl_mesa_gpu
 ```
 
-### macOS
-
-From the build directory:
-
-```bash
-# Run CPU version (will use Apple's OpenCL CPU device)
-./hello_opencl_cpu
-
-# On macOS, these examples are recommended:
-# - hello_opencl_cpu: Works on all Macs (uses CPU)
-
-# Note: The following examples may not work on macOS because they specifically
-# look for vendor-specific platforms (NVIDIA, AMD, Mesa) that aren't available
-# on macOS. The hello_opencl_cpu example is the most portable option.
+Expected output:
 ```
-
-**What to expect on macOS:**
-- **Intel-based Macs:** You may see "Intel HD Graphics" or "Intel Iris Graphics" as available devices
-- **Apple Silicon Macs (M1/M2/M3/M4):** You'll see "Apple M1/M2/M3/M4" GPU as an available device
-- The CPU device is always available and will work reliably across all Mac models
-
-**Tip:** To see all available OpenCL devices on your Mac, you can install and run `clinfo`:
-```bash
-brew install clinfo
-clinfo
-```
-
-## Example Output
-
-Here's the expected output when running the Mesa GPU example with an Intel GPU:
-
-```bash
-$ RUSTICL_ENABLE=iris ./hello_opencl_mesa_gpu
 OpenCL Hello World - Mesa GPU Device
 Platform 0: rusticl (Mesa/X.org)
 Selected Mesa platform: rusticl
@@ -214,92 +143,191 @@ sqrt(81) = 9 (expected: 9)
 Success!
 ```
 
-The other examples (CPU, Nvidia, AMD) produce similar output, with the main difference being the platform and device information.
+### Comprehensive Test Suite
 
-## How It Works
-
-Each program:
-1. Initializes input data (array of squared integers)
-2. Finds the appropriate OpenCL device (CPU, Nvidia GPU, AMD GPU, or Mesa GPU)
-3. Compiles the kernel from `kernel.cl`
-4. Executes the `vector_sqrt` kernel which uses the OpenCL C built-in `sqrt()` function
-5. Retrieves and displays the results
-
-The kernel uses `sqrt()`, a standard built-in function defined in the [OpenCL C Specification](https://registry.khronos.org/OpenCL/specs/3.0-unified/html/OpenCL_C.html#built-in-math-functions) as part of the "Built-in Scalar and Vector Argument Math Functions". This function is available on all OpenCL implementations.
-
-## Understanding OpenCL Built-in Functions and libclc
-
-You might notice when running `ldd` on the compiled binaries that they only link against the OpenCL ICD loader:
+From the build directory:
 
 ```bash
-$ ldd hello_opencl_cpu
-    libOpenCL.so.1 => /lib64/libOpenCL.so.1
-    libstdc++.so.6 => /lib64/libstdc++.so.6
-    # ... no libclc or other libraries!
+RUSTICL_ENABLE=iris ./test_all_opencl_functions
 ```
 
-This is expected behavior. Here's how OpenCL built-in functions work:
+The test runner will:
+1. Initialize Mesa OpenCL and detect GPU device
+2. Run all 129 function tests (1,290 test cases total)
+3. Display test progress for each function category
+4. Show summary with pass/fail statistics
+5. List any failed tests with details
 
-### OpenCL Built-in Functions are Defined by the Specification
+Example output:
+```
+========================================
+OpenCL Built-in Functions Test Suite
+Testing 129 functions with 1290 test cases
+========================================
 
-The `sqrt()` function (and other math functions like `sin()`, `cos()`, etc.) are **defined by the OpenCL C Specification**, not by any particular library. The [OpenCL C 3.0 Specification](https://registry.khronos.org/OpenCL/specs/3.0-unified/html/OpenCL_C.html#built-in-math-functions) defines these as "Built-in Scalar and Vector Argument Math Functions" that must be available in all conforming OpenCL implementations.
+Found Mesa platform: rusticl (Mesa/X.org)
+Using device: Mesa Intel(R) UHD Graphics (TGL GT1)
+OpenCL initialized successfully
 
-### How Implementations Provide Built-in Functions
+=== INTEGER FUNCTIONS ===
+Testing abs_int()...
+abs_int() tests complete
 
-When you call `clBuildProgram()` in your host code, the OpenCL implementation compiles your kernel and provides implementations of built-in functions:
+Testing add_sat_int()...
+add_sat_int() tests complete
 
-1. **The compilation process**:
-   - The OpenCL driver/compiler compiles your kernel source code
-   - During compilation, the implementation provides built-in function implementations
-   - These get compiled into the kernel binary (SPIR-V, PTX, or native GPU code)
-   - The compiled kernel is what actually runs on the device
+...
 
-2. **Different implementations use different approaches**:
-   - Some use **libclc** (an open-source library providing reference implementations)
-   - Others use proprietary implementations built into their drivers
-   - All must conform to the OpenCL C Specification
+=== MATH FUNCTIONS ===
+Testing sqrt()...
+sqrt() tests complete
+
+Testing sin()...
+sin() tests complete
+
+...
+
+========================================
+TEST SUMMARY
+========================================
+Total tests: 1290
+Passed: 1285 (99.6%)
+Failed: 5 (0.4%)
+========================================
+
+Failed tests:
+  - exp10 test #9
+  - pow test #8
+  - tgamma test #9
+  - native_exp10 test #9
+  - powr test #9
+========================================
+```
+
+## Test Data Generation
+
+The test suite uses a data-driven approach:
+
+1. **JSON Test Specifications** (`test_data/*.json`):
+   - Define function metadata (name, input/output types, number of inputs)
+   - Specify 10 test cases per function with inputs and expected outputs
+   - Example:
+   ```json
+   {
+     "name": "sqrt",
+     "kernel_name": "test_sqrt",
+     "input_type": "float",
+     "output_type": "float",
+     "num_inputs": 1,
+     "tests": [
+       {"inputs": [4.0], "expected": 2.0},
+       ...
+     ]
+   }
+   ```
+
+2. **Automated Test Data Generation** (`create_*_test_data.py`):
+   - Python scripts to generate test data for each function category
+   - Use Python's math library to compute expected outputs
+   - Automatically extend JSON files with new functions
+
+3. **C++ Code Generation** (`generate_tests.py`):
+   - Reads all JSON test specifications
+   - Generates `src/generated_tests.cpp` (11,000+ lines)
+   - Creates test functions with proper OpenCL buffer management
+   - Handles scalar and vector types (int2/3/4, float2/3/4)
+   - Implements tolerance-based floating-point comparison
+
+To regenerate test code after modifying JSON test data:
+```bash
+python3 generate_tests.py
+```
+
+## OpenCL Built-in Functions and libclc
+
+The functions tested in this suite are defined by the [OpenCL C 3.0 Specification](https://registry.khronos.org/OpenCL/specs/3.0-unified/html/OpenCL_C.html). They are built-in functions that must be available in all conforming OpenCL implementations.
+
+### How Built-in Functions Work
+
+When you call `clBuildProgram()`, the OpenCL implementation compiles your kernel and provides implementations of built-in functions:
+
+1. **Compilation**: The OpenCL driver/compiler compiles your kernel source
+2. **Linking**: Built-in function implementations are provided by the runtime
+3. **Execution**: Compiled kernels run on the GPU with built-in functions available
 
 ### What is libclc?
 
-**libclc** is an open-source library that provides portable implementations of OpenCL built-in functions. It's a **compiler library, not a runtime library**:
+**libclc** is an open-source library providing reference implementations of OpenCL built-in functions:
 
-- It provides LLVM bitcode implementations of OpenCL built-in functions
-- It's used by some OpenCL compilers during kernel compilation
-- It's NOT linked at runtime - the implementations get compiled into your kernel
-- Your host application only links against `libOpenCL.so` (the ICD loader)
+- Provides LLVM bitcode implementations
+- Used by some OpenCL compilers during kernel compilation
+- NOT a runtime library - implementations are compiled into kernels
+- Your host application only links against `libOpenCL.so`
 
-### Why You Don't Need to Install libclc Separately
+Different OpenCL implementations handle built-in functions differently:
 
-You might wonder: "Why can I build and run these examples without installing libclc?"
+- **Mesa Rusticl**: Uses libclc-based implementations
+- **NVIDIA**: Proprietary implementations in CUDA drivers
+- **AMD ROCm**: Proprietary implementations in ROCm drivers
+- **PoCL**: Ships with pre-compiled LLVM bitcode (`/usr/share/pocl/kernel-*.bc`)
 
-The answer is that **OpenCL runtimes provide their own implementations of built-in functions**:
+You don't need to install libclc separately - the OpenCL runtime you install includes everything needed to compile kernels with built-in functions.
 
-1. **Build time (CMake)**: Your host application only needs:
-   - OpenCL headers (the API declarations)
-   - OpenCL ICD Loader library (`libOpenCL.so`)
-   - No libclc required!
+## Function Categories
 
-2. **Runtime (kernel compilation)**: When `clBuildProgram()` runs, the OpenCL implementation provides built-in function implementations. Different vendors do this differently:
+### Math Functions (51 functions)
+- **Trigonometric**: sin, cos, tan, asin, acos, atan, atan2
+- **Hyperbolic**: sinh, cosh, tanh, asinh, acosh, atanh
+- **Exponential/Log**: exp, exp2, exp10, expm1, log, log2, log10, log1p
+- **Power**: pow, pown, powr, sqrt, cbrt, rsqrt
+- **Rounding**: ceil, floor, round, rint, trunc
+- **Other**: fabs, fmax, fmin, fmod, remainder, fma, hypot, erf, erfc, tgamma, lgamma
+- **Native variants**: native_exp, native_exp2, native_exp10, native_log, native_log2, native_log10, native_sqrt, native_rsqrt
 
-   - **PoCL** (CPU runtime): Ships with pre-compiled LLVM bitcode files (`/usr/share/pocl/kernel-*.bc`, ~6MB each) containing implementations of all OpenCL built-in functions (based on libclc). These are automatically linked with your kernel during compilation.
+### Geometric Functions (23 functions)
+- **Dot product**: dot (float2/3/4)
+- **Cross product**: cross (float3/4)
+- **Distance**: distance (float2/3/4), fast_distance (float2/3/4)
+- **Length**: length (float2/3/4), fast_length (float2/3/4)
+- **Normalize**: normalize (float2/3/4), fast_normalize (float2/3/4)
 
-   - **NVIDIA**: CUDA toolkit includes proprietary built-in function implementations in the driver's compiler.
+### Common Functions (12 functions)
+- clamp, degrees, radians, max, min, mix, step, smoothstep, sign
+- Vector variants: clamp_float2, max_float2, min_float2
 
-   - **AMD ROCm**: Similarly bundles built-in function implementations with the driver.
+### Integer Functions (21 functions)
+- **Arithmetic**: abs, add_sat, sub_sat, mad_sat, hadd, rhadd
+- **Bit operations**: clz, ctz, popcount, rotate
+- **Multiply**: mul24, mad24, mul_hi, mad_hi
+- **Min/Max**: max, min
+- **Difference**: abs_diff
+- Unsigned variants: add_sat_uint, abs_diff_uint, max_uint, min_uint
 
-   - **Mesa Rusticl**: Uses libclc-based implementations for built-in functions.
+### Relational Functions (22 functions)
+- **Comparisons**: isequal, isnotequal, isgreater, isgreaterequal, isless, islessequal, islessgreater
+- **Classification**: isfinite, isinf, isnan, isnormal, signbit
+- **Ordering**: isordered, isunordered
+- **Vector tests**: any (int2/4), all (int2/4)
+- **Selection**: select (float/int), bitselect (float/int)
 
-3. **The role of libclc**: While libclc is the open-source reference implementation used by many OpenCL compilers, vendors can provide their own implementations. All implementations must conform to the OpenCL C Specification. You only need to install libclc separately if you're developing an OpenCL compiler itself.
+## Contributing
 
-You can verify how PoCL provides built-in functions on a system with PoCL installed:
-```bash
-$ rpm -ql pocl | grep "\.bc$"
-/usr/share/pocl/kernel-x86_64-redhat-linux-gnu-avx2.bc
-/usr/share/pocl/kernel-x86_64-redhat-linux-gnu-sse2.bc
-# ... more architecture-specific bitcode files
+To add tests for additional OpenCL built-in functions:
 
-$ llvm-dis /usr/share/pocl/kernel-*.bc -o - | grep "define.*sqrt"
-# Shows sqrt() implementations in LLVM IR (based on libclc)
-```
+1. Create kernel implementations in appropriate `kernels/*_kernel.cl` file
+2. Add test data to corresponding `test_data/*.json` file, or
+3. Create a Python generator script in `create_*_test_data.py`
+4. Run `python3 generate_tests.py` to regenerate test code
+5. Add function declarations and calls in `src/test_all_opencl_functions.cpp`
+6. Rebuild and test
 
-**Bottom line**: The OpenCL runtime you install (PoCL, NVIDIA drivers, AMD ROCm, Mesa Rusticl, etc.) includes everything needed to compile kernels with OpenCL C built-in functions as defined by the specification. libclc is used internally by some implementations, but you don't need to install it separately.
+## License
+
+This project is provided as educational material for learning OpenCL programming.
+
+## References
+
+- [OpenCL C 3.0 Specification](https://registry.khronos.org/OpenCL/specs/3.0-unified/html/OpenCL_C.html)
+- [Mesa Rusticl Documentation](https://docs.mesa3d.org/rusticl.html)
+- [libclc Project](https://libclc.llvm.org/)
+- [Khronos OpenCL Registry](https://www.khronos.org/registry/OpenCL/)

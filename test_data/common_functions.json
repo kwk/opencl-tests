@@ -1,0 +1,1264 @@
+{
+  "category": "common_functions",
+  "kernel_file": "kernels/common_functions.cl",
+  "functions": [
+    {
+      "name": "clamp_float",
+      "kernel_name": "test_clamp_float",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 3,
+      "tests": [
+        {
+          "inputs": [
+            0.5,
+            0.0,
+            1.0
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            -0.5,
+            0.0,
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.5,
+            0.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            5.0,
+            0.0,
+            10.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            -5.0,
+            0.0,
+            10.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            15.0,
+            0.0,
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            7.0,
+            5.0,
+            10.0
+          ],
+          "expected": 7.0
+        },
+        {
+          "inputs": [
+            3.0,
+            5.0,
+            10.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            12.0,
+            5.0,
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            0.0,
+            -1.0,
+            1.0
+          ],
+          "expected": 0.0
+        }
+      ]
+    },
+    {
+      "name": "degrees",
+      "kernel_name": "test_degrees",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            3.14159265359
+          ],
+          "expected": 180.0
+        },
+        {
+          "inputs": [
+            1.57079632679
+          ],
+          "expected": 90.0
+        },
+        {
+          "inputs": [
+            6.28318530718
+          ],
+          "expected": 360.0
+        },
+        {
+          "inputs": [
+            0.7853981634
+          ],
+          "expected": 45.0
+        },
+        {
+          "inputs": [
+            -3.14159265359
+          ],
+          "expected": -180.0
+        },
+        {
+          "inputs": [
+            -1.57079632679
+          ],
+          "expected": -90.0
+        },
+        {
+          "inputs": [
+            0.52359877559
+          ],
+          "expected": 30.0
+        },
+        {
+          "inputs": [
+            1.0471975512
+          ],
+          "expected": 60.0
+        },
+        {
+          "inputs": [
+            0.2617993878
+          ],
+          "expected": 15.0
+        }
+      ]
+    },
+    {
+      "name": "radians",
+      "kernel_name": "test_radians",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            180.0
+          ],
+          "expected": 3.14159265359
+        },
+        {
+          "inputs": [
+            90.0
+          ],
+          "expected": 1.57079632679
+        },
+        {
+          "inputs": [
+            360.0
+          ],
+          "expected": 6.28318530718
+        },
+        {
+          "inputs": [
+            45.0
+          ],
+          "expected": 0.7853981634
+        },
+        {
+          "inputs": [
+            -180.0
+          ],
+          "expected": -3.14159265359
+        },
+        {
+          "inputs": [
+            -90.0
+          ],
+          "expected": -1.57079632679
+        },
+        {
+          "inputs": [
+            30.0
+          ],
+          "expected": 0.52359877559
+        },
+        {
+          "inputs": [
+            60.0
+          ],
+          "expected": 1.0471975512
+        },
+        {
+          "inputs": [
+            15.0
+          ],
+          "expected": 0.2617993878
+        }
+      ]
+    },
+    {
+      "name": "max_float",
+      "kernel_name": "test_max_float",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            2.0,
+            1.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            5.0,
+            5.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.0,
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -5.0,
+            -3.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            10.0,
+            100.0
+          ],
+          "expected": 100.0
+        },
+        {
+          "inputs": [
+            3.14,
+            2.71
+          ],
+          "expected": 3.14
+        },
+        {
+          "inputs": [
+            -10.0,
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            0.5,
+            0.25
+          ],
+          "expected": 0.5
+        }
+      ]
+    },
+    {
+      "name": "min_float",
+      "kernel_name": "test_min_float",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            2.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            5.0,
+            5.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.0,
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -5.0,
+            -3.0
+          ],
+          "expected": -5.0
+        },
+        {
+          "inputs": [
+            10.0,
+            100.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            3.14,
+            2.71
+          ],
+          "expected": 2.71
+        },
+        {
+          "inputs": [
+            -10.0,
+            10.0
+          ],
+          "expected": -10.0
+        },
+        {
+          "inputs": [
+            0.5,
+            0.25
+          ],
+          "expected": 0.25
+        }
+      ]
+    },
+    {
+      "name": "mix",
+      "kernel_name": "test_mix",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 3,
+      "tests": [
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            1.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            0.5
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            0.25
+          ],
+          "expected": 2.5
+        },
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            0.75
+          ],
+          "expected": 7.5
+        },
+        {
+          "inputs": [
+            5.0,
+            15.0,
+            0.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            5.0,
+            15.0,
+            1.0
+          ],
+          "expected": 15.0
+        },
+        {
+          "inputs": [
+            5.0,
+            15.0,
+            0.5
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -10.0,
+            10.0,
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0,
+            8.0,
+            0.333333
+          ],
+          "expected": 4.0
+        }
+      ]
+    },
+    {
+      "name": "step",
+      "kernel_name": "test_step",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            0.0,
+            -1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.0,
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            5.0,
+            3.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            5.0,
+            5.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            5.0,
+            7.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -5.0,
+            -10.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -5.0,
+            -5.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -5.0,
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0,
+            0.999999
+          ],
+          "expected": 0.0
+        }
+      ]
+    },
+    {
+      "name": "smoothstep",
+      "kernel_name": "test_smoothstep",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 3,
+      "tests": [
+        {
+          "inputs": [
+            0.0,
+            1.0,
+            -1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.0,
+            1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.0,
+            1.0,
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.0,
+            1.0,
+            0.5
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            5.0
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            2.5
+          ],
+          "expected": 0.15625
+        },
+        {
+          "inputs": [
+            0.0,
+            10.0,
+            7.5
+          ],
+          "expected": 0.84375
+        },
+        {
+          "inputs": [
+            5.0,
+            10.0,
+            7.5
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            -5.0,
+            5.0,
+            0.0
+          ],
+          "expected": 0.5
+        }
+      ]
+    },
+    {
+      "name": "sign",
+      "kernel_name": "test_sign",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            5.5
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -5.5
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -100.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            1e-05
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1e-05
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            999999.9
+          ],
+          "expected": 1.0
+        }
+      ]
+    },
+    {
+      "name": "clamp_float2",
+      "kernel_name": "test_clamp_float2",
+      "input_type": "float2",
+      "output_type": "float2",
+      "num_inputs": 3,
+      "tests": [
+        {
+          "inputs": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "expected": [
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -0.5,
+              -0.5
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "expected": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              1.5,
+              1.5
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "expected": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              0.2,
+              0.8
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "expected": [
+            0.2,
+            0.8
+          ]
+        },
+        {
+          "inputs": [
+            [
+              5.0,
+              15.0
+            ],
+            [
+              0.0,
+              10.0
+            ],
+            [
+              10.0,
+              20.0
+            ]
+          ],
+          "expected": [
+            5.0,
+            15.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -5.0,
+              5.0
+            ],
+            [
+              0.0,
+              10.0
+            ],
+            [
+              10.0,
+              20.0
+            ]
+          ],
+          "expected": [
+            0.0,
+            10.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              15.0,
+              25.0
+            ],
+            [
+              0.0,
+              10.0
+            ],
+            [
+              10.0,
+              20.0
+            ]
+          ],
+          "expected": [
+            10.0,
+            20.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              3.0,
+              7.0
+            ],
+            [
+              5.0,
+              5.0
+            ],
+            [
+              10.0,
+              10.0
+            ]
+          ],
+          "expected": [
+            5.0,
+            7.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              12.0,
+              12.0
+            ],
+            [
+              5.0,
+              5.0
+            ],
+            [
+              10.0,
+              10.0
+            ]
+          ],
+          "expected": [
+            10.0,
+            10.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              0.0,
+              0.5
+            ],
+            [
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          "expected": [
+            0.0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "name": "max_float2",
+      "kernel_name": "test_max_float2",
+      "input_type": "float2",
+      "output_type": "float2",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            [
+              1.0,
+              2.0
+            ],
+            [
+              2.0,
+              1.0
+            ]
+          ],
+          "expected": [
+            2.0,
+            2.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              2.0,
+              1.0
+            ],
+            [
+              1.0,
+              2.0
+            ]
+          ],
+          "expected": [
+            2.0,
+            2.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              5.0,
+              5.0
+            ],
+            [
+              5.0,
+              5.0
+            ]
+          ],
+          "expected": [
+            5.0,
+            5.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -1.0,
+              1.0
+            ],
+            [
+              1.0,
+              -1.0
+            ]
+          ],
+          "expected": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "expected": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -5.0,
+              -3.0
+            ],
+            [
+              -3.0,
+              -5.0
+            ]
+          ],
+          "expected": [
+            -3.0,
+            -3.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              10.0,
+              100.0
+            ],
+            [
+              100.0,
+              10.0
+            ]
+          ],
+          "expected": [
+            100.0,
+            100.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              3.14,
+              2.71
+            ],
+            [
+              2.71,
+              3.14
+            ]
+          ],
+          "expected": [
+            3.14,
+            3.14
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -10.0,
+              10.0
+            ],
+            [
+              10.0,
+              -10.0
+            ]
+          ],
+          "expected": [
+            10.0,
+            10.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ]
+          ],
+          "expected": [
+            0.5,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "name": "min_float2",
+      "kernel_name": "test_min_float2",
+      "input_type": "float2",
+      "output_type": "float2",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            [
+              1.0,
+              2.0
+            ],
+            [
+              2.0,
+              1.0
+            ]
+          ],
+          "expected": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              2.0,
+              1.0
+            ],
+            [
+              1.0,
+              2.0
+            ]
+          ],
+          "expected": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              5.0,
+              5.0
+            ],
+            [
+              5.0,
+              5.0
+            ]
+          ],
+          "expected": [
+            5.0,
+            5.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -1.0,
+              1.0
+            ],
+            [
+              1.0,
+              -1.0
+            ]
+          ],
+          "expected": [
+            -1.0,
+            -1.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "expected": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -5.0,
+              -3.0
+            ],
+            [
+              -3.0,
+              -5.0
+            ]
+          ],
+          "expected": [
+            -5.0,
+            -5.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              10.0,
+              100.0
+            ],
+            [
+              100.0,
+              10.0
+            ]
+          ],
+          "expected": [
+            10.0,
+            10.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              3.14,
+              2.71
+            ],
+            [
+              2.71,
+              3.14
+            ]
+          ],
+          "expected": [
+            2.71,
+            2.71
+          ]
+        },
+        {
+          "inputs": [
+            [
+              -10.0,
+              10.0
+            ],
+            [
+              10.0,
+              -10.0
+            ]
+          ],
+          "expected": [
+            -10.0,
+            -10.0
+          ]
+        },
+        {
+          "inputs": [
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ]
+          ],
+          "expected": [
+            0.25,
+            0.25
+          ]
+        }
+      ]
+    }
+  ]
+}

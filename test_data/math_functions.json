@@ -1,0 +1,3635 @@
+{
+  "category": "math_functions",
+  "kernel_file": "kernels/math_functions.cl",
+  "functions": [
+    {
+      "name": "sqrt",
+      "kernel_name": "test_sqrt",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            4.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            9.0
+          ],
+          "expected": 3.0
+        },
+        {
+          "inputs": [
+            16.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            25.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            36.0
+          ],
+          "expected": 6.0
+        },
+        {
+          "inputs": [
+            49.0
+          ],
+          "expected": 7.0
+        },
+        {
+          "inputs": [
+            64.0
+          ],
+          "expected": 8.0
+        },
+        {
+          "inputs": [
+            81.0
+          ],
+          "expected": 9.0
+        }
+      ]
+    },
+    {
+      "name": "sin",
+      "kernel_name": "test_sin",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.5235987756
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            0.7853981634
+          ],
+          "expected": 0.7071067812
+        },
+        {
+          "inputs": [
+            1.0471975512
+          ],
+          "expected": 0.8660254038
+        },
+        {
+          "inputs": [
+            1.5707963268
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            3.1415926536
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            4.7123889804
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            6.2831853072
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.5707963268
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            -3.1415926536
+          ],
+          "expected": 0.0
+        }
+      ]
+    },
+    {
+      "name": "cos",
+      "kernel_name": "test_cos",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5235987756
+          ],
+          "expected": 0.8660254038
+        },
+        {
+          "inputs": [
+            0.7853981634
+          ],
+          "expected": 0.7071067812
+        },
+        {
+          "inputs": [
+            1.0471975512
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            1.5707963268
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            3.1415926536
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            4.7123889804
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            6.2831853072
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.5707963268
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -3.1415926536
+          ],
+          "expected": -1.0
+        }
+      ]
+    },
+    {
+      "name": "tan",
+      "kernel_name": "test_tan",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.7853981634
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.463647609
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            1.1071487178
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -0.7853981634
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.3217505544
+          ],
+          "expected": 0.333333333
+        },
+        {
+          "inputs": [
+            1.2490457724
+          ],
+          "expected": 3.0
+        },
+        {
+          "inputs": [
+            1.3734008
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            -0.463647609
+          ],
+          "expected": -0.5
+        },
+        {
+          "inputs": [
+            0.19739555984988078
+          ],
+          "expected": 0.2
+        }
+      ]
+    },
+    {
+      "name": "asin",
+      "kernel_name": "test_asin",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5235987756
+        },
+        {
+          "inputs": [
+            0.7071067812
+          ],
+          "expected": 0.7853981634
+        },
+        {
+          "inputs": [
+            0.8660254038
+          ],
+          "expected": 1.0471975512
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.5707963268
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.5235987756
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.5707963268
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": 0.2526802551
+        },
+        {
+          "inputs": [
+            0.75
+          ],
+          "expected": 0.8480620789
+        },
+        {
+          "inputs": [
+            0.3
+          ],
+          "expected": 0.304692654
+        }
+      ]
+    },
+    {
+      "name": "acos",
+      "kernel_name": "test_acos",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.8660254038
+          ],
+          "expected": 0.5235987756
+        },
+        {
+          "inputs": [
+            0.7071067812
+          ],
+          "expected": 0.7853981634
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.0471975512
+        },
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.5707963268
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 3.1415926536
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": 1.3181160716
+        },
+        {
+          "inputs": [
+            0.75
+          ],
+          "expected": 0.7227342478
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 2.0943951024
+        },
+        {
+          "inputs": [
+            0.9
+          ],
+          "expected": 0.4510268118
+        }
+      ]
+    },
+    {
+      "name": "atan",
+      "kernel_name": "test_atan",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.7853981634
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.1071487178
+        },
+        {
+          "inputs": [
+            3.0
+          ],
+          "expected": 1.2490457724
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -0.7853981634
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.463647609
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1.4711276743
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -1.1071487178
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 0.0996686525
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.5607966601
+        }
+      ]
+    },
+    {
+      "name": "exp",
+      "kernel_name": "test_exp",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 2.7182818285
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 7.3890560989
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.3678794412
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.6487212707
+        },
+        {
+          "inputs": [
+            3.0
+          ],
+          "expected": 20.0855369232
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.1353352832
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 1.1051709181
+        },
+        {
+          "inputs": [
+            4.0
+          ],
+          "expected": 54.5981500331
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.6065306597
+        }
+      ]
+    },
+    {
+      "name": "log",
+      "kernel_name": "test_log",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.7182818285
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            7.3890560989
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.6931471806
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.302585093
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -0.6931471806
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 4.605170186
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": -2.302585093
+        },
+        {
+          "inputs": [
+            5.0
+          ],
+          "expected": 1.6094379124
+        },
+        {
+          "inputs": [
+            0.01
+          ],
+          "expected": -4.605170186
+        }
+      ]
+    },
+    {
+      "name": "pow",
+      "kernel_name": "test_pow",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 8.0
+        },
+        {
+          "inputs": [
+            3.0,
+            2.0
+          ],
+          "expected": 9.0
+        },
+        {
+          "inputs": [
+            10.0,
+            2.0
+          ],
+          "expected": 100.0
+        },
+        {
+          "inputs": [
+            2.0,
+            10.0
+          ],
+          "expected": 1024.0
+        },
+        {
+          "inputs": [
+            5.0,
+            3.0
+          ],
+          "expected": 125.0
+        },
+        {
+          "inputs": [
+            2.0,
+            0.5
+          ],
+          "expected": 1.4142135624
+        },
+        {
+          "inputs": [
+            4.0,
+            0.5
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            2.0,
+            -1.0
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            10.0,
+            3.0
+          ],
+          "expected": 1000.0
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 81.0
+        }
+      ]
+    },
+    {
+      "name": "atan2",
+      "kernel_name": "test_atan2",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 0.7853981633974483
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 0.5880026035475675
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 1.1902899496825317
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 1.5208379310729538
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 0.6435011087932844
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": -0.7853981633974483
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": 2.356194490192345
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.7853981633974483
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 1.4711276743037347
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 1.1659045405098132
+        }
+      ]
+    },
+    {
+      "name": "sinh",
+      "kernel_name": "test_sinh",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.1752011936438014
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.1752011936438014
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5210953054937474
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.5210953054937474
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 3.626860407847019
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -3.626860407847019
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 11013.232874703393
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -11013.232874703393
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.3440585709080678e+43
+        }
+      ]
+    },
+    {
+      "name": "cosh",
+      "kernel_name": "test_cosh",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.5430806348152437
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 1.5430806348152437
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.1276259652063807
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 1.1276259652063807
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 3.7621956910836314
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 3.7621956910836314
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 11013.232920103324
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 11013.232920103324
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.3440585709080678e+43
+        }
+      ]
+    },
+    {
+      "name": "tanh",
+      "kernel_name": "test_tanh",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.7615941559557649
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -0.7615941559557649
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.46211715726000974
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.46211715726000974
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.9640275800758169
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -0.9640275800758169
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 0.9999999958776927
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -0.9999999958776927
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.0
+        }
+      ]
+    },
+    {
+      "name": "asinh",
+      "kernel_name": "test_asinh",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.881373587019543
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -0.881373587019543
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.48121182505960347
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.48121182505960347
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.4436354751788103
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -1.4436354751788103
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.99822295029797
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -2.99822295029797
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 5.298342365610589
+        }
+      ]
+    },
+    {
+      "name": "acosh",
+      "kernel_name": "test_acosh",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.3169578969248166
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.993222846126381
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 5.298292365610484
+        }
+      ]
+    },
+    {
+      "name": "atanh",
+      "kernel_name": "test_atanh",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 2.6466524123622457
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -2.6466524123622457
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5493061443340548
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.5493061443340548
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 2.6466524123622457
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -2.6466524123622457
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.6466524123622457
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -2.6466524123622457
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 2.6466524123622457
+        }
+      ]
+    },
+    {
+      "name": "exp2",
+      "kernel_name": "test_exp2",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.25
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1024.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 0.0009765625
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.2676506002282294e+30
+        }
+      ]
+    },
+    {
+      "name": "exp10",
+      "kernel_name": "test_exp10",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.1
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 3.1622776601683795
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.31622776601683794
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 100.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.01
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10000000000.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 1e-10
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1e+100
+        }
+      ]
+    },
+    {
+      "name": "expm1",
+      "kernel_name": "test_expm1",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.718281828459045
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -0.6321205588285577
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.6487212707001282
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.3934693402873666
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 6.38905609893065
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -0.8646647167633873
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 22025.465794806718
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -0.9999546000702375
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 2.6881171418161356e+43
+        }
+      ]
+    },
+    {
+      "name": "log2",
+      "kernel_name": "test_log2",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 3.321928094887362
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 6.643856189774724
+        }
+      ]
+    },
+    {
+      "name": "log10",
+      "kernel_name": "test_log10",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -0.3010299956639812
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.3010299956639812
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 2.0
+        }
+      ]
+    },
+    {
+      "name": "log1p",
+      "kernel_name": "test_log1p",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.6931471805599453
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -4.60517018598809
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.4054651081081644
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.6931471805599453
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.0986122886681096
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -4.60517018598809
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.3978952727983707
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -4.60517018598809
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 4.61512051684126
+        }
+      ]
+    },
+    {
+      "name": "cbrt",
+      "kernel_name": "test_cbrt",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.7937005259840998
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.7937005259840998
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.2599210498948732
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -1.2599210498948732
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.154434690031884
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -2.154434690031884
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 4.641588833612778
+        }
+      ]
+    },
+    {
+      "name": "rsqrt",
+      "kernel_name": "test_rsqrt",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.414213562373095
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.7071067811865475
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 0.31622776601683794
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 0.1
+        }
+      ]
+    },
+    {
+      "name": "pown",
+      "kernel_name": "test_pown",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 8.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 25.0
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 3.1622776601683795
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 81.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 1e+20
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 343.0
+        }
+      ]
+    },
+    {
+      "name": "powr",
+      "kernel_name": "test_powr",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 8.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 25.0
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 3.1622776601683795
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 81.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": 0.001
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 1e+20
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 343.0
+        }
+      ]
+    },
+    {
+      "name": "ceil",
+      "kernel_name": "test_ceil",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -2.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -10.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 100.0
+        }
+      ]
+    },
+    {
+      "name": "floor",
+      "kernel_name": "test_floor",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -2.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -10.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 100.0
+        }
+      ]
+    },
+    {
+      "name": "trunc",
+      "kernel_name": "test_trunc",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -2.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -10.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 100.0
+        }
+      ]
+    },
+    {
+      "name": "round",
+      "kernel_name": "test_round",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -2.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -10.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 100.0
+        }
+      ]
+    },
+    {
+      "name": "rint",
+      "kernel_name": "test_rint",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -2.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -10.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 100.0
+        }
+      ]
+    },
+    {
+      "name": "fmod",
+      "kernel_name": "test_fmod",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 3.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": -0.0
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": 0.09999999999999995
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 1.0
+        }
+      ]
+    },
+    {
+      "name": "remainder",
+      "kernel_name": "test_remainder",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": -0.0
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": -5.551115123125783e-17
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 1.0
+        }
+      ]
+    },
+    {
+      "name": "fabs",
+      "kernel_name": "test_fabs",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 100.0
+        }
+      ]
+    },
+    {
+      "name": "fmax",
+      "kernel_name": "test_fmax",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 3.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 100.0
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 7.0
+        }
+      ]
+    },
+    {
+      "name": "fmin",
+      "kernel_name": "test_fmin",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 3.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 3.0
+        }
+      ]
+    },
+    {
+      "name": "fma",
+      "kernel_name": "test_fma",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 3,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0,
+            4.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0,
+            1.0
+          ],
+          "expected": 11.0
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5,
+            0.1
+          ],
+          "expected": 5.1
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0,
+            5.0
+          ],
+          "expected": 17.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0,
+            0.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0,
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "expected": 0.75
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0,
+            1.0
+          ],
+          "expected": 1001.0
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0,
+            2.0
+          ],
+          "expected": 23.0
+        }
+      ]
+    },
+    {
+      "name": "hypot",
+      "kernel_name": "test_hypot",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            2.0,
+            3.0
+          ],
+          "expected": 3.605551275463989
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 5.385164807134504
+        },
+        {
+          "inputs": [
+            10.0,
+            0.5
+          ],
+          "expected": 10.012492197250394
+        },
+        {
+          "inputs": [
+            3.0,
+            4.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            -1.0,
+            1.0
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            1.0,
+            -1.0
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            0.5,
+            0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 100.4987562112089
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 7.615773105863909
+        }
+      ]
+    },
+    {
+      "name": "erf",
+      "kernel_name": "test_erf",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.8427007929497149
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -0.8427007929497149
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5204998778130465
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.5204998778130465
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.9953222650189527
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -0.9953222650189527
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.0
+        }
+      ]
+    },
+    {
+      "name": "erfc",
+      "kernel_name": "test_erfc",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.15729920705028513
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 1.842700792949715
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.4795001221869535
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 1.5204998778130465
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.004677734981047265
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 1.9953222650189528
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.088487583762545e-45
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 0.0
+        }
+      ]
+    },
+    {
+      "name": "tgamma",
+      "kernel_name": "test_tgamma",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 9.513507698668732
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 9.513507698668732
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.7724538509055159
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 9.513507698668732
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 9.513507698668732
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 362880.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 9.513507698668732
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 9.332621544394415e+155
+        }
+      ]
+    },
+    {
+      "name": "lgamma",
+      "kernel_name": "test_lgamma",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 2.2527126517342055
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 2.2527126517342055
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5723649429247004
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 2.2527126517342055
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 2.2527126517342055
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 12.801827480081467
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 2.2527126517342055
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 359.1342053695754
+        }
+      ]
+    },
+    {
+      "name": "native_exp",
+      "kernel_name": "test_native_exp",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 2.718281828459045
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.36787944117144233
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.6487212707001282
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.6065306597126334
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 7.38905609893065
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.1353352832366127
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 22026.465794806718
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 4.5399929762484854e-05
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 2.6881171418161356e+43
+        }
+      ]
+    },
+    {
+      "name": "native_exp2",
+      "kernel_name": "test_native_exp2",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.25
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1024.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 0.0009765625
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.2676506002282294e+30
+        }
+      ]
+    },
+    {
+      "name": "native_exp10",
+      "kernel_name": "test_native_exp10",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.1
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 3.1622776601683795
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.31622776601683794
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 100.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.01
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10000000000.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 1e-10
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1e+100
+        }
+      ]
+    },
+    {
+      "name": "native_log",
+      "kernel_name": "test_native_log",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": -6.907755278982137
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -6.907755278982137
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -0.6931471805599453
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -6.907755278982137
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.6931471805599453
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -6.907755278982137
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.302585092994046
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -6.907755278982137
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 4.605170185988092
+        }
+      ]
+    },
+    {
+      "name": "native_log2",
+      "kernel_name": "test_native_log2",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 3.321928094887362
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -9.965784284662087
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 6.643856189774724
+        }
+      ]
+    },
+    {
+      "name": "native_log10",
+      "kernel_name": "test_native_log10",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -0.3010299956639812
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.3010299956639812
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -3.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 2.0
+        }
+      ]
+    },
+    {
+      "name": "native_sqrt",
+      "kernel_name": "test_native_sqrt",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 3.1622776601683795
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 10.0
+        }
+      ]
+    },
+    {
+      "name": "native_rsqrt",
+      "kernel_name": "test_native_rsqrt",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.414213562373095
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.7071067811865475
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 0.31622776601683794
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 31.622776601683796
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 0.1
+        }
+      ]
+    }
+  ]
+}

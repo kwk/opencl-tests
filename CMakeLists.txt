@@ -19,25 +19,14 @@ endif()
 
 include_directories(${OpenCL_INCLUDE_DIRS})
 
-# Common kernel file
+# Copy kernel files to build directory
 configure_file(${CMAKE_SOURCE_DIR}/kernel.cl ${CMAKE_BINARY_DIR}/kernel.cl COPYONLY)
+file(COPY ${CMAKE_SOURCE_DIR}/kernels DESTINATION ${CMAKE_BINARY_DIR})
 
-# CPU device binary
-add_executable(hello_opencl_cpu src/hello_opencl_cpu.cpp)
-target_link_libraries(hello_opencl_cpu ${OpenCL_LIBRARIES})
-
-# Nvidia GPU device binary
-add_executable(hello_opencl_nvidia src/hello_opencl_nvidia.cpp)
-target_link_libraries(hello_opencl_nvidia ${OpenCL_LIBRARIES})
-
-# AMD GPU device binary
-add_executable(hello_opencl_amd src/hello_opencl_amd.cpp)
-target_link_libraries(hello_opencl_amd ${OpenCL_LIBRARIES})
-
-# Mesa GPU device binary
+# Mesa GPU device example
 add_executable(hello_opencl_mesa_gpu src/hello_opencl_mesa_gpu.cpp)
 target_link_libraries(hello_opencl_mesa_gpu ${OpenCL_LIBRARIES})
 
-# Mesa CPU device binary
-add_executable(hello_opencl_mesa_cpu src/hello_opencl_mesa_cpu.cpp)
-target_link_libraries(hello_opencl_mesa_cpu ${OpenCL_LIBRARIES})
+# Comprehensive OpenCL built-in functions test suite
+add_executable(test_all_opencl_functions src/test_all_opencl_functions.cpp)
+target_link_libraries(test_all_opencl_functions ${OpenCL_LIBRARIES})
