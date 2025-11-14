@@ -20,7 +20,6 @@ endif()
 include_directories(${OpenCL_INCLUDE_DIRS})
 
 # Copy kernel files to build directory
-configure_file(${CMAKE_SOURCE_DIR}/kernel.cl ${CMAKE_BINARY_DIR}/kernel.cl COPYONLY)
 file(COPY ${CMAKE_SOURCE_DIR}/kernels DESTINATION ${CMAKE_BINARY_DIR})
 
 # Find Python 3 for code generation
@@ -42,10 +41,6 @@ add_custom_command(
 
 # Create a custom target for the generated file
 add_custom_target(generate_tests DEPENDS ${GENERATED_TESTS_FILE})
-
-# Mesa GPU device example
-add_executable(hello_opencl_mesa_gpu src/hello_opencl_mesa_gpu.cpp)
-target_link_libraries(hello_opencl_mesa_gpu ${OpenCL_LIBRARIES})
 
 # Comprehensive OpenCL built-in functions test suite
 # Note: generated_tests.cpp is included via #include in test_all_opencl_functions.cpp,

@@ -16,7 +16,6 @@ This project tests **128 OpenCL built-in functions** with **1,280 test cases** a
 ```
 opencl-examples/
 ├── CMakeLists.txt
-├── kernel.cl                       # Simple hello world kernel
 ├── kernels/                        # Test kernels for all built-in functions
 │   ├── common_functions_kernel.cl
 │   ├── geometric_functions_kernel.cl
@@ -30,7 +29,6 @@ opencl-examples/
 │   ├── math_functions.json
 │   └── relational_functions.json
 ├── src/
-│   ├── hello_opencl_mesa_gpu.cpp           # Simple Mesa GPU example
 │   ├── test_all_opencl_functions.cpp       # Comprehensive test runner
 │   └── generated_tests.cpp                 # Auto-generated test code (11,000+ lines)
 ├── generate_tests.py               # Code generator (JSON → C++)
@@ -38,9 +36,6 @@ opencl-examples/
 ```
 
 ## Features
-
-### Simple Example
-- **hello_opencl_mesa_gpu**: Basic OpenCL example using Mesa GPU (Rusticl) with the `sqrt()` function
 
 ### Comprehensive Test Suite
 - **test_all_opencl_functions**: Tests 129 OpenCL built-in functions with 1,290 test cases
@@ -107,45 +102,9 @@ cmake ..
 make
 ```
 
-This builds two executables:
-- `hello_opencl_mesa_gpu` - Simple Mesa GPU example
-- `test_all_opencl_functions` - Comprehensive test suite
+This builds the test suite executable: `test_all_opencl_functions`
 
 ## Running
-
-### Simple Example
-
-From the build directory:
-
-```bash
-RUSTICL_ENABLE=iris ./hello_opencl_mesa_gpu
-```
-
-Expected output:
-```
-OpenCL Hello World - Mesa GPU Device
-Platform 0: rusticl (Mesa/X.org)
-Selected Mesa platform: rusticl
-Using device: Mesa Intel(R) UHD Graphics (TGL GT1)
-Device vendor: Intel
-Device type: GPU
-
-Results (using Mesa OpenCL sqrt function):
-sqrt(0) = 0 (expected: 0)
-sqrt(1) = 1 (expected: 1)
-sqrt(4) = 2 (expected: 2)
-sqrt(9) = 3 (expected: 3)
-sqrt(16) = 4 (expected: 4)
-sqrt(25) = 5 (expected: 5)
-sqrt(36) = 6 (expected: 6)
-sqrt(49) = 7 (expected: 7)
-sqrt(64) = 8 (expected: 8)
-sqrt(81) = 9 (expected: 9)
-
-Success!
-```
-
-### Comprehensive Test Suite
 
 From the build directory:
 
