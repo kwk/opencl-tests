@@ -2,13 +2,14 @@
 
 This document tracks OpenCL C built-in functions not yet covered by the test suite.
 
-## Currently Tested Categories (129 functions, 1,277 tests, 100% passing ✅)
+## Currently Tested Categories (131 functions, 1,297 tests, 100% passing ✅)
 
 ✅ **Math Functions** (51 functions)
 ✅ **Geometric Functions** (23 functions)
 ✅ **Common Functions** (12 functions)
 ✅ **Integer Functions** (21 functions)
 ✅ **Relational Functions** (22 functions)
+✅ **Vector Miscellaneous Functions** (2 functions)
 
 ## Missing Categories
 
@@ -89,17 +90,15 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ---
 
-### 5. Miscellaneous Vector Functions ✅ Can Be Added
+### 5. Miscellaneous Vector Functions ✅ COMPLETED
 
 **Functions:**
-- `shuffle(x, mask)` - Shuffle vector elements
-- `shuffle2(x, y, mask)` - Shuffle two vectors
+- ✅ `shuffle(x, mask)` - Shuffle vector elements (IMPLEMENTED)
+- ✅ `shuffle2(x, y, mask)` - Shuffle two vectors (IMPLEMENTED)
 
-**Testability:** ✅ Can be tested
-- Standard vector operations
-- Similar to existing geometric/relational tests
-
-**Priority:** High - Easy to add, useful functions
+**Status:** ✅ Completed - 2 functions with 20 test cases, all passing
+- Implemented shuffle_float4 and shuffle2_float4
+- Tests cover identity, reverse, rotation, interleaving, and custom patterns
 
 ---
 
@@ -157,9 +156,9 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ### High Priority - Should Add
 
-1. **Shuffle Functions** - Easy to implement, useful operations
-   - Add to new `vector_misc_functions` category
-   - ~10-20 additional tests
+1. ✅ ~~**Shuffle Functions**~~ - COMPLETED
+   - ✅ Implemented in `vector_misc_functions` category
+   - ✅ Added 20 test cases, all passing
 
 ### Medium Priority - Could Add
 
@@ -182,9 +181,9 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 
 ## Current Test Coverage
 
-**Total Functions Tested:** 129 functions
-**Total Test Cases:** 1,277 tests
-**Test Pass Rate:** 100% ✅ (1277/1277 passing)
+**Total Functions Tested:** 131 functions
+**Total Test Cases:** 1,297 tests
+**Test Pass Rate:** 100% ✅ (1297/1297 passing)
 **Estimated Missing (Testable):** ~60-80 functions
 **Estimated Missing (Not Testable):** ~30-40 functions
 
@@ -193,6 +192,7 @@ This document tracks OpenCL C built-in functions not yet covered by the test sui
 ## Recent Improvements (Achieved 100% Pass Rate)
 
 The test suite has been extensively validated and improved:
+- ✅ **Shuffle Functions** (Jan 2025) - Added shuffle() and shuffle2() for vector element rearrangement
 - Fixed vector relational functions (`any()`, `all()`) to properly check MSB
 - Implemented hybrid tolerance for float comparison (absolute + relative)
 - Added domain validation to prevent overflow and invalid inputs
