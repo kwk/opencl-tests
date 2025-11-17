@@ -27,6 +27,8 @@ def get_c_type(opencl_type):
         "float16": "cl_float16",
         "int": "int",
         "uint": "unsigned int",
+        "long": "long",
+        "ulong": "unsigned long",
         "float": "float",
     }
     return type_map.get(opencl_type, opencl_type)
@@ -38,8 +40,19 @@ def is_vector_type(type_name):
 
 
 def is_int_type(type_name):
-    """Check if type is an integer type"""
-    return "int" in type_name
+    """Check if type is an integer type (not float/double)"""
+    # Floating point base types
+    float_bases = ["float", "double", "half"]
+    # Integer base types
+    int_bases = ["char", "uchar", "short", "ushort", "int", "uint", "long", "ulong", "bool"]
+
+    # Check if type matches any integer base (with or without vector suffix)
+    for int_base in int_bases:
+        if type_name == int_base or type_name.startswith(int_base):
+            # Make sure it's not a substring match (e.g., "long" in "long double")
+            if len(type_name) == len(int_base) or type_name[len(int_base) :].isdigit():
+                return True
+    return False
 
 
 def format_vector_value(value_list, type_name):
@@ -112,8 +125,8 @@ def generate_function_test(func_data, category):
     else:
         # Standard handling
         for i in range(num_inputs):
-            # Special case: select and pown functions have int as last parameter
-            if ("select" in name or name == "pown") and i == num_inputs - 1:
+            # Special case: select, pown, ldexp, rootn functions have int as last parameter
+            if ("select" in name or name in ["pown", "ldexp", "rootn"]) and i == num_inputs - 1:
                 code.append(f"    int input{i}[NUM_TESTS];")
             # Special case: shuffle functions have uint4 mask as last parameter(s)
             elif "shuffle" in name and i >= num_inputs - 1:
@@ -181,8 +194,10 @@ def generate_function_test(func_data, category):
             # Scalar inputs
             for input_idx in range(num_inputs):
                 value = inputs[input_idx] if num_inputs > 1 else inputs[0]
-                # Special case: select and pown functions have int as last parameter
-                if ("select" in name or name == "pown") and input_idx == num_inputs - 1:
+                # Special case: select, pown, ldexp, rootn functions have int as last parameter
+                if (
+                    "select" in name or name in ["pown", "ldexp", "rootn"]
+                ) and input_idx == num_inputs - 1:
                     formatted = str(int(value))
                 else:
                     formatted = format_scalar_value(value, input_type)
@@ -257,8 +272,8 @@ def generate_function_test(func_data, category):
     else:
         # Standard buffer creation
         for i in range(num_inputs):
-            # Special case: select and pown functions have int as last parameter
-            if ("select" in name or name == "pown") and i == num_inputs - 1:
+            # Special case: select, pown, ldexp, rootn functions have int as last parameter
+            if ("select" in name or name in ["pown", "ldexp", "rootn"]) and i == num_inputs - 1:
                 buffer_type = "int"
             # Special case: shuffle functions have uint4 mask as last parameter(s)
             elif "shuffle" in name and i >= num_inputs - 1:

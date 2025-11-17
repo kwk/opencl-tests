@@ -133,6 +133,70 @@ MATH_FUNCTIONS = {
         "test_fn": lambda x: 1 / math.sqrt(x),
         "valid_range": lambda x: x > 0.0,
     },
+    # Pi variants (Phase 1 - easy additions)
+    "acospi": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.acos(x) / math.pi,
+        "valid_range": lambda x: -1.0 <= x <= 1.0,  # Domain restriction for acos
+    },
+    "asinpi": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.asin(x) / math.pi,
+        "valid_range": lambda x: -1.0 <= x <= 1.0,  # Domain restriction for asin
+    },
+    "atanpi": {"inputs": 1, "type": "float", "test_fn": lambda x: math.atan(x) / math.pi},
+    "atan2pi": {"inputs": 2, "type": "float", "test_fn": lambda y, x: math.atan2(y, x) / math.pi},
+    "cospi": {"inputs": 1, "type": "float", "test_fn": lambda x: math.cos(x * math.pi)},
+    "sinpi": {"inputs": 1, "type": "float", "test_fn": lambda x: math.sin(x * math.pi)},
+    "tanpi": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.tan(x * math.pi),
+        "valid_range": lambda x: abs(x - 0.5) > 0.01
+        and abs(x + 0.5) > 0.01,  # Avoid singularity at ±π/2
+    },
+    # Math other functions (Phase 1)
+    "copysign": {"inputs": 2, "type": "float", "test_fn": lambda x, y: math.copysign(x, y)},
+    "fdim": {"inputs": 2, "type": "float", "test_fn": lambda x, y: max(x - y, 0.0)},
+    "fract": {"inputs": 1, "type": "float", "test_fn": lambda x: x - math.floor(x)},
+    "ilogb": {
+        "inputs": 1,
+        "type": "float",
+        "output_type": "int",  # ilogb returns int, not float
+        "test_fn": lambda x: int(math.floor(math.log2(abs(x)))) if x != 0 else -2147483648,
+        "valid_range": lambda x: x != 0.0,
+    },
+    "ldexp": {"inputs": 2, "types": ["float", "int"], "test_fn": lambda x, n: x * (2 ** int(n))},
+    "logb": {
+        "inputs": 1,
+        "type": "float",
+        "test_fn": lambda x: math.floor(math.log2(abs(x))),
+        "valid_range": lambda x: x != 0.0,
+    },
+    "mad": {"inputs": 3, "type": "float", "test_fn": lambda a, b, c: a * b + c},
+    "maxmag": {
+        "inputs": 2,
+        "type": "float",
+        "test_fn": lambda x, y: x if abs(x) > abs(y) else (y if abs(y) > abs(x) else max(x, y)),
+    },
+    "minmag": {
+        "inputs": 2,
+        "type": "float",
+        "test_fn": lambda x, y: x if abs(x) < abs(y) else (y if abs(y) < abs(x) else min(x, y)),
+    },
+    # "nan" removed - NaN comparisons fail (NaN != NaN)
+    "nextafter": {"inputs": 2, "type": "float", "test_fn": lambda x, y: math.nextafter(x, y)},
+    "rootn": {
+        "inputs": 2,
+        "types": ["float", "int"],
+        "test_fn": lambda x, n: (
+            x ** (1.0 / int(n))
+            if int(n) != 0 and x >= 0
+            else (-((-x) ** (1.0 / int(n))) if int(n) != 0 and x < 0 else float("inf"))
+        ),
+    },
 }
 
 
@@ -207,6 +271,22 @@ def generate_test_values_2input():
     ]
 
 
+def generate_test_values_rootn():
+    """Generate test values for rootn (x, n) where n must be non-zero integer"""
+    return [
+        (8.0, 3),  # cube root of 8
+        (16.0, 4),  # fourth root of 16
+        (27.0, 3),  # cube root of 27
+        (1.0, 5),  # any root of 1 is 1
+        (32.0, 5),  # fifth root of 32
+        (64.0, 6),  # sixth root of 64
+        (100.0, 2),  # square root of 100
+        (625.0, 4),  # fourth root of 625
+        (2.0, 2),  # square root of 2
+        (10.0, 3),  # cube root of 10
+    ]
+
+
 def generate_test_values_3input():
     """Generate diverse test value triples for three-input functions"""
     return [
@@ -228,6 +308,7 @@ def generate_math_function_tests(name, spec):
     num_inputs = spec["inputs"]
     test_fn = spec["test_fn"]
     valid_range = spec.get("valid_range", None)
+    output_type = spec.get("output_type", "float")
     tests = []
 
     if num_inputs == 1:
@@ -261,18 +342,27 @@ def generate_math_function_tests(name, spec):
                 continue
             try:
                 expected = test_fn(val)
-                tests.append({"inputs": [val], "expected": float(expected)})
+                # Cast to correct output type (int for ilogb, float for others)
+                if output_type == "int":
+                    tests.append({"inputs": [val], "expected": int(expected)})
+                else:
+                    tests.append({"inputs": [val], "expected": float(expected)})
             except:
                 pass
     elif num_inputs == 2:
-        value_pairs = generate_test_values_2input()
+        # Use custom test values for specific functions
+        if name == "rootn":
+            value_pairs = generate_test_values_rootn()
+        else:
+            value_pairs = generate_test_values_2input()
+
         for v1, v2 in value_pairs:
             # Skip values outside valid range if specified (check first parameter for powr)
             if valid_range and not valid_range(v1):
                 continue
             try:
-                # For pown, second parameter should be int
-                if name == "pown":
+                # For pown, ldexp, rootn: second parameter should be int
+                if name in ["pown", "ldexp", "rootn"]:
                     v2_val = int(v2)
                     expected = test_fn(v1, v2_val)
                     tests.append({"inputs": [v1, v2_val], "expected": float(expected)})
@@ -309,8 +399,10 @@ def extend_math_functions_json():
         tests = generate_math_function_tests(func_name, spec)
 
         if existing_func is not None:
-            # Update existing function
+            # Update existing function (including output_type if specified)
             data["functions"][existing_func]["tests"] = tests
+            if "output_type" in spec:
+                data["functions"][existing_func]["output_type"] = spec["output_type"]
         else:
             # Add new function
             data["functions"].append(
@@ -318,7 +410,9 @@ def extend_math_functions_json():
                     "name": func_name,
                     "kernel_name": f"test_{func_name}",
                     "input_type": "float",
-                    "output_type": "float",
+                    "output_type": spec.get(
+                        "output_type", "float"
+                    ),  # Use spec output_type if provided
                     "num_inputs": spec["inputs"],
                     "tests": tests,
                 }

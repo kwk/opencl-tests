@@ -366,6 +366,56 @@ def extend_integer_functions_json():
             }
         )
 
+    # upsample (Phase 1 - combine two ints into long)
+    if "upsample_int" not in existing:
+        tests = [
+            {"inputs": [0, 0], "expected": 0},
+            {"inputs": [1, 0], "expected": 4294967296},  # 1 << 32
+            {"inputs": [0, 1], "expected": 1},
+            {"inputs": [1, 1], "expected": 4294967297},  # (1 << 32) | 1
+            {"inputs": [255, 255], "expected": 1095216660735},  # (255 << 32) | 255
+            {"inputs": [256, 256], "expected": 1099511628032},  # (256 << 32) | 256 - FIXED
+            {"inputs": [65535, 65535], "expected": 281470681808895},  # (65535 << 32) | 65535
+            {"inputs": [2147483647, 4294967295], "expected": 9223372036854775807},  # max long
+            {"inputs": [100, 200], "expected": 429496729800},  # (100 << 32) | 200
+            {"inputs": [42, 99], "expected": 180388626531},  # (42 << 32) | 99 - FIXED
+        ]
+        new_functions.append(
+            {
+                "name": "upsample_int",
+                "kernel_name": "test_upsample_int",
+                "input_type": "int",
+                "output_type": "long",
+                "num_inputs": 2,
+                "tests": tests,
+            }
+        )
+
+    # clamp (int version - Phase 1)
+    if "clamp_int" not in existing:
+        tests = [
+            {"inputs": [5, 0, 10], "expected": 5},  # within range
+            {"inputs": [-5, 0, 10], "expected": 0},  # below min
+            {"inputs": [15, 0, 10], "expected": 10},  # above max
+            {"inputs": [0, 0, 10], "expected": 0},  # at min
+            {"inputs": [10, 0, 10], "expected": 10},  # at max
+            {"inputs": [100, -50, 50], "expected": 50},  # above max
+            {"inputs": [-100, -50, 50], "expected": -50},  # below min
+            {"inputs": [0, -10, 10], "expected": 0},  # at midpoint
+            {"inputs": [7, 5, 15], "expected": 7},  # within range
+            {"inputs": [20, 10, 15], "expected": 15},  # above max
+        ]
+        new_functions.append(
+            {
+                "name": "clamp_int",
+                "kernel_name": "test_clamp_int",
+                "input_type": "int",
+                "output_type": "int",
+                "num_inputs": 3,
+                "tests": tests,
+            }
+        )
+
     # Add all new functions
     data["functions"].extend(new_functions)
 

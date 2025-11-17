@@ -190,3 +190,19 @@ __kernel void test_mul24_int(__global const int *x, __global const int *y, __glo
     if (i < count)
         output[i] = mul24(x[i], y[i]);
 }
+
+// Phase 1 additions - upsample and clamp
+__kernel void test_upsample_int(__global const int *hi, __global const int *lo,
+                                __global long *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = upsample(hi[i], (unsigned int)lo[i]);
+}
+
+__kernel void test_clamp_int(__global const int *x, __global const int *minval,
+                             __global const int *maxval, __global int *output,
+                             const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = clamp(x[i], minval[i], maxval[i]);
+}

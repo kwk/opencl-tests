@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 155 functions with 1479 test cases
+ * Tests 177 functions with 1770 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -105,6 +105,9 @@ void test_rotate_int();
 void test_rotate_int2();
 void test_rotate_int4();
 void test_sub_sat_int();
+// Phase 1 integer additions
+void test_upsample_int();
+void test_clamp_int();
 void test_clamp_float();
 void test_clamp_float2();
 void test_degrees();
@@ -191,6 +194,25 @@ void test_rsqrt();
 void test_sqrt();
 void test_tgamma();
 void test_trunc();
+// Phase 1 math additions
+void test_acospi();
+void test_asinpi();
+void test_atanpi();
+void test_atan2pi();
+void test_cospi();
+void test_sinpi();
+void test_tanpi();
+void test_copysign();
+void test_fdim();
+void test_fract();
+void test_ilogb();
+void test_ldexp();
+void test_logb();
+void test_mad();
+void test_maxmag();
+void test_minmag();
+void test_nextafter();
+void test_rootn();
 void test_all_int2();
 void test_all_int4();
 void test_any_int2();
@@ -390,6 +412,9 @@ void registerAllTests() {
   registerTest("rotate_int2", "integer", test_rotate_int2);
   registerTest("rotate_int4", "integer", test_rotate_int4);
   registerTest("sub_sat_int", "integer", test_sub_sat_int);
+  // Phase 1 integer additions
+  registerTest("upsample_int", "integer", test_upsample_int);
+  registerTest("clamp_int", "integer", test_clamp_int);
 
   // Register all common function tests
   registerTest("clamp_float", "common", test_clamp_float);
@@ -485,6 +510,25 @@ void registerAllTests() {
   registerTest("sqrt", "math", test_sqrt);
   registerTest("tgamma", "math", test_tgamma);
   registerTest("trunc", "math", test_trunc);
+  // Phase 1 math additions
+  registerTest("acospi", "math", test_acospi);
+  registerTest("asinpi", "math", test_asinpi);
+  registerTest("atanpi", "math", test_atanpi);
+  registerTest("atan2pi", "math", test_atan2pi);
+  registerTest("cospi", "math", test_cospi);
+  registerTest("sinpi", "math", test_sinpi);
+  registerTest("tanpi", "math", test_tanpi);
+  registerTest("copysign", "math", test_copysign);
+  registerTest("fdim", "math", test_fdim);
+  registerTest("fract", "math", test_fract);
+  registerTest("ilogb", "math", test_ilogb);
+  registerTest("ldexp", "math", test_ldexp);
+  registerTest("logb", "math", test_logb);
+  registerTest("mad", "math", test_mad);
+  registerTest("maxmag", "math", test_maxmag);
+  registerTest("minmag", "math", test_minmag);
+  registerTest("nextafter", "math", test_nextafter);
+  registerTest("rootn", "math", test_rootn);
 
   // Register all relational function tests
   registerTest("all_int2", "relational", test_all_int2);

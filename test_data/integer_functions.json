@@ -2644,6 +2644,174 @@
           ]
         }
       ]
+    },
+    {
+      "name": "upsample_int",
+      "kernel_name": "test_upsample_int",
+      "input_type": "int",
+      "output_type": "long",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            0,
+            0
+          ],
+          "expected": 0
+        },
+        {
+          "inputs": [
+            1,
+            0
+          ],
+          "expected": 4294967296
+        },
+        {
+          "inputs": [
+            0,
+            1
+          ],
+          "expected": 1
+        },
+        {
+          "inputs": [
+            1,
+            1
+          ],
+          "expected": 4294967297
+        },
+        {
+          "inputs": [
+            255,
+            255
+          ],
+          "expected": 1095216660735
+        },
+        {
+          "inputs": [
+            256,
+            256
+          ],
+          "expected": 1099511628032
+        },
+        {
+          "inputs": [
+            65535,
+            65535
+          ],
+          "expected": 281470681808895
+        },
+        {
+          "inputs": [
+            2147483647,
+            4294967295
+          ],
+          "expected": 9223372036854775807
+        },
+        {
+          "inputs": [
+            100,
+            200
+          ],
+          "expected": 429496729800
+        },
+        {
+          "inputs": [
+            42,
+            99
+          ],
+          "expected": 180388626531
+        }
+      ]
+    },
+    {
+      "name": "clamp_int",
+      "kernel_name": "test_clamp_int",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 3,
+      "tests": [
+        {
+          "inputs": [
+            5,
+            0,
+            10
+          ],
+          "expected": 5
+        },
+        {
+          "inputs": [
+            -5,
+            0,
+            10
+          ],
+          "expected": 0
+        },
+        {
+          "inputs": [
+            15,
+            0,
+            10
+          ],
+          "expected": 10
+        },
+        {
+          "inputs": [
+            0,
+            0,
+            10
+          ],
+          "expected": 0
+        },
+        {
+          "inputs": [
+            10,
+            0,
+            10
+          ],
+          "expected": 10
+        },
+        {
+          "inputs": [
+            100,
+            -50,
+            50
+          ],
+          "expected": 50
+        },
+        {
+          "inputs": [
+            -100,
+            -50,
+            50
+          ],
+          "expected": -50
+        },
+        {
+          "inputs": [
+            0,
+            -10,
+            10
+          ],
+          "expected": 0
+        },
+        {
+          "inputs": [
+            7,
+            5,
+            15
+          ],
+          "expected": 7
+        },
+        {
+          "inputs": [
+            20,
+            10,
+            15
+          ],
+          "expected": 15
+        }
+      ]
     }
   ]
 }

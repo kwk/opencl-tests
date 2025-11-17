@@ -365,3 +365,139 @@ __kernel void test_native_rsqrt(__global const float *input, __global float *out
     if (i < count)
         output[i] = native_rsqrt(input[i]);
 }
+
+// Phase 1 additions - Pi variants
+__kernel void test_acospi(__global const float *input, __global float *output,
+                          const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = acospi(input[i]);
+}
+
+__kernel void test_asinpi(__global const float *input, __global float *output,
+                          const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = asinpi(input[i]);
+}
+
+__kernel void test_atanpi(__global const float *input, __global float *output,
+                          const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = atanpi(input[i]);
+}
+
+__kernel void test_atan2pi(__global const float *y, __global const float *x,
+                           __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = atan2pi(y[i], x[i]);
+}
+
+__kernel void test_cospi(__global const float *input, __global float *output,
+                         const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = cospi(input[i]);
+}
+
+__kernel void test_sinpi(__global const float *input, __global float *output,
+                         const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = sinpi(input[i]);
+}
+
+__kernel void test_tanpi(__global const float *input, __global float *output,
+                         const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = tanpi(input[i]);
+}
+
+// Phase 1 additions - Math other functions
+__kernel void test_copysign(__global const float *x, __global const float *y,
+                            __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = copysign(x[i], y[i]);
+}
+
+__kernel void test_fdim(__global const float *x, __global const float *y,
+                        __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = fdim(x[i], y[i]);
+}
+
+__kernel void test_fract(__global const float *input, __global float *output,
+                         const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = fract(input[i], (__global float*)0);
+}
+
+__kernel void test_ilogb(__global const float *input, __global int *output,
+                         const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = ilogb(input[i]);
+}
+
+__kernel void test_ldexp(__global const float *x, __global const int *n,
+                         __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = ldexp(x[i], n[i]);
+}
+
+__kernel void test_logb(__global const float *input, __global float *output,
+                        const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = logb(input[i]);
+}
+
+__kernel void test_mad(__global const float *a, __global const float *b,
+                       __global const float *c, __global float *output,
+                       const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = mad(a[i], b[i], c[i]);
+}
+
+__kernel void test_maxmag(__global const float *x, __global const float *y,
+                          __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = maxmag(x[i], y[i]);
+}
+
+__kernel void test_minmag(__global const float *x, __global const float *y,
+                          __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = minmag(x[i], y[i]);
+}
+
+__kernel void test_nan(__global const unsigned int *input, __global float *output,
+                       const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = nan(input[i]);
+}
+
+__kernel void test_nextafter(__global const float *x, __global const float *y,
+                             __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = nextafter(x[i], y[i]);
+}
+
+__kernel void test_rootn(__global const float *x, __global const int *n,
+                         __global float *output, const unsigned int count) {
+    int i = get_global_id(0);
+    if (i < count)
+        output[i] = rootn(x[i], n[i]);
+}
