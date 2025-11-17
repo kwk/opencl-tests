@@ -1,0 +1,240 @@
+{
+  "category": "misc_functions",
+  "functions": [
+    {
+      "name": "printf_int",
+      "kernel_name": "test_printf_int",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            42
+          ],
+          "expected": 0,
+          "expected_output": "42"
+        },
+        {
+          "inputs": [
+            -123
+          ],
+          "expected": 0,
+          "expected_output": "-123"
+        },
+        {
+          "inputs": [
+            0
+          ],
+          "expected": 0,
+          "expected_output": "0"
+        },
+        {
+          "inputs": [
+            999
+          ],
+          "expected": 0,
+          "expected_output": "999"
+        },
+        {
+          "inputs": [
+            -1
+          ],
+          "expected": 0,
+          "expected_output": "-1"
+        }
+      ]
+    },
+    {
+      "name": "printf_hex",
+      "kernel_name": "test_printf_hex",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            255
+          ],
+          "expected": 0,
+          "expected_output": "ff"
+        },
+        {
+          "inputs": [
+            16
+          ],
+          "expected": 0,
+          "expected_output": "10"
+        },
+        {
+          "inputs": [
+            0
+          ],
+          "expected": 0,
+          "expected_output": "0"
+        }
+      ]
+    },
+    {
+      "name": "printf_int_width",
+      "kernel_name": "test_printf_int_width",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            10
+          ],
+          "expected": 0,
+          "expected_output": "  10"
+        },
+        {
+          "inputs": [
+            1234
+          ],
+          "expected": 0,
+          "expected_output": "1234"
+        },
+        {
+          "inputs": [
+            5
+          ],
+          "expected": 0,
+          "expected_output": "   5"
+        }
+      ]
+    },
+    {
+      "name": "printf_float",
+      "kernel_name": "test_printf_float",
+      "input_type": "float",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            3.14
+          ],
+          "expected": 0,
+          "expected_output": "3.14"
+        },
+        {
+          "inputs": [
+            -2.5
+          ],
+          "expected": 0,
+          "expected_output": "-2.50"
+        },
+        {
+          "inputs": [
+            123.456
+          ],
+          "expected": 0,
+          "expected_output": "123.46"
+        },
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0,
+          "expected_output": "0.00"
+        }
+      ]
+    },
+    {
+      "name": "printf_hello",
+      "kernel_name": "test_printf_hello",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0
+          ],
+          "expected": 0,
+          "expected_output": "Hello"
+        }
+      ]
+    },
+    {
+      "name": "printf_hello_world",
+      "kernel_name": "test_printf_hello_world",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0
+          ],
+          "expected": 0,
+          "expected_output": "Hello, World!"
+        }
+      ]
+    },
+    {
+      "name": "printf_newline",
+      "kernel_name": "test_printf_newline",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0
+          ],
+          "expected": 0,
+          "expected_output": "\n"
+        }
+      ]
+    },
+    {
+      "name": "printf_value",
+      "kernel_name": "test_printf_value",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            42
+          ],
+          "expected": 0,
+          "expected_output": "Value is 42"
+        },
+        {
+          "inputs": [
+            0
+          ],
+          "expected": 0,
+          "expected_output": "Value is 0"
+        }
+      ]
+    },
+    {
+      "name": "printf_multi",
+      "kernel_name": "test_printf_multi",
+      "input_type": "int",
+      "output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            100
+          ],
+          "expected": 0,
+          "expected_output": "Number: 100 (0x64)"
+        },
+        {
+          "inputs": [
+            255
+          ],
+          "expected": 0,
+          "expected_output": "Number: 255 (0xff)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 146 functions with 1457 test cases
+ * Tests 155 functions with 1479 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -225,6 +225,15 @@ void test_vstore3_float();
 void test_vstore4_float();
 void test_vstore8_float();
 void test_vstore16_float();
+void test_printf_int();
+void test_printf_hex();
+void test_printf_int_width();
+void test_printf_float();
+void test_printf_hello();
+void test_printf_hello_world();
+void test_printf_newline();
+void test_printf_value();
+void test_printf_multi();
 
 void initializeOpenCL() {
   cl_int err;
@@ -516,6 +525,15 @@ void registerAllTests() {
   registerTest("vstore4_float", "vector_load_store", test_vstore4_float);
   registerTest("vstore8_float", "vector_load_store", test_vstore8_float);
   registerTest("vstore16_float", "vector_load_store", test_vstore16_float);
+  registerTest("printf_int", "misc_functions", test_printf_int);
+  registerTest("printf_hex", "misc_functions", test_printf_hex);
+  registerTest("printf_int_width", "misc_functions", test_printf_int_width);
+  registerTest("printf_float", "misc_functions", test_printf_float);
+  registerTest("printf_hello", "misc_functions", test_printf_hello);
+  registerTest("printf_hello_world", "misc_functions", test_printf_hello_world);
+  registerTest("printf_newline", "misc_functions", test_printf_newline);
+  registerTest("printf_value", "misc_functions", test_printf_value);
+  registerTest("printf_multi", "misc_functions", test_printf_multi);
 }
 
 void printUsage(const char *program) {
@@ -525,7 +543,7 @@ void printUsage(const char *program) {
   std::cout << "  --list              List all available tests\n";
   std::cout << "  --category <name>   Run tests only from specified category\n";
   std::cout << "                      (integer, common, geometric, math, "
-               "relational, vector_misc)\n";
+               "relational, vector_misc, misc_functions)\n";
   std::cout << "  --help              Show this help message\n\n";
   std::cout << "Examples:\n";
   std::cout << "  " << program << "                  # Run all tests\n";
@@ -599,7 +617,7 @@ int main(int argc, char *argv[]) {
     if (!valid_category) {
       std::cerr << "Error: Invalid category '" << filter_category << "'\n";
       std::cerr << "Valid categories: integer, common, geometric, math, "
-                   "relational, vector_misc\n";
+                   "relational, vector_misc, misc_functions\n";
       return 1;
     }
   }
