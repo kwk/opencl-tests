@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 177 functions with 1770 test cases
+ * Tests 152 functions with 1517 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -253,6 +253,13 @@ void test_half_rsqrt();
 void test_half_recip();
 void test_half_divide();
 void test_half_powr();
+// Phase 4: Native math functions
+void test_native_cos();
+void test_native_sin();
+void test_native_tan();
+void test_native_recip();
+void test_native_divide();
+void test_native_powr();
 void test_all_int2();
 void test_all_int4();
 void test_any_int2();
@@ -593,6 +600,14 @@ void registerAllTests() {
   registerTest("half_divide", "half_precision_math", test_half_divide);
   registerTest("half_powr", "half_precision_math", test_half_powr);
 
+  // Register Phase 4: Native math function tests
+  registerTest("native_cos", "native_math", test_native_cos);
+  registerTest("native_sin", "native_math", test_native_sin);
+  registerTest("native_tan", "native_math", test_native_tan);
+  registerTest("native_recip", "native_math", test_native_recip);
+  registerTest("native_divide", "native_math", test_native_divide);
+  registerTest("native_powr", "native_math", test_native_powr);
+
   // Register all relational function tests
   registerTest("all_int2", "relational", test_all_int2);
   registerTest("all_int4", "relational", test_all_int4);
@@ -753,7 +768,7 @@ int main(int argc, char *argv[]) {
   } else if (!filter_category.empty()) {
     std::cout << "Running category: " << filter_category << std::endl;
   } else {
-    std::cout << "Testing 146 functions with 1457 test cases" << std::endl;
+    std::cout << "Testing 152 functions with 1517 test cases" << std::endl;
   }
   std::cout << "========================================" << std::endl
             << std::endl;

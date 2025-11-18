@@ -89,8 +89,8 @@ def generate_function_test(func_data, category):
     has_ptr_output = "ptr_output_type" in func_data
     ptr_output_type = func_data.get("ptr_output_type", None)
 
-    # Check if this is a half-precision function (needs relaxed tolerance)
-    is_half_precision = name.startswith("half_")
+    # Check if this is a half-precision or native function (needs relaxed tolerance)
+    is_relaxed_precision = name.startswith("half_") or name.startswith("native_")
 
     num_tests = len(tests)
 
@@ -371,7 +371,7 @@ def generate_function_test(func_data, category):
     code.append("    // Verify results")
 
     # Choose comparison function based on precision requirements
-    float_cmp_fn = "halfFloatEquals" if is_half_precision else "floatEquals"
+    float_cmp_fn = "halfFloatEquals" if is_relaxed_precision else "floatEquals"
 
     if is_vstore:
         # For vstore, we need to verify the entire scalar array for each test
@@ -457,8 +457,8 @@ def generate_function_test(func_data, category):
     elif not is_vstore and is_int_type(output_type):
         code.append("        bool passed = (output[i] == expected[i]);")
     elif not is_vstore:
-        # Use relaxed tolerance for half-precision functions
-        if is_half_precision:
+        # Use relaxed tolerance for half-precision and native functions
+        if is_relaxed_precision:
             code.append("        bool passed = halfFloatEquals(output[i], expected[i]);")
         else:
             code.append("        bool passed = floatEquals(output[i], expected[i]);")
