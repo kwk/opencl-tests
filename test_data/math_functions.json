@@ -2197,13 +2197,13 @@
           "inputs": [
             0.5
           ],
-          "expected": 1.0
+          "expected": 0.0
         },
         {
           "inputs": [
             -0.5
           ],
-          "expected": -1.0
+          "expected": 0.0
         },
         {
           "inputs": [
@@ -2291,7 +2291,7 @@
             1.0,
             -1.0
           ],
-          "expected": 0.09999999999999995
+          "expected": 0.0
         },
         {
           "inputs": [

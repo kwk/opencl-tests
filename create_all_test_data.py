@@ -71,9 +71,14 @@ MATH_FUNCTIONS = {
     "rint": {
         "inputs": 1,
         "type": "float",
-        "test_fn": lambda x: math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5),
+        "test_fn": lambda x: float(round(x)),  # Python 3 uses banker's rounding (round-to-even)
     },
-    "fmod": {"inputs": 2, "type": "float", "test_fn": lambda x, y: math.fmod(x, max(0.1, y))},
+    "fmod": {
+        "inputs": 2,
+        "type": "float",
+        "test_fn": lambda x, y: math.fmod(x, y),
+        "valid_range": lambda x, y: y != 0.0,  # Avoid division by zero
+    },
     "remainder": {
         "inputs": 2,
         "type": "float",
@@ -357,9 +362,18 @@ def generate_math_function_tests(name, spec):
             value_pairs = generate_test_values_2input()
 
         for v1, v2 in value_pairs:
-            # Skip values outside valid range if specified (check first parameter for powr)
-            if valid_range and not valid_range(v1):
-                continue
+            # Skip values outside valid range if specified
+            # Check if valid_range takes 1 or 2 parameters
+            if valid_range:
+                import inspect
+
+                sig = inspect.signature(valid_range)
+                if len(sig.parameters) == 1:
+                    if not valid_range(v1):
+                        continue
+                elif len(sig.parameters) == 2:
+                    if not valid_range(v1, v2):
+                        continue
             try:
                 # For pown, ldexp, rootn: second parameter should be int
                 if name in ["pown", "ldexp", "rootn"]:
