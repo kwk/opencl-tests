@@ -1,0 +1,416 @@
+{
+  "category": "pointer_output_functions",
+  "kernel_file": "kernels/pointer_output_functions_kernel.cl",
+  "functions": [
+    {
+      "name": "frexp",
+      "kernel_name": "test_frexp",
+      "input_type": "float",
+      "output_type": "float",
+      "ptr_output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0,
+          "expected_ptr": 0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.5,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.5,
+          "expected_ptr": 2
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5,
+          "expected_ptr": 0
+        },
+        {
+          "inputs": [
+            4.0
+          ],
+          "expected": 0.5,
+          "expected_ptr": 3
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": 0.5,
+          "expected_ptr": -1
+        },
+        {
+          "inputs": [
+            3.0
+          ],
+          "expected": 0.75,
+          "expected_ptr": 2
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 0.78125,
+          "expected_ptr": 7
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 0.8,
+          "expected_ptr": -3
+        },
+        {
+          "inputs": [
+            -2.0
+          ],
+          "expected": -0.5,
+          "expected_ptr": 2
+        }
+      ]
+    },
+    {
+      "name": "modf",
+      "kernel_name": "test_modf",
+      "input_type": "float",
+      "output_type": "float",
+      "ptr_output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0,
+          "expected_ptr": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0,
+          "expected_ptr": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -0.0,
+          "expected_ptr": -1.0
+        },
+        {
+          "inputs": [
+            1.5
+          ],
+          "expected": 0.5,
+          "expected_ptr": 1.0
+        },
+        {
+          "inputs": [
+            -1.5
+          ],
+          "expected": -0.5,
+          "expected_ptr": -1.0
+        },
+        {
+          "inputs": [
+            2.75
+          ],
+          "expected": 0.75,
+          "expected_ptr": 2.0
+        },
+        {
+          "inputs": [
+            -2.75
+          ],
+          "expected": -0.75,
+          "expected_ptr": -2.0
+        },
+        {
+          "inputs": [
+            10.25
+          ],
+          "expected": 0.25,
+          "expected_ptr": 10.0
+        },
+        {
+          "inputs": [
+            -10.25
+          ],
+          "expected": -0.25,
+          "expected_ptr": -10.0
+        },
+        {
+          "inputs": [
+            100.123
+          ],
+          "expected": 0.12300000000000466,
+          "expected_ptr": 100.0
+        }
+      ]
+    },
+    {
+      "name": "sincos",
+      "kernel_name": "test_sincos",
+      "input_type": "float",
+      "output_type": "float",
+      "ptr_output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0,
+          "expected_ptr": 1.0
+        },
+        {
+          "inputs": [
+            0.5235987755982988
+          ],
+          "expected": 0.49999999999999994,
+          "expected_ptr": 0.8660254037844387
+        },
+        {
+          "inputs": [
+            0.7853981633974483
+          ],
+          "expected": 0.7071067811865475,
+          "expected_ptr": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            1.0471975511965976
+          ],
+          "expected": 0.8660254037844386,
+          "expected_ptr": 0.5000000000000001
+        },
+        {
+          "inputs": [
+            1.5707963267948966
+          ],
+          "expected": 1.0,
+          "expected_ptr": 6.123233995736766e-17
+        },
+        {
+          "inputs": [
+            3.141592653589793
+          ],
+          "expected": 1.2246467991473532e-16,
+          "expected_ptr": -1.0
+        },
+        {
+          "inputs": [
+            -0.7853981633974483
+          ],
+          "expected": -0.7071067811865475,
+          "expected_ptr": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            6.283185307179586
+          ],
+          "expected": -2.4492935982947064e-16,
+          "expected_ptr": 1.0
+        },
+        {
+          "inputs": [
+            1.6707963267948966
+          ],
+          "expected": 0.9950041652780257,
+          "expected_ptr": -0.09983341664682818
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.8414709848078965,
+          "expected_ptr": 0.5403023058681398
+        }
+      ]
+    },
+    {
+      "name": "remquo",
+      "kernel_name": "test_remquo",
+      "input_type": "float",
+      "output_type": "float",
+      "ptr_output_type": "int",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 1.0,
+          "expected_ptr": 2
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 1.0,
+          "expected_ptr": 2
+        },
+        {
+          "inputs": [
+            10.0,
+            3.0
+          ],
+          "expected": 1.0,
+          "expected_ptr": 3
+        },
+        {
+          "inputs": [
+            9.0,
+            4.0
+          ],
+          "expected": 1.0,
+          "expected_ptr": 2
+        },
+        {
+          "inputs": [
+            11.5,
+            2.5
+          ],
+          "expected": -1.0,
+          "expected_ptr": 5
+        },
+        {
+          "inputs": [
+            20.0,
+            6.0
+          ],
+          "expected": 2.0,
+          "expected_ptr": 3
+        },
+        {
+          "inputs": [
+            -5.0,
+            2.0
+          ],
+          "expected": -1.0,
+          "expected_ptr": -2
+        },
+        {
+          "inputs": [
+            5.0,
+            -2.0
+          ],
+          "expected": 1.0,
+          "expected_ptr": -2
+        },
+        {
+          "inputs": [
+            13.0,
+            5.0
+          ],
+          "expected": -2.0,
+          "expected_ptr": 3
+        },
+        {
+          "inputs": [
+            100.0,
+            7.0
+          ],
+          "expected": 2.0,
+          "expected_ptr": 14
+        }
+      ]
+    },
+    {
+      "name": "lgamma_r",
+      "kernel_name": "test_lgamma_r",
+      "input_type": "float",
+      "output_type": "float",
+      "ptr_output_type": "int",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5723649429247004,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            1.5
+          ],
+          "expected": -0.12078223763524543,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.0,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            3.0
+          ],
+          "expected": 0.693147180559945,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            4.0
+          ],
+          "expected": 1.7917594692280554,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            5.0
+          ],
+          "expected": 3.178053830347945,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 12.801827480081467,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            15.0
+          ],
+          "expected": 25.191221182738683,
+          "expected_ptr": 1
+        },
+        {
+          "inputs": [
+            20.0
+          ],
+          "expected": 39.339884187199495,
+          "expected_ptr": 1
+        }
+      ]
+    }
+  ]
+}

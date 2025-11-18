@@ -85,6 +85,10 @@ def generate_function_test(func_data, category):
     output_type = func_data["output_type"]
     tests = func_data["tests"]
 
+    # Check for pointer output functions
+    has_ptr_output = "ptr_output_type" in func_data
+    ptr_output_type = func_data.get("ptr_output_type", None)
+
     num_tests = len(tests)
 
     code = []
@@ -155,6 +159,12 @@ def generate_function_test(func_data, category):
         code.append(f"    {output_c_type} output[NUM_TESTS];")
         code.append(f"    {output_c_type} expected[NUM_TESTS];")
 
+    # Pointer output arrays (if applicable)
+    if has_ptr_output:
+        ptr_output_c_type = get_c_type(ptr_output_type)
+        code.append(f"    {ptr_output_c_type} ptr_output[NUM_TESTS];")
+        code.append(f"    {ptr_output_c_type} expected_ptr[NUM_TESTS];")
+
     code.append("")
     code.append("    // Initialize test data")
 
@@ -217,6 +227,12 @@ def generate_function_test(func_data, category):
         else:
             formatted = format_scalar_value(expected, output_type)
             code.append(f"    expected[{test_idx}] = {formatted};")
+
+        # Handle pointer output expected value (if applicable)
+        if has_ptr_output:
+            expected_ptr = test["expected_ptr"]
+            formatted_ptr = format_scalar_value(expected_ptr, ptr_output_type)
+            code.append(f"    expected_ptr[{test_idx}] = {formatted_ptr};")
 
     code.append("")
     code.append(f'    std::string kernelSource = loadKernel("{category}_kernel.cl");')
@@ -298,6 +314,14 @@ def generate_function_test(func_data, category):
         code.append(
             f"                                         NUM_TESTS * sizeof({output_c_type}), NULL, &err);"
         )
+
+    # Pointer output buffer (if applicable)
+    if has_ptr_output:
+        code.append(f"    cl_mem ptrOutputBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY,")
+        code.append(
+            f"                                          NUM_TESTS * sizeof({ptr_output_c_type}), NULL, &err);"
+        )
+
     code.append("")
 
     # Set kernel arguments
@@ -305,7 +329,15 @@ def generate_function_test(func_data, category):
     for i in range(num_inputs):
         code.append(f"    clSetKernelArg(kernel, {i}, sizeof(cl_mem), &inputBuffer{i});")
     code.append(f"    clSetKernelArg(kernel, {num_inputs}, sizeof(cl_mem), &outputBuffer);")
-    code.append(f"    clSetKernelArg(kernel, {num_inputs + 1}, sizeof(unsigned int), &count);")
+
+    # For pointer output functions, add ptr_output buffer argument
+    if has_ptr_output:
+        code.append(
+            f"    clSetKernelArg(kernel, {num_inputs + 1}, sizeof(cl_mem), &ptrOutputBuffer);"
+        )
+        code.append(f"    clSetKernelArg(kernel, {num_inputs + 2}, sizeof(unsigned int), &count);")
+    else:
+        code.append(f"    clSetKernelArg(kernel, {num_inputs + 1}, sizeof(unsigned int), &count);")
     code.append("")
 
     # Execute kernel
@@ -323,6 +355,13 @@ def generate_function_test(func_data, category):
         code.append(
             f"    clEnqueueReadBuffer(queue, outputBuffer, CL_TRUE, 0, NUM_TESTS * sizeof({output_c_type}), output, 0, NULL, NULL);"
         )
+
+    # Read pointer output buffer (if applicable)
+    if has_ptr_output:
+        code.append(
+            f"    clEnqueueReadBuffer(queue, ptrOutputBuffer, CL_TRUE, 0, NUM_TESTS * sizeof({ptr_output_c_type}), ptr_output, 0, NULL, NULL);"
+        )
+
     code.append("")
 
     # Verify results
@@ -406,6 +445,14 @@ def generate_function_test(func_data, category):
     elif not is_vstore:
         code.append("        bool passed = floatEquals(output[i], expected[i]);")
 
+    # Add pointer output verification if applicable
+    if has_ptr_output:
+        # Check if pointer output type is int or float to use appropriate comparison
+        if is_int_type(ptr_output_type):
+            code.append("        passed = passed && (ptr_output[i] == expected_ptr[i]);")
+        else:
+            code.append("        passed = passed && floatEquals(ptr_output[i], expected_ptr[i]);")
+
     code.append(f'        test_results.push_back({{"{name}", i, passed, ""}});')
     code.append("        if (!passed) {")
     code.append(f'            std::cout << "  Test " << i << " FAILED" << std::endl;')
@@ -417,6 +464,8 @@ def generate_function_test(func_data, category):
     for i in range(num_inputs):
         code.append(f"    clReleaseMemObject(inputBuffer{i});")
     code.append("    clReleaseMemObject(outputBuffer);")
+    if has_ptr_output:
+        code.append("    clReleaseMemObject(ptrOutputBuffer);")
     code.append("    clReleaseKernel(kernel);")
     code.append("    clReleaseProgram(program);")
     code.append("")

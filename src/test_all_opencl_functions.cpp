@@ -213,6 +213,12 @@ void test_maxmag();
 void test_minmag();
 void test_nextafter();
 void test_rootn();
+// Phase 2: Pointer output functions
+void test_frexp();
+void test_modf();
+void test_sincos();
+void test_remquo();
+void test_lgamma_r();
 void test_all_int2();
 void test_all_int4();
 void test_any_int2();
@@ -529,6 +535,13 @@ void registerAllTests() {
   registerTest("minmag", "math", test_minmag);
   registerTest("nextafter", "math", test_nextafter);
   registerTest("rootn", "math", test_rootn);
+
+  // Register Phase 2: Pointer output function tests
+  registerTest("frexp", "pointer_output_functions", test_frexp);
+  registerTest("modf", "pointer_output_functions", test_modf);
+  registerTest("sincos", "pointer_output_functions", test_sincos);
+  registerTest("remquo", "pointer_output_functions", test_remquo);
+  registerTest("lgamma_r", "pointer_output_functions", test_lgamma_r);
 
   // Register all relational function tests
   registerTest("all_int2", "relational", test_all_int2);
