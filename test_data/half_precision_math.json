@@ -1,0 +1,985 @@
+{
+  "category": "half_precision_math",
+  "kernel_file": "kernels/half_precision_math_kernel.cl",
+  "functions": [
+    {
+      "name": "half_cos",
+      "kernel_name": "test_half_cos",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.5403023058681398
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.5403023058681398
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.8775825618903728
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.8775825618903728
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": -0.4161468365471424
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": -0.8390715290764524
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 0.8623188722876839
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -0.8390715290764524
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": -0.9999999999964793
+        }
+      ]
+    },
+    {
+      "name": "half_sin",
+      "kernel_name": "test_half_sin",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.8414709848078965
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -0.8414709848078965
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.479425538604203
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.479425538604203
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.9092974268256817
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": -0.5440211108893698
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": -0.5063656411097588
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 0.5440211108893698
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 2.65358979335273e-06
+        }
+      ]
+    },
+    {
+      "name": "half_tan",
+      "kernel_name": "test_half_tan",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.5574077246549023
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.5574077246549023
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.5463024898437905
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -0.5463024898437905
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": -2.185039863261519
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 0.6483608274590866
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": -0.5872139151569291
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -0.6483608274590866
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": -2.6535897933620727e-06
+        }
+      ]
+    },
+    {
+      "name": "half_exp",
+      "kernel_name": "test_half_exp",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 2.718281828459045
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.36787944117144233
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.6487212707001282
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.6065306597126334
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 7.38905609893065
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 22026.465794806718
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 4.5399929762484854e-05
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 23.14063122695496
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 1.1051709180756477
+        }
+      ]
+    },
+    {
+      "name": "half_exp2",
+      "kernel_name": "test_half_exp2",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1024.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 1.2676506002282294e+30
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 0.0009765625
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 8.824961595059897
+        }
+      ]
+    },
+    {
+      "name": "half_exp10",
+      "kernel_name": "test_half_exp10",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": 0.1
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 3.1622776601683795
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": 0.31622776601683794
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 100.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 10000000000.0
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": 1e-10
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 1385.4472660972244
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 1.2589254117941673
+        }
+      ]
+    },
+    {
+      "name": "half_log",
+      "kernel_name": "test_half_log",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -0.6931471805599453
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.6931471805599453
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 2.302585092994046
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 4.605170185988092
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 1.1447290411851783
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": -2.3025850929940455
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": -1.3862943611198906
+        },
+        {
+          "inputs": [
+            0.75
+          ],
+          "expected": -0.2876820724517809
+        },
+        {
+          "inputs": [
+            1.5
+          ],
+          "expected": 0.4054651081081644
+        }
+      ]
+    },
+    {
+      "name": "half_log2",
+      "kernel_name": "test_half_log2",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 3.321928094887362
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 6.643856189774724
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 1.6514949108794348
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": -3.321928094887362
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": -2.0
+        },
+        {
+          "inputs": [
+            0.75
+          ],
+          "expected": -0.4150374992788438
+        },
+        {
+          "inputs": [
+            1.5
+          ],
+          "expected": 0.5849625007211562
+        }
+      ]
+    },
+    {
+      "name": "half_log10",
+      "kernel_name": "test_half_log10",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": -0.3010299956639812
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.3010299956639812
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 0.4971495058611233
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": -0.6020599913279624
+        },
+        {
+          "inputs": [
+            0.75
+          ],
+          "expected": -0.12493873660829993
+        },
+        {
+          "inputs": [
+            1.5
+          ],
+          "expected": 0.17609125905568124
+        }
+      ]
+    },
+    {
+      "name": "half_sqrt",
+      "kernel_name": "test_half_sqrt",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            0.0
+          ],
+          "expected": 0.0
+        },
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 0.7071067811865476
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 1.4142135623730951
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 3.1622776601683795
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 1.7724531023414978
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 0.31622776601683794
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            0.75
+          ],
+          "expected": 0.8660254037844386
+        }
+      ]
+    },
+    {
+      "name": "half_rsqrt",
+      "kernel_name": "test_half_rsqrt",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 1.414213562373095
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.7071067811865475
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 0.31622776601683794
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 0.1
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 0.5641898218231843
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 3.162277660168379
+        },
+        {
+          "inputs": [
+            0.25
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            0.75
+          ],
+          "expected": 1.1547005383792517
+        },
+        {
+          "inputs": [
+            1.5
+          ],
+          "expected": 0.8164965809277261
+        }
+      ]
+    },
+    {
+      "name": "half_recip",
+      "kernel_name": "test_half_recip",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 1,
+      "tests": [
+        {
+          "inputs": [
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            -1.0
+          ],
+          "expected": -1.0
+        },
+        {
+          "inputs": [
+            0.5
+          ],
+          "expected": 2.0
+        },
+        {
+          "inputs": [
+            -0.5
+          ],
+          "expected": -2.0
+        },
+        {
+          "inputs": [
+            2.0
+          ],
+          "expected": 0.5
+        },
+        {
+          "inputs": [
+            10.0
+          ],
+          "expected": 0.1
+        },
+        {
+          "inputs": [
+            100.0
+          ],
+          "expected": 0.01
+        },
+        {
+          "inputs": [
+            -10.0
+          ],
+          "expected": -0.1
+        },
+        {
+          "inputs": [
+            3.14159
+          ],
+          "expected": 0.31831015504887655
+        },
+        {
+          "inputs": [
+            0.1
+          ],
+          "expected": 10.0
+        }
+      ]
+    },
+    {
+      "name": "half_divide",
+      "kernel_name": "test_half_divide",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            10.0,
+            2.0
+          ],
+          "expected": 5.0
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 10.0
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 2.5
+        },
+        {
+          "inputs": [
+            8.0,
+            2.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            16.0,
+            4.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            3.0,
+            2.0
+          ],
+          "expected": 1.5
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 2.3333333333333335
+        },
+        {
+          "inputs": [
+            20.0,
+            5.0
+          ],
+          "expected": 4.0
+        },
+        {
+          "inputs": [
+            100.0,
+            25.0
+          ],
+          "expected": 4.0
+        }
+      ]
+    },
+    {
+      "name": "half_powr",
+      "kernel_name": "test_half_powr",
+      "input_type": "float",
+      "output_type": "float",
+      "num_inputs": 2,
+      "tests": [
+        {
+          "inputs": [
+            1.0,
+            1.0
+          ],
+          "expected": 1.0
+        },
+        {
+          "inputs": [
+            10.0,
+            2.0
+          ],
+          "expected": 100.0
+        },
+        {
+          "inputs": [
+            100.0,
+            10.0
+          ],
+          "expected": 1e+20
+        },
+        {
+          "inputs": [
+            5.0,
+            2.0
+          ],
+          "expected": 25.0
+        },
+        {
+          "inputs": [
+            8.0,
+            2.0
+          ],
+          "expected": 64.0
+        },
+        {
+          "inputs": [
+            16.0,
+            4.0
+          ],
+          "expected": 65536.0
+        },
+        {
+          "inputs": [
+            3.0,
+            2.0
+          ],
+          "expected": 9.0
+        },
+        {
+          "inputs": [
+            7.0,
+            3.0
+          ],
+          "expected": 343.0
+        },
+        {
+          "inputs": [
+            20.0,
+            5.0
+          ],
+          "expected": 3200000.0
+        }
+      ]
+    }
+  ]
+}

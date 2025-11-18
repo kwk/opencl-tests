@@ -89,6 +89,9 @@ def generate_function_test(func_data, category):
     has_ptr_output = "ptr_output_type" in func_data
     ptr_output_type = func_data.get("ptr_output_type", None)
 
+    # Check if this is a half-precision function (needs relaxed tolerance)
+    is_half_precision = name.startswith("half_")
+
     num_tests = len(tests)
 
     code = []
@@ -366,13 +369,17 @@ def generate_function_test(func_data, category):
 
     # Verify results
     code.append("    // Verify results")
+
+    # Choose comparison function based on precision requirements
+    float_cmp_fn = "halfFloatEquals" if is_half_precision else "floatEquals"
+
     if is_vstore:
         # For vstore, we need to verify the entire scalar array for each test
         code.append("    for (int i = 0; i < NUM_TESTS; i++) {")
         code.append(f"        bool passed = true;")
         code.append(f"        for (int j = 0; j < {output_array_size}; j++) {{")
         code.append(
-            f"            if (!floatEquals(output[i * {output_array_size} + j], expected[i * {output_array_size} + j])) {{"
+            f"            if (!{float_cmp_fn}(output[i * {output_array_size} + j], expected[i * {output_array_size} + j])) {{"
         )
         code.append(f"                passed = false;")
         code.append(f"                break;")
@@ -382,37 +389,44 @@ def generate_function_test(func_data, category):
         code.append("    for (int i = 0; i < NUM_TESTS; i++) {")
 
     # Generate comparison code based on output type (skip for vstore, already handled)
+
     if not is_vstore and is_vector_type(output_type):
         # For vector outputs, compare component-wise
         if "float" in output_type:
             # Float vector - use tolerance-based comparison
             if output_type.endswith("2"):
                 code.append(
-                    "        bool passed = floatEquals(output[i].s[0], expected[i].s[0]) &&"
+                    f"        bool passed = {float_cmp_fn}(output[i].s[0], expected[i].s[0]) &&"
                 )
-                code.append("                       floatEquals(output[i].s[1], expected[i].s[1]);")
+                code.append(
+                    f"                       {float_cmp_fn}(output[i].s[1], expected[i].s[1]);"
+                )
             elif output_type.endswith("3"):
                 code.append(
-                    "        bool passed = floatEquals(output[i].s[0], expected[i].s[0]) &&"
+                    f"        bool passed = {float_cmp_fn}(output[i].s[0], expected[i].s[0]) &&"
                 )
                 code.append(
-                    "                       floatEquals(output[i].s[1], expected[i].s[1]) &&"
+                    f"                       {float_cmp_fn}(output[i].s[1], expected[i].s[1]) &&"
                 )
-                code.append("                       floatEquals(output[i].s[2], expected[i].s[2]);")
+                code.append(
+                    f"                       {float_cmp_fn}(output[i].s[2], expected[i].s[2]);"
+                )
             elif output_type.endswith("4"):
                 code.append(
-                    "        bool passed = floatEquals(output[i].s[0], expected[i].s[0]) &&"
+                    f"        bool passed = {float_cmp_fn}(output[i].s[0], expected[i].s[0]) &&"
                 )
                 code.append(
-                    "                       floatEquals(output[i].s[1], expected[i].s[1]) &&"
+                    f"                       {float_cmp_fn}(output[i].s[1], expected[i].s[1]) &&"
                 )
                 code.append(
-                    "                       floatEquals(output[i].s[2], expected[i].s[2]) &&"
+                    f"                       {float_cmp_fn}(output[i].s[2], expected[i].s[2]) &&"
                 )
-                code.append("                       floatEquals(output[i].s[3], expected[i].s[3]);")
+                code.append(
+                    f"                       {float_cmp_fn}(output[i].s[3], expected[i].s[3]);"
+                )
             elif output_type.endswith("8"):
                 comparisons = [
-                    f"floatEquals(output[i].s[{j}], expected[i].s[{j}])" for j in range(8)
+                    f"{float_cmp_fn}(output[i].s[{j}], expected[i].s[{j}])" for j in range(8)
                 ]
                 code.append(f"        bool passed = {comparisons[0]} &&")
                 for j in range(1, 7):
@@ -420,7 +434,7 @@ def generate_function_test(func_data, category):
                 code.append(f"                       {comparisons[7]};")
             elif output_type.endswith("16"):
                 comparisons = [
-                    f"floatEquals(output[i].s[{j}], expected[i].s[{j}])" for j in range(16)
+                    f"{float_cmp_fn}(output[i].s[{j}], expected[i].s[{j}])" for j in range(16)
                 ]
                 code.append(f"        bool passed = {comparisons[0]} &&")
                 for j in range(1, 15):
@@ -443,7 +457,11 @@ def generate_function_test(func_data, category):
     elif not is_vstore and is_int_type(output_type):
         code.append("        bool passed = (output[i] == expected[i]);")
     elif not is_vstore:
-        code.append("        bool passed = floatEquals(output[i], expected[i]);")
+        # Use relaxed tolerance for half-precision functions
+        if is_half_precision:
+            code.append("        bool passed = halfFloatEquals(output[i], expected[i]);")
+        else:
+            code.append("        bool passed = floatEquals(output[i], expected[i]);")
 
     # Add pointer output verification if applicable
     if has_ptr_output:

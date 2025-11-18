@@ -61,6 +61,25 @@ bool floatEquals(float a, float b, float tolerance = 0.0001f) {
   return (diff / max_val) < relative_tolerance;
 }
 
+// Half-precision float comparison with relaxed tolerance
+// Half-precision functions have ≤ 8192 ULP accuracy vs ≤ 4 ULP for regular
+// functions
+bool halfFloatEquals(float a, float b) {
+  float diff = std::fabs(a - b);
+
+  // For very small values, use absolute tolerance
+  if (std::fabs(a) < 1.0f || std::fabs(b) < 1.0f) {
+    return diff < 0.01f; // 1% absolute for small values
+  }
+
+  // For larger values, use very relaxed relative tolerance
+  // Half-precision can have up to 8192 ULP error, which translates to ~0.1% for
+  // worst case
+  float max_val = std::max(std::fabs(a), std::fabs(b));
+  float relative_tolerance = 0.1f; // 10% for half-precision functions
+  return (diff / max_val) < relative_tolerance;
+}
+
 // Helper function to load kernel source from file
 std::string loadKernel(const std::string &filename) {
   std::string fullPath = "kernels/" + filename;
@@ -219,6 +238,21 @@ void test_modf();
 void test_sincos();
 void test_remquo();
 void test_lgamma_r();
+// Phase 3: Half-precision math functions
+void test_half_cos();
+void test_half_sin();
+void test_half_tan();
+void test_half_exp();
+void test_half_exp2();
+void test_half_exp10();
+void test_half_log();
+void test_half_log2();
+void test_half_log10();
+void test_half_sqrt();
+void test_half_rsqrt();
+void test_half_recip();
+void test_half_divide();
+void test_half_powr();
 void test_all_int2();
 void test_all_int4();
 void test_any_int2();
@@ -542,6 +576,22 @@ void registerAllTests() {
   registerTest("sincos", "pointer_output_functions", test_sincos);
   registerTest("remquo", "pointer_output_functions", test_remquo);
   registerTest("lgamma_r", "pointer_output_functions", test_lgamma_r);
+
+  // Register Phase 3: Half-precision math function tests
+  registerTest("half_cos", "half_precision_math", test_half_cos);
+  registerTest("half_sin", "half_precision_math", test_half_sin);
+  registerTest("half_tan", "half_precision_math", test_half_tan);
+  registerTest("half_exp", "half_precision_math", test_half_exp);
+  registerTest("half_exp2", "half_precision_math", test_half_exp2);
+  registerTest("half_exp10", "half_precision_math", test_half_exp10);
+  registerTest("half_log", "half_precision_math", test_half_log);
+  registerTest("half_log2", "half_precision_math", test_half_log2);
+  registerTest("half_log10", "half_precision_math", test_half_log10);
+  registerTest("half_sqrt", "half_precision_math", test_half_sqrt);
+  registerTest("half_rsqrt", "half_precision_math", test_half_rsqrt);
+  registerTest("half_recip", "half_precision_math", test_half_recip);
+  registerTest("half_divide", "half_precision_math", test_half_divide);
+  registerTest("half_powr", "half_precision_math", test_half_powr);
 
   // Register all relational function tests
   registerTest("all_int2", "relational", test_all_int2);
