@@ -25,7 +25,9 @@ RUN dnf install -y \
     && dnf clean all
 
 # Set up environment for Rusticl
-ENV RUSTICL_ENABLE=llvmpipe
+# Use iris for Intel GPU hardware acceleration (requires Intel GPU on host)
+# Alternative: ENV RUSTICL_ENABLE=llvmpipe (CPU-based software rendering)
+ENV RUSTICL_ENABLE=iris
 
 # Create working directory
 WORKDIR /workspace

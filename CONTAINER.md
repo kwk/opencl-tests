@@ -78,8 +78,9 @@ Stops and removes the container and image.
 
 ### Base Image
 - **Image**: `fedora:rawhide`
-- **OpenCL Implementation**: Mesa Rusticl (CPU-based)
-- **Device**: `RUSTICL_ENABLE=llvmpipe` (software rendering)
+- **OpenCL Implementation**: Mesa Rusticl
+- **Device**: `RUSTICL_ENABLE=iris` (Intel GPU hardware acceleration)
+- **Fallback**: Can use `RUSTICL_ENABLE=llvmpipe` for CPU-based software rendering
 
 ### Installed Packages
 - Build tools: `cmake`, `gcc`, `gcc-c++`, `make`, `git`
@@ -101,11 +102,13 @@ The project directory is mounted at `/workspace` inside the container using:
 3. **Easy cleanup**: Remove container when done, no system pollution
 4. **CI/CD ready**: Can be used in automated testing pipelines
 5. **Latest packages**: Rawhide provides cutting-edge Mesa/Rusticl versions
+6. **Hardware acceleration**: Uses Intel GPU (iris driver) for better performance
 
 ### Limitations
-1. **Software rendering**: Uses llvmpipe (CPU-based) instead of GPU
-2. **Performance**: Slower than native execution
-3. **Device access**: Requires `/dev/dri` passthrough
+1. **Intel GPU required**: Default configuration requires Intel GPU on host
+   - Use `RUSTICL_ENABLE=llvmpipe` for CPU-based software rendering on any system
+2. **Device access**: Requires `/dev/dri` passthrough
+3. **GPU sharing**: Container uses host GPU resources
 
 ## Troubleshooting
 
@@ -123,6 +126,12 @@ make -f Makefile.container container-build
 # Inside container, check OpenCL availability
 clinfo -l
 
+# Should show (with Intel GPU):
+# Platform #0: rusticl
+#   Device #0: Mesa Intel(R) UHD Graphics (TGL GT1)
+
+# If no Intel GPU, fallback to software rendering:
+RUSTICL_ENABLE=llvmpipe clinfo -l
 # Should show:
 # Platform #0: rusticl
 #   Device #0: llvmpipe
@@ -138,18 +147,39 @@ sudo usermod -a -G video,render $USER
 ```
 
 ### Tests fail in container but pass on host
-This is expected - the container uses software rendering (llvmpipe) while the host may use actual GPU. Some tests may have different behavior.
+The container uses the same GPU as the host (iris driver), so behavior should be identical. If tests fail in container but pass on host:
+1. Check that `/dev/dri` is properly mounted: `ls -la /dev/dri` inside container
+2. Verify GPU permissions on host
+3. Try rebuilding with `make -f Makefile.container container-clean && make -f Makefile.container container-build`
+
+### No Intel GPU available
+If you don't have an Intel GPU, use software rendering instead:
+```bash
+# Override at runtime
+podman run --rm --device=/dev/dri -v $(pwd):/workspace:Z \
+  opencl-test-suite:latest \
+  /bin/bash -c "RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+
+# Or modify Containerfile to change default from iris to llvmpipe
+```
 
 ## Advanced Usage
 
 ### Custom RUSTICL_ENABLE
 ```bash
-# Run with different device
+# Run with software rendering (CPU-based, works on any system)
 podman run --rm \
   --device=/dev/dri \
   -v $(pwd):/workspace:Z \
   opencl-test-suite:latest \
-  /bin/bash -c "cd /workspace && RUSTICL_ENABLE=iris ./build/test_all_opencl_functions"
+  /bin/bash -c "cd /workspace && RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+
+# Run with specific GPU (e.g., AMD)
+podman run --rm \
+  --device=/dev/dri \
+  -v $(pwd):/workspace:Z \
+  opencl-test-suite:latest \
+  /bin/bash -c "cd /workspace && RUSTICL_ENABLE=radeonsi ./build/test_all_opencl_functions"
 ```
 
 ### Debug Build

@@ -73,7 +73,7 @@ container-run: container-build
 		              make -C build -j\$$(nproc) && \
 		              echo '' && \
 		              echo '=== Running tests ===' && \
-		              RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+		              RUSTICL_ENABLE=iris ./build/test_all_opencl_functions"
 
 # Run tests in already-running container
 container-test:
@@ -87,7 +87,7 @@ container-test:
 		/bin/bash -c "cd /workspace && \
 		              cmake -B build && \
 		              make -C build -j\$$(nproc) && \
-		              RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+		              RUSTICL_ENABLE=iris ./build/test_all_opencl_functions"
 
 # Open interactive shell in container
 container-shell: container-sync
