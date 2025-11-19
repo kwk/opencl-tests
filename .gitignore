@@ -1,4 +1,5 @@
 build/
+build-in-container/
 *.o
 *.a
 *.so

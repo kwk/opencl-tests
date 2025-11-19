@@ -48,10 +48,12 @@ make -f Makefile.container container-shell
 
 # Inside container:
 cd /workspace
-cmake -B build
-make -C build -j$(nproc)
-RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions
+cmake -B build-in-container
+make -C build-in-container -j$(nproc)
+RUSTICL_ENABLE=iris ./build-in-container/test_all_opencl_functions
 ```
+
+**Note**: Container builds use `build-in-container/` directory to avoid conflicts with host builds in `build/` directory.
 
 ### Run Tests in Running Container
 
@@ -158,7 +160,7 @@ If you don't have an Intel GPU, use software rendering instead:
 # Override at runtime
 podman run --rm --device=/dev/dri -v $(pwd):/workspace:Z \
   opencl-test-suite:latest \
-  /bin/bash -c "RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+  /bin/bash -c "RUSTICL_ENABLE=llvmpipe ./build-in-container/test_all_opencl_functions"
 
 # Or modify Containerfile to change default from iris to llvmpipe
 ```
@@ -172,14 +174,14 @@ podman run --rm \
   --device=/dev/dri \
   -v $(pwd):/workspace:Z \
   opencl-test-suite:latest \
-  /bin/bash -c "cd /workspace && RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+  /bin/bash -c "cd /workspace && RUSTICL_ENABLE=llvmpipe ./build-in-container/test_all_opencl_functions"
 
 # Run with specific GPU (e.g., AMD)
 podman run --rm \
   --device=/dev/dri \
   -v $(pwd):/workspace:Z \
   opencl-test-suite:latest \
-  /bin/bash -c "cd /workspace && RUSTICL_ENABLE=radeonsi ./build/test_all_opencl_functions"
+  /bin/bash -c "cd /workspace && RUSTICL_ENABLE=radeonsi ./build-in-container/test_all_opencl_functions"
 ```
 
 ### Debug Build
@@ -187,16 +189,16 @@ podman run --rm \
 make -f Makefile.container container-shell
 
 # Inside container:
-cmake -B build -DCMAKE_BUILD_TYPE=Debug
-make -C build -j$(nproc)
-gdb ./build/test_all_opencl_functions
+cmake -B build-in-container -DCMAKE_BUILD_TYPE=Debug
+make -C build-in-container -j$(nproc)
+gdb ./build-in-container/test_all_opencl_functions
 ```
 
 ### Run Specific Tests
 ```bash
 podman exec -it opencl-test-suite \
   /bin/bash -c "cd /workspace && \
-                RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions --category math"
+                RUSTICL_ENABLE=iris ./build-in-container/test_all_opencl_functions --category math"
 ```
 
 ## Integration with CI/CD

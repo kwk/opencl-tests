@@ -7,14 +7,6 @@ IMAGE_NAME := opencl-test-suite:latest
 # Source directory (current directory)
 SRC_DIR := $(shell pwd)
 
-# Files to sync (exclude build artifacts and cache)
-RSYNC_EXCLUDE := --exclude='build/' \
-                 --exclude='__pycache__/' \
-                 --exclude='.git/' \
-                 --exclude='*.o' \
-                 --exclude='*.so' \
-                 --exclude='test_all_opencl_functions'
-
 help:
 	@echo "OpenCL Test Suite Container Makefile"
 	@echo ""
@@ -67,13 +59,13 @@ container-run: container-build
 		              clinfo -l && \
 		              echo '' && \
 		              echo '=== Configuring build ===' && \
-		              cmake -B build && \
+		              cmake -B build-in-container && \
 		              echo '' && \
 		              echo '=== Building test suite ===' && \
-		              make -C build -j\$$(nproc) && \
+		              make -C build-in-container -j\$$(nproc) && \
 		              echo '' && \
 		              echo '=== Running tests ===' && \
-		              RUSTICL_ENABLE=iris ./build/test_all_opencl_functions"
+		              RUSTICL_ENABLE=iris ./build-in-container/test_all_opencl_functions"
 
 # Run tests in already-running container
 container-test:
@@ -85,9 +77,9 @@ container-test:
 	fi
 	podman exec -it $(CONTAINER_NAME) \
 		/bin/bash -c "cd /workspace && \
-		              cmake -B build && \
-		              make -C build -j\$$(nproc) && \
-		              RUSTICL_ENABLE=iris ./build/test_all_opencl_functions"
+		              cmake -B build-in-container && \
+		              make -C build-in-container -j\$$(nproc) && \
+		              RUSTICL_ENABLE=iris ./build-in-container/test_all_opencl_functions"
 
 # Open interactive shell in container
 container-shell: container-sync
