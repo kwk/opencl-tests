@@ -10,6 +10,8 @@ cmake_install.cmake
 Makefile
 compile_commands.json
 
+**/__pycache__/
+
 # Generated test code
 src/generated_tests.cpp
 
@@ -20,3 +22,4 @@ test_all_opencl_functions
 *.swp
 *.swo
 *~
+__pycache__/
