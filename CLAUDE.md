@@ -218,6 +218,30 @@ All failing math functions were fixed to achieve 100% test pass rate:
 
 **Math Functions**: 13 functions fixed, 60 additional tests passing
 
+### Phase 6: Image Functions Implementation
+
+Successfully implemented OpenCL image functions, requiring significant framework extension:
+
+**Functions Added (6 functions, 7 tests)**:
+- **Query Functions (4)**: get_image_width, get_image_height, get_image_channel_data_type, get_image_channel_order
+- **Read Functions (1)**: read_imagef - Read float4 pixels from 2D images
+- **Write Functions (1)**: write_imagef - Write float4 pixels to 2D images
+
+**Implementation Approach**:
+- Created standalone `test_image_functions.cpp` (not auto-generated)
+- Image functions require fundamentally different infrastructure than buffer-based tests
+- Uses `clCreateImage` with `cl_image_format` and `cl_image_desc` structures
+- Test images: 64x32 for queries, 4x4 RGBA float for read/write
+- Verifies specific pixel colors: red (1,0,0,1), green (0,1,0,1)
+
+**Technical Challenges Solved**:
+- Image memory objects vs regular buffers
+- Mixed read/write access flags (CL_MEM_READ_ONLY, CL_MEM_WRITE_ONLY)
+- Using `clEnqueueReadImage` for write verification
+- Integrated into existing test framework while bypassing code generator
+
+**Test Results**: All 7 tests passing (100%)
+
 ### Final Test Suite Statistics
 
 **Evolution of Test Coverage**:
@@ -227,8 +251,10 @@ All failing math functions were fixed to achieve 100% test pass rate:
 - After vector load/store (2/4): 140 functions, 1,397 tests
 - After vector load/store (all): 146 functions, 1,457 tests
 - After half-precision math: 160 functions, 1,596 tests
-- After native math (Phase 4): **200 functions, 1,914 tests**
-- **Final pass rate: 100% ✅ (1914/1914 tests passing)**
+- After native math (Phase 4): 200 functions, 1,914 tests
+- After documentation update (Phase 5): 200 functions, 1,914 tests
+- After image functions (Phase 6): **203 functions, 1,921 tests**
+- **Final pass rate: 100% ✅ (1921/1921 tests passing)**
 
 **Functions by Category**:
 - Math Functions: 73 functions (51 standard + 8 native + 14 half-precision)
@@ -240,6 +266,7 @@ All failing math functions were fixed to achieve 100% test pass rate:
 - Vector Miscellaneous: 2 functions (shuffle, shuffle2)
 - Vector Load/Store: 10 functions (vload2/3/4/8/16, vstore2/3/4/8/16)
 - Printf Functions: 9 functions
+- Image Functions: 6 functions (get_image_width/height, get_image_channel_data_type/order, read_imagef, write_imagef)
 
 ## Project Cleanup
 
@@ -281,6 +308,9 @@ All failing math functions were fixed to achieve 100% test pass rate:
 
 ### Phase 5: Documentation and Test Count Updates
 12. `Update test counts and documentation (Phase 5)`
+
+### Phase 6: Image Functions
+13. `Implement OpenCL image functions (Phase 6)`
 
 ## Testing Environment
 
@@ -326,6 +356,15 @@ All failing math functions were fixed to achieve 100% test pass rate:
 - `test_data/native_math.json` - Native math test specifications (60 tests)
 - `generate_tests.py` - Enhanced to detect native_* prefix and use relaxed tolerance
 - `src/test_all_opencl_functions.cpp` - Added 6 function declarations and registrations
+
+### Phase 6: Image Functions
+- `create_image_test_data.py` - Test data generator for image functions
+- `kernels/image_functions_kernel.cl` - Image query, read, and write kernels
+- `src/test_image_functions.cpp` - Standalone image test implementation
+- `test_data/image_functions.json` - Image function test specifications (reference only)
+- `CMakeLists.txt` - Added test_image_functions.cpp to build
+- `generate_tests.py` - Skip image_functions category (handled separately)
+- `src/test_all_opencl_functions.cpp` - Added 3 image test registrations
 
 ### Documentation
 - `README.md` - Updated test statistics and coverage information
