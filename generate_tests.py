@@ -30,6 +30,7 @@ def get_c_type(opencl_type):
         "long": "long",
         "ulong": "unsigned long",
         "float": "float",
+        "half": "cl_half",  # Half-precision type
     }
     return type_map.get(opencl_type, opencl_type)
 
@@ -92,6 +93,12 @@ def generate_function_test(func_data, category):
     # Check if this is a half-precision or native function (needs relaxed tolerance)
     is_relaxed_precision = name.startswith("half_") or name.startswith("native_")
 
+    # Check for half-precision vload/vstore functions
+    is_half_vload = func_data.get("is_half_vload", False)
+    is_half_vstore = func_data.get("is_half_vstore", False)
+    is_half_vloada = func_data.get("is_half_vloada", False)
+    is_half_vstorea = func_data.get("is_half_vstorea", False)
+
     num_tests = len(tests)
 
     code = []
@@ -105,8 +112,8 @@ def generate_function_test(func_data, category):
     output_c_type = get_c_type(output_type)
 
     # Special handling for vload/vstore functions
-    is_vload = name.startswith("vload")
-    is_vstore = name.startswith("vstore")
+    is_vload = name.startswith("vload") and not (is_half_vload or is_half_vloada)
+    is_vstore = name.startswith("vstore") and not (is_half_vstore or is_half_vstorea)
 
     if is_vload:
         # vload: first input is scalar array, second is size_t offset
@@ -128,6 +135,19 @@ def generate_function_test(func_data, category):
     elif is_vstore:
         # vstore: first input is vector, second is size_t offset
         code.append(f"    {input_c_type} input0[NUM_TESTS];")
+        code.append(f"    size_t input1[NUM_TESTS];")
+    elif is_half_vload or is_half_vloada:
+        # half vload: input is half array, but we work with floats in C++
+        # OpenCL kernel reads from cl_half buffer and returns float
+        vec_size = func_data.get("vector_size", 1)
+        array_size = vec_size * 2  # Two vectors worth
+        if vec_size == 1:
+            array_size = 4  # For scalar vload_half
+        code.append(f"    float input0[NUM_TESTS * {array_size}];  // Stored as half in OpenCL")
+        code.append(f"    size_t input1[NUM_TESTS];")
+    elif is_half_vstore or is_half_vstorea:
+        # half vstore: input is float value/vector, stored as half in OpenCL
+        code.append(f"    {output_c_type} input0[NUM_TESTS];  // Will be stored as half")
         code.append(f"    size_t input1[NUM_TESTS];")
     else:
         # Standard handling
@@ -158,6 +178,20 @@ def generate_function_test(func_data, category):
             output_array_size = 4
         code.append(f"    {output_c_type} output[NUM_TESTS * {output_array_size}];")
         code.append(f"    {output_c_type} expected[NUM_TESTS * {output_array_size}];")
+    elif is_half_vload or is_half_vloada:
+        # half vload returns float/floatn
+        code.append(f"    {output_c_type} output[NUM_TESTS];")
+        code.append(f"    {output_c_type} expected[NUM_TESTS];")
+    elif is_half_vstore or is_half_vstorea:
+        # half vstore outputs to half array (but we read as float for verification)
+        vec_size = func_data.get("vector_size", 1)
+        output_array_size = vec_size * 2
+        if vec_size == 1:
+            output_array_size = 4
+        code.append(
+            f"    float output[NUM_TESTS * {output_array_size}];  // Read back from half buffer"
+        )
+        code.append(f"    float expected[NUM_TESTS * {output_array_size}];")
     else:
         code.append(f"    {output_c_type} output[NUM_TESTS];")
         code.append(f"    {output_c_type} expected[NUM_TESTS];")
@@ -511,6 +545,10 @@ def generate_all_tests():
 
             # Skip image functions - they're handled separately in test_image_functions.cpp
             if category == "image_functions":
+                continue
+
+            # Skip half-precision functions - they're handled separately in test_half_functions.cpp
+            if category == "half_vector_load_store_functions":
                 continue
 
             for func in data["functions"]:

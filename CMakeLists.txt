@@ -46,6 +46,7 @@ add_custom_target(generate_tests DEPENDS ${GENERATED_TESTS_FILE})
 # so we only add it as a dependency, not as a source file to compile separately
 add_executable(test_all_opencl_functions
     src/test_all_opencl_functions.cpp
-    src/test_image_functions.cpp)
+    src/test_image_functions.cpp
+    src/test_half_functions.cpp)
 add_dependencies(test_all_opencl_functions generate_tests)
 target_link_libraries(test_all_opencl_functions ${OpenCL_LIBRARIES})

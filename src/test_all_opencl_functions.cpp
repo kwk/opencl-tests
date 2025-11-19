@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 203 functions with 1921 test cases
+ * Tests 209 functions with 1943 test cases (includes half-precision functions)
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -307,6 +307,11 @@ void test_printf_multi();
 void test_image_query_functions();
 void test_image_read_functions();
 void test_image_write_functions();
+// Half-precision vector load/store functions
+void test_half_vload_functions();
+void test_half_vstore_functions();
+void test_half_vloada_functions();
+void test_half_vstorea_functions();
 
 void initializeOpenCL() {
   cl_int err;
@@ -665,6 +670,16 @@ void registerAllTests() {
   registerTest("image_query", "image_functions", test_image_query_functions);
   registerTest("image_read", "image_functions", test_image_read_functions);
   registerTest("image_write", "image_functions", test_image_write_functions);
+
+  // Register half-precision vector load/store tests
+  registerTest("half_vload", "half_vector_load_store",
+               test_half_vload_functions);
+  registerTest("half_vstore", "half_vector_load_store",
+               test_half_vstore_functions);
+  registerTest("half_vloada", "half_vector_load_store",
+               test_half_vloada_functions);
+  registerTest("half_vstorea", "half_vector_load_store",
+               test_half_vstorea_functions);
 }
 
 void printUsage(const char *program) {
@@ -777,7 +792,7 @@ int main(int argc, char *argv[]) {
   } else if (!filter_category.empty()) {
     std::cout << "Running category: " << filter_category << std::endl;
   } else {
-    std::cout << "Testing 203 functions with 1921 test cases" << std::endl;
+    std::cout << "Testing 209 functions with 1943 test cases" << std::endl;
   }
   std::cout << "========================================" << std::endl
             << std::endl;
