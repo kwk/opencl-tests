@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 200 functions with 1914 test cases
+ * Tests 203 functions with 1921 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -303,6 +303,10 @@ void test_printf_hello_world();
 void test_printf_newline();
 void test_printf_value();
 void test_printf_multi();
+// Image functions
+void test_image_query_functions();
+void test_image_read_functions();
+void test_image_write_functions();
 
 void initializeOpenCL() {
   cl_int err;
@@ -656,6 +660,11 @@ void registerAllTests() {
   registerTest("printf_newline", "misc_functions", test_printf_newline);
   registerTest("printf_value", "misc_functions", test_printf_value);
   registerTest("printf_multi", "misc_functions", test_printf_multi);
+
+  // Register image function tests
+  registerTest("image_query", "image_functions", test_image_query_functions);
+  registerTest("image_read", "image_functions", test_image_read_functions);
+  registerTest("image_write", "image_functions", test_image_write_functions);
 }
 
 void printUsage(const char *program) {
@@ -768,7 +777,7 @@ int main(int argc, char *argv[]) {
   } else if (!filter_category.empty()) {
     std::cout << "Running category: " << filter_category << std::endl;
   } else {
-    std::cout << "Testing 200 functions with 1914 test cases" << std::endl;
+    std::cout << "Testing 203 functions with 1921 test cases" << std::endl;
   }
   std::cout << "========================================" << std::endl
             << std::endl;

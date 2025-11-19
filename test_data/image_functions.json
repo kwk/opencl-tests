@@ -1,0 +1,250 @@
+{
+  "category": "image_functions",
+  "kernel_file": "kernels/image_functions_kernel.cl",
+  "functions": [
+    {
+      "name": "get_image_width",
+      "kernel_name": "test_get_image_width",
+      "input_type": "image2d_t",
+      "output_type": "int",
+      "num_inputs": 0,
+      "is_image_query": true,
+      "description": "Returns the image width in pixels",
+      "tests": [
+        {
+          "image_width": 16,
+          "image_height": 16,
+          "expected": 16
+        },
+        {
+          "image_width": 32,
+          "image_height": 16,
+          "expected": 32
+        },
+        {
+          "image_width": 64,
+          "image_height": 32,
+          "expected": 64
+        },
+        {
+          "image_width": 128,
+          "image_height": 64,
+          "expected": 128
+        },
+        {
+          "image_width": 256,
+          "image_height": 128,
+          "expected": 256
+        }
+      ]
+    },
+    {
+      "name": "get_image_height",
+      "kernel_name": "test_get_image_height",
+      "input_type": "image2d_t",
+      "output_type": "int",
+      "num_inputs": 0,
+      "is_image_query": true,
+      "description": "Returns the image height in pixels",
+      "tests": [
+        {
+          "image_width": 16,
+          "image_height": 16,
+          "expected": 16
+        },
+        {
+          "image_width": 32,
+          "image_height": 32,
+          "expected": 32
+        },
+        {
+          "image_width": 64,
+          "image_height": 48,
+          "expected": 48
+        },
+        {
+          "image_width": 128,
+          "image_height": 96,
+          "expected": 96
+        },
+        {
+          "image_width": 256,
+          "image_height": 192,
+          "expected": 192
+        }
+      ]
+    },
+    {
+      "name": "get_image_channel_data_type",
+      "kernel_name": "test_get_image_channel_data_type",
+      "input_type": "image2d_t",
+      "output_type": "int",
+      "num_inputs": 0,
+      "is_image_query": true,
+      "description": "Returns the channel data type",
+      "tests": [
+        {
+          "image_width": 16,
+          "image_height": 16,
+          "channel_data_type": "CL_FLOAT",
+          "expected": 4318
+        },
+        {
+          "image_width": 16,
+          "image_height": 16,
+          "channel_data_type": "CL_UNSIGNED_INT8",
+          "expected": 4311
+        }
+      ]
+    },
+    {
+      "name": "get_image_channel_order",
+      "kernel_name": "test_get_image_channel_order",
+      "input_type": "image2d_t",
+      "output_type": "int",
+      "num_inputs": 0,
+      "is_image_query": true,
+      "description": "Returns the channel order",
+      "tests": [
+        {
+          "image_width": 16,
+          "image_height": 16,
+          "channel_order": "CL_RGBA",
+          "expected": 4277
+        },
+        {
+          "image_width": 16,
+          "image_height": 16,
+          "channel_order": "CL_R",
+          "expected": 4272
+        }
+      ]
+    },
+    {
+      "name": "read_imagef_2d",
+      "kernel_name": "test_read_imagef_2d",
+      "input_type": "image2d_t",
+      "output_type": "float4",
+      "num_inputs": 2,
+      "is_image_read": true,
+      "channel_order": "CL_RGBA",
+      "channel_data_type": "CL_FLOAT",
+      "description": "Read float4 pixel from 2D image",
+      "tests": [
+        {
+          "image_width": 4,
+          "image_height": 4,
+          "inputs": [
+            0,
+            0
+          ],
+          "image_data": [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "expected": [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "image_width": 4,
+          "image_height": 4,
+          "inputs": [
+            1,
+            0
+          ],
+          "image_data": [
+            0.0,
+            1.0,
+            0.0,
+            1.0
+          ],
+          "expected": [
+            0.0,
+            1.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "image_width": 4,
+          "image_height": 4,
+          "inputs": [
+            0,
+            1
+          ],
+          "image_data": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "expected": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "write_imagef_2d",
+      "kernel_name": "test_write_imagef_2d",
+      "input_type": "image2d_t",
+      "output_type": "float4",
+      "num_inputs": 2,
+      "is_image_write": true,
+      "channel_order": "CL_RGBA",
+      "channel_data_type": "CL_FLOAT",
+      "description": "Write float4 pixel to 2D image",
+      "tests": [
+        {
+          "image_width": 4,
+          "image_height": 4,
+          "inputs": [
+            0,
+            0
+          ],
+          "color": [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "expected": [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "image_width": 4,
+          "image_height": 4,
+          "inputs": [
+            1,
+            0
+          ],
+          "color": [
+            0.0,
+            1.0,
+            0.0,
+            1.0
+          ],
+          "expected": [
+            0.0,
+            1.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -44,6 +44,8 @@ add_custom_target(generate_tests DEPENDS ${GENERATED_TESTS_FILE})
 # Comprehensive OpenCL built-in functions test suite
 # Note: generated_tests.cpp is included via #include in test_all_opencl_functions.cpp,
 # so we only add it as a dependency, not as a source file to compile separately
-add_executable(test_all_opencl_functions src/test_all_opencl_functions.cpp)
+add_executable(test_all_opencl_functions
+    src/test_all_opencl_functions.cpp
+    src/test_image_functions.cpp)
 add_dependencies(test_all_opencl_functions generate_tests)
 target_link_libraries(test_all_opencl_functions ${OpenCL_LIBRARIES})

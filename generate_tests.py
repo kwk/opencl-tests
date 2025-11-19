@@ -507,6 +507,10 @@ def generate_all_tests():
             data = json.load(f)
             category = data["category"]
 
+            # Skip image functions - they're handled separately in test_image_functions.cpp
+            if category == "image_functions":
+                continue
+
             for func in data["functions"]:
                 test_code = generate_function_test(func, category)
                 all_functions.append({"name": func["name"], "code": test_code})
