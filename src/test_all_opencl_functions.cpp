@@ -414,9 +414,40 @@ void printTestSummary() {
     }
   }
 
+  // Detect if running in container
+  bool in_container = false;
+  std::ifstream cgroup_file("/proc/1/cgroup");
+  if (cgroup_file.is_open()) {
+    std::string line;
+    while (std::getline(cgroup_file, line)) {
+      if (line.find("docker") != std::string::npos ||
+          line.find("podman") != std::string::npos ||
+          line.find("buildah") != std::string::npos) {
+        in_container = true;
+        break;
+      }
+    }
+    cgroup_file.close();
+  }
+
+  // Alternative check: look for /.dockerenv or /run/.containerenv
+  if (!in_container) {
+    std::ifstream docker_env("/.dockerenv");
+    std::ifstream container_env("/run/.containerenv");
+    in_container = docker_env.good() || container_env.good();
+  }
+
   std::cout << "\n========================================" << std::endl;
   std::cout << "TEST SUMMARY" << std::endl;
   std::cout << "========================================" << std::endl;
+
+  // Print environment information
+  if (in_container) {
+    std::cout << "Environment: Running in container" << std::endl;
+  } else {
+    std::cout << "Environment: Running on host system" << std::endl;
+  }
+
   std::cout << "Total tests: " << total << std::endl;
   std::cout << "Passed: " << passed << " (" << (100.0 * passed / total) << "%)"
             << std::endl;
