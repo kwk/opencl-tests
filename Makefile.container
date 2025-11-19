@@ -1,0 +1,107 @@
+.PHONY: help container-build container-sync container-run container-test container-shell container-clean all
+
+# Container and image names
+CONTAINER_NAME := opencl-test-suite
+IMAGE_NAME := opencl-test-suite:latest
+
+# Source directory (current directory)
+SRC_DIR := $(shell pwd)
+
+# Files to sync (exclude build artifacts and cache)
+RSYNC_EXCLUDE := --exclude='build/' \
+                 --exclude='__pycache__/' \
+                 --exclude='.git/' \
+                 --exclude='*.o' \
+                 --exclude='*.so' \
+                 --exclude='test_all_opencl_functions'
+
+help:
+	@echo "OpenCL Test Suite Container Makefile"
+	@echo ""
+	@echo "Available targets:"
+	@echo "  help             - Show this help message"
+	@echo "  container-build  - Build the container image"
+	@echo "  container-sync   - Sync source code to running container"
+	@echo "  container-run    - Build image, sync code, build and run tests"
+	@echo "  container-test   - Run tests in container (container must be running)"
+	@echo "  container-shell  - Open interactive shell in container"
+	@echo "  container-clean  - Stop and remove container and image"
+	@echo "  all              - Build image and run full test suite"
+	@echo ""
+	@echo "Usage examples:"
+	@echo "  make -f Makefile.container all                    # Complete build and test"
+	@echo "  make -f Makefile.container container-shell        # Interactive development"
+	@echo "  make -f Makefile.container container-sync         # Sync changes to running container"
+	@echo "  make -f Makefile.container container-clean        # Clean up everything"
+
+# Build the container image
+container-build:
+	@echo "Building container image: $(IMAGE_NAME)"
+	podman build -t $(IMAGE_NAME) -f Containerfile .
+	@echo "Container image built successfully"
+
+# Start container and sync source code
+container-sync:
+	@echo "Checking if container is running..."
+	@if ! podman ps --format '{{.Names}}' | grep -q '^$(CONTAINER_NAME)$$'; then \
+		echo "Container not running. Starting container..."; \
+		podman run -d --name $(CONTAINER_NAME) \
+			--device=/dev/dri \
+			-v $(SRC_DIR):/workspace:Z \
+			$(IMAGE_NAME) sleep infinity; \
+		echo "Container started"; \
+	else \
+		echo "Container already running"; \
+	fi
+	@echo "Source code available in container via volume mount"
+
+# Run full build and test in container
+container-run: container-build
+	@echo "Running build and test in container..."
+	podman run --rm \
+		--device=/dev/dri \
+		-v $(SRC_DIR):/workspace:Z \
+		$(IMAGE_NAME) \
+		/bin/bash -c "cd /workspace && \
+		              echo '=== Checking OpenCL availability ===' && \
+		              clinfo -l && \
+		              echo '' && \
+		              echo '=== Configuring build ===' && \
+		              cmake -B build && \
+		              echo '' && \
+		              echo '=== Building test suite ===' && \
+		              make -C build -j\$$(nproc) && \
+		              echo '' && \
+		              echo '=== Running tests ===' && \
+		              RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+
+# Run tests in already-running container
+container-test:
+	@echo "Running tests in container..."
+	@if ! podman ps --format '{{.Names}}' | grep -q '^$(CONTAINER_NAME)$$'; then \
+		echo "Error: Container $(CONTAINER_NAME) is not running"; \
+		echo "Run 'make -f Makefile.container container-sync' first to start the container"; \
+		exit 1; \
+	fi
+	podman exec -it $(CONTAINER_NAME) \
+		/bin/bash -c "cd /workspace && \
+		              cmake -B build && \
+		              make -C build -j\$$(nproc) && \
+		              RUSTICL_ENABLE=llvmpipe ./build/test_all_opencl_functions"
+
+# Open interactive shell in container
+container-shell: container-sync
+	@echo "Opening shell in container..."
+	podman exec -it $(CONTAINER_NAME) /bin/bash
+
+# Clean up container and image
+container-clean:
+	@echo "Cleaning up container and image..."
+	-podman stop $(CONTAINER_NAME) 2>/dev/null || true
+	-podman rm $(CONTAINER_NAME) 2>/dev/null || true
+	-podman rmi $(IMAGE_NAME) 2>/dev/null || true
+	@echo "Cleanup complete"
+
+# Complete build and test workflow
+all: container-run
+	@echo "All tasks complete!"
