@@ -472,7 +472,9 @@ def generate_function_test(func_data, category):
             code.append("        passed = passed && floatEquals(ptr_output[i], expected_ptr[i]);")
 
     code.append(f'        test_results.push_back({{"{name}", i, passed, ""}});')
-    code.append("        if (!passed) {")
+    code.append("        if (passed) {")
+    code.append(f'            std::cout << "  Test " << i << " PASS" << std::endl;')
+    code.append("        } else {")
     code.append(f'            std::cout << "  Test " << i << " FAILED" << std::endl;')
     code.append("        }")
     code.append("    }")
