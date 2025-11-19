@@ -1,7 +1,7 @@
 /**
  * OpenCL Built-in Functions Test Runner
  * Comprehensive test suite for all OpenCL C built-in functions
- * Tests 152 functions with 1517 test cases
+ * Tests 200 functions with 1914 test cases
  */
 
 #define CL_TARGET_OPENCL_VERSION 300
@@ -768,7 +768,7 @@ int main(int argc, char *argv[]) {
   } else if (!filter_category.empty()) {
     std::cout << "Running category: " << filter_category << std::endl;
   } else {
-    std::cout << "Testing 152 functions with 1517 test cases" << std::endl;
+    std::cout << "Testing 200 functions with 1914 test cases" << std::endl;
   }
   std::cout << "========================================" << std::endl
             << std::endl;
